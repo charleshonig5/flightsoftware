@@ -16,9 +16,9 @@
 - **No magic values in components.** No arbitrary Tailwind values
   (`text-[13px]`, `bg-[#f4f4f4]`, `p-[7px]`). If a design needs a value with no
   token, map it to the nearest token or add a new token here first.
-  - Currently allowed exception: the `Gauge` is a fixed-art component
-    (`h-[30px] w-[60px]` and SVG geometry) — its dimensions are intrinsic to the
-    artwork, not layout spacing.
+  - Currently allowed exception: the `Gauge`'s internal SVG geometry
+    (60×30 viewBox, arc path, 7.5 stroke) is intrinsic to the artwork, not
+    layout spacing. Its rendered box uses scale utilities (`w-12 h-6`).
 
 ## 1. Color — ✅ LOCKED (v0)
 
@@ -244,7 +244,8 @@ Rules:
     white text, hover `opacity-85`.
 
 ### `dashboard/KpiCard` — fleet stat card
-- `bg-card rounded-card p-6 pb-4`, 107px tall by content.
+- `bg-card rounded-card p-6 pb-4`, 104px tall by content (24 + 14 label +
+  14 + 36 count + 16).
 - Label row: 14px icon + `text-caption`, both `ink-muted`, 4px gap.
 - 14px `InfoIcon` in `ink-faint` at top-right (24px insets); turns `brand` on
   hover/focus while its tooltip is open.
@@ -350,8 +351,9 @@ Rules:
 
 ### `ui/Tooltip` — hover/focus tooltip
 - White `bg-card` bubble, `shadow-pop`, `text-ink text-caption`, `rounded-tile`,
-  `px-2.5 py-1.5`, `max-w-3xs`; pops up above its trigger (right-aligned by
-  default, `align="left"` to flip) with a 150ms fade + 2px rise.
+  `p-2.5`, `max-w-40` (160px — copy wraps into a compact block, never one long
+  skinny line); pops up **centered above** its trigger with a 150ms fade +
+  2px rise.
 - Pure CSS (`group/tip` hover + focus-visible); triggers should turn `brand`
   while open (see KPI info icons).
 
@@ -502,9 +504,10 @@ Rules:
 ### `dashboard/MeterTile` — stat tile
 - `rounded-tile p-3.5`; fill by `surface` prop per the inversion rule:
   `bg-tile` on a card (dashboard), `bg-card` on the page (aircraft Overview).
-- Label (caption), value (stat, with the unit as a baseline-aligned caption
-  exactly 8px after it — `items-baseline gap-2`), meta (caption muted);
-  Edit affordance top-right (faint); Gauge bottom-right.
+- Label (caption), value (`text-title` semibold, with the unit as a
+  baseline-aligned caption exactly 8px after it — `items-baseline gap-2`),
+  meta (caption muted); Edit affordance top-right (faint); Gauge bottom-right.
+  85px tall by content.
 
 ### `dashboard/MaintenanceItem` — schedule row
 - `bg-tile rounded-tile`, 6px status accent bar on the left edge.
