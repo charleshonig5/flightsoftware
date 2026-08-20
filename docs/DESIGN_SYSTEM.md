@@ -205,9 +205,10 @@ Rules:
   interactive child is hovered (buttons, `[data-interactive]` tiles/rows,
   non-`[data-nav]` links) — it only fires where a click actually navigates.
 - Tooltips (`ui/Tooltip`): white `bg-card` bubble with `shadow-pop`, `text-ink`
-  `text-caption`, `rounded-tile`, `px-2.5 py-1.5`; pops up **above** its
-  trigger (right-aligned by default) with a 150ms fade + 2px rise; shows on
-  hover and keyboard focus.
+  `text-caption`, `rounded-tile`, `p-2.5`, **max-w-40 (160px) so copy wraps
+  into a compact block — never one long skinny line**; pops up **centered
+  above** its trigger with a 150ms fade + 2px rise; shows on hover and
+  keyboard focus.
 - No artificial loading states — data is local; everything renders instantly.
 
 ## 6. Components
@@ -577,6 +578,7 @@ every count updates itself.
 | 2026-08-15 | all | Maintenance Schedule tab locked from Figma `65-15600`: schedule timeline (page-surface `MaintenanceItem` rows), `StatusSelect` dropdown pattern, `SearchInput` extracted (shared with logs). Maintenance data extended to full schedules (747: 14 items, N314: 6, 822: 4, N551: 11) with counts now **derived from items** (`withCounts`); dashboard cards cap at 3 rows. |
 | 2026-08-15 | motion | `card-nav-hover` custom variant: the aircraft-card ↗ nudge/brighten now suppresses while hovering interactive children (tiles, pills, rows) — the nav cue only shows where clicking navigates. |
 | 2026-08-15 | all | Calendar picker (`ui/DateField`) added to both modals; form-field pattern extracted to `ui/TextField` (both modals share it). Consistency audit: calendar toggle hover corrected to `brand` (icon-affordance family); hover states across modal surfaces reduced to the four documented families. |
+| 2026-08-15 | components | Tooltips reshaped: centered above the trigger, `max-w-40` + `p-2.5` so copy wraps into a compact block (was long/skinny, right-aligned). `align` prop removed. Shadow unchanged. |
 | 2026-08-15 | components | Tab control rows raised to 40px per Figma `65-15769`: `SearchInput` 278×40 `pl-4`, `StatusSelect` `h-10 px-4`, "Add Item"/"Log Maintenance" → `Button size="lg"`. |
 | 2026-08-15 | components | Dropdown menus: selected option now shows a right-aligned `CheckIcon` (new glyph) alongside its brand text — standard for all menus. |
 | 2026-08-15 | components | Header hero buttons enlarged per Figma `88-4370`: `Button` gains `size` (`md` 36 / `lg` 40 with `px-4`); Add Aircraft + Ask AI use `lg` on the dashboard and plane pages. Tab-bar actions and modal footers stay `md`. |

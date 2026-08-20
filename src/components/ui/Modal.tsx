@@ -84,7 +84,7 @@ export function Modal({
             <div className="flex items-center gap-1.5">
               <h2 className="text-title font-semibold">{title}</h2>
               {titleInfo && (
-                <Tooltip content={titleInfo} align="left">
+                <Tooltip content={titleInfo}>
                   <span className="text-ink-faint transition-colors duration-150 group-hover/tip:text-brand group-focus-visible/tip:text-brand">
                     <InfoIcon className="size-3.5" />
                   </span>
