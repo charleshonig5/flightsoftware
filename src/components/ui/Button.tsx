@@ -11,8 +11,8 @@ const sizes = {
 const variants = {
   /* brand gradient fill, white text — the primary action ("Ask AI", modal confirm) */
   primary: "bg-linear-to-r/srgb from-brand to-brand-strong text-white hover:opacity-85",
-  /* white fill, brand border + text — the secondary action ("Add Aircraft", modal cancel) */
-  outline: "border border-brand bg-card text-brand hover:bg-brand-soft",
+  /* white fill, divider hairline border, brand text — the secondary action ("Add Aircraft", modal cancel) */
+  outline: "border border-divider bg-card text-brand hover:bg-brand-soft",
 } as const;
 
 /** Standard action button: `primary` (gradient) or `outline` (brand border); `lg` for page-header heroes. */

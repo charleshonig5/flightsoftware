@@ -28,7 +28,7 @@ All tokens are **semantic**; components never reference raw hex values.
 
 | Token | Value | Usage |
 |---|---|---|
-| `brand` | `#4A78F1` | Active nav (text, icon, edge indicator), outline-button border/text, brand icons, active toggle icon |
+| `brand` | `#4A78F1` | Active nav (text, icon, edge indicator), outline-button text, brand icons, active toggle icon |
 | `brand-strong` | `#2460FF` | End color of brand gradients only — never used alone |
 | `brand-soft` | `#F3F6FF` | Active nav pill fill; hover fill for brand outline buttons |
 
@@ -40,7 +40,7 @@ to oklab). Used on: logo mark, "Ask AI" primary button.
 
 | Token | Value | Usage |
 |---|---|---|
-| `divider` | `#E8E8E8` | Hairline separators (sidebar aircraft-tree line) |
+| `divider` | `#E8E8E8` | Hairline separators (sidebar aircraft-tree line, table rows); outline-button borders |
 
 ### Surfaces
 
@@ -329,7 +329,8 @@ Rules:
   40px/`px-4` (page-header heroes — Add Aircraft, Ask AI on both pages).
 - `primary`: brand gradient fill (`from-brand to-brand-strong`), white text,
   hover `opacity-85` — the main action ("Ask AI", modal confirm).
-- `outline`: white fill, brand border + text, hover `bg-brand-soft` — the
+- `outline`: white fill, `divider` hairline border, brand text, hover
+  `bg-brand-soft` — the
   secondary action ("Add Aircraft", "Log Maintenance", modal cancel).
 - `fullWidth` makes it share a footer row equally (`flex-1`).
 - Never hand-roll these styles inline — use the component.
@@ -591,6 +592,7 @@ every count updates itself.
 | 2026-08-15 | tokens | `--blur-scrim` softened 17px → 12px (~30% weaker) by request. |
 | 2026-08-15 | components | Maintenance-row status accent bars slimmed 6px → 4px (`w-1`). |
 | 2026-08-15 | components | Accent bars became true left borders (`border-l-4`) so they curl around the row's rounded corners and taper, instead of clipping flat. |
+| 2026-08-15 | components | Secondary (outline) buttons per Figma `88-4371`: border changed brand → `divider` hairline; brand text/icon and `brand-soft` hover unchanged. |
 | 2026-08-15 | type | `text-headline` reduced 32/41 → 28/36 — all page titles and KPI counts step down together; skeletons resized (headline lines h-9, hero-button lines corrected to h-10). |
 | 2026-08-15 | type | Meter readings reduced 24→18: `MeterTile` values now use `text-title`; the orphaned `text-stat` token retired (tiles resize to 85px by content). Skeleton value lines shrunk to match. |
 | 2026-08-15 | components | Tooltips reshaped: centered above the trigger, `max-w-40` + `p-2.5` so copy wraps into a compact block (was long/skinny, right-aligned). `align` prop removed. Shadow unchanged. |
