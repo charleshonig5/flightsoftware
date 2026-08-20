@@ -1,26 +1,158 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Flight CRM design tokens — v0, extracted from the Figma dashboard
+ * (file LuaXriGgwjSXjovjZU4w0t, node 65:14564).
+ * Rules and usage guidance live in docs/DESIGN_SYSTEM.md.
+ * Any change here must update that doc in the same commit.
+ */
+@theme {
+  /* ---- Font ---- */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ---- Color: surfaces ---- */
+  --color-page: #f7f8fa; /* app background (pixel-verified from Figma frame) */
+  --color-card: #ffffff; /* primary card surface */
+  --color-tile: #f7f8fa; /* inset tile / list-row surface on a card */
+  --color-chip-neutral: #f1f1f1; /* neutral chip on a white surface */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ---- Color: brand ---- */
+  --color-brand: #4a78f1; /* primary brand blue: active nav, outline buttons, brand icons */
+  --color-brand-strong: #2460ff; /* gradient end for brand fills */
+  --color-brand-soft: #f3f6ff; /* active nav pill background */
+
+  /* ---- Color: lines ---- */
+  --color-divider: #e8e8e8; /* hairline separators (sidebar tree line) */
+
+  /* ---- Color: text ---- */
+  --color-ink: #000000; /* primary text */
+  --color-ink-muted: #909090; /* secondary text, labels, units */
+  --color-ink-faint: #d2d2d2; /* disabled/tertiary text, gauge track */
+
+  /* ---- Color: status ---- */
+  --color-danger: #f31515;
+  --color-danger-soft: #ffd2d2;
+  --color-warning: #cc6900;
+  --color-warning-soft: #fbdbb9;
+  --color-success: #07c91f;
+  --color-success-soft: #d0ffd6;
+
+  /* ---- Type scale (size / line-height from Figma) ---- */
+  --text-caption: 10px; /* chips, labels, meta, small buttons */
+  --text-caption--line-height: 13px;
+  --text-body: 14px; /* item titles, section headers, model names */
+  --text-body--line-height: 18px;
+  --text-title: 18px; /* card headings (tail numbers) */
+  --text-title--line-height: 23px;
+  --text-stat: 24px; /* big meter values, dashboard page title */
+  --text-stat--line-height: 31px;
+  --text-headline: 32px; /* page titles, KPI counts */
+  --text-headline--line-height: 41px;
+
+  /* ---- Elevation ---- */
+  --shadow-pop: 0 4px 12px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06); /* floating overlays (tooltips, pickers) */
+  --shadow-card: 0 0 58px 0 rgb(113 113 113 / 0.05); /* ambient glow on top-level surfaces (cards, KPI cards, sidebar) */
+
+  /* ---- Radii ---- */
+  --radius-nav: 8px; /* sidebar nav pills */
+  --radius-field: 8px; /* form fields */
+  --radius-tile: 10px; /* inset tiles, list rows */
+  --radius-card: 14px; /* top-level cards */
+  /* chips & pill buttons use rounded-full */
+
+  /* ---- Motion: entrance animations ---- */
+  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1); /* fast start, soft landing */
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoots, then settles */
+  --animate-gauge-fill: gauge-fill 900ms var(--ease-out-back) both;
+
+  --animate-shimmer: shimmer 1.8s ease-in-out infinite;
+  --animate-scrim-in: scrim-in 200ms ease-out both;
+  --animate-modal-in: modal-in 250ms var(--ease-out-back) both;
+  --animate-scrim-out: scrim-out 150ms ease-out both;
+  --animate-modal-out: modal-out 180ms var(--ease-snap) both;
+
+  /* Gauge arc grows from empty to its inline dasharray value; the back-out
+     easing overfills slightly past the mark before settling. */
+  @keyframes gauge-fill {
+    from {
+      stroke-dasharray: 0 100;
+    }
+  }
+  /* Skeleton highlight sweeps left→right across a 200%-wide gradient. */
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  /* Modal lightbox: scrim fades, panel pops up on open and slips away on close. */
+  @keyframes scrim-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes modal-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(8px);
+    }
+  }
+  @keyframes scrim-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes modal-out {
+    to {
+      opacity: 0;
+      transform: scale(0.97) translateY(6px);
+    }
   }
 }
 
+/* Fires only when the card is hovered on its NAVIGABLE area — suppressed while
+   any interactive child (buttons, tiles, rows, non-nav links) is hovered, so
+   the ↗ nav cue never lies about what a click will do. */
+@custom-variant card-nav-hover (.group\/card:hover:not(:has(button:hover, [data-interactive]:hover, a:not([data-nav]):hover)) &);
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* View transitions (grid ↔ list morph in FleetSection): snappy + smooth.
+   The old snapshot is dropped and the new one fills the morphing group box —
+   a single surface resizing reads smoother than two cross-fading snapshots. */
+::view-transition-group(*) {
+  animation-duration: 450ms;
+  animation-timing-function: var(--ease-snap);
+}
+::view-transition-old(*) {
+  display: none;
+}
+::view-transition-new(*) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gauge-fill,
+  .animate-shimmer {
+    animation: none;
+  }
+  /* 1ms (not none) so animationend still fires and exiting modals unmount */
+  .animate-scrim-in,
+  .animate-modal-in,
+  .animate-scrim-out,
+  .animate-modal-out {
+    animation-duration: 1ms;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

@@ -1,0 +1,47 @@
+"use client";
+
+import { useState } from "react";
+import type { Aircraft } from "@/lib/data/aircraft";
+import { Button } from "@/components/ui/Button";
+import { Chip } from "@/components/ui/Chip";
+import { PillButton } from "@/components/ui/PillButton";
+import { ImageIcon, ChatLinesIcon } from "@/components/ui/icons";
+import { UpdateMetersModal } from "./UpdateMetersModal";
+import { LogOilModal } from "./LogOilModal";
+
+/** Aircraft page header: photo placeholder, identity, quick actions, Ask AI. */
+export function AircraftHeader({ aircraft }: { aircraft: Aircraft }) {
+  const [metersOpen, setMetersOpen] = useState(false);
+  const [oilOpen, setOilOpen] = useState(false);
+  return (
+    <header className="flex items-start justify-between">
+      <div className="flex items-center gap-6">
+        <div className="flex h-26.25 w-38 shrink-0 items-center justify-center rounded-tile bg-card">
+          <ImageIcon className="size-6 text-ink-faint" />
+        </div>
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <h1 className="text-headline font-semibold">{aircraft.tailNumber}</h1>
+            {aircraft.badge && <Chip tone="danger">{aircraft.badge}</Chip>}
+          </div>
+          <p className="text-body text-ink-muted">{aircraft.model}</p>
+          <div className="mt-4.5 flex items-center gap-2">
+            <PillButton surface="page" onClick={() => setMetersOpen(true)}>
+              Update Meters
+            </PillButton>
+            <PillButton surface="page" onClick={() => setOilOpen(true)}>
+              Log Oil
+            </PillButton>
+          </div>
+        </div>
+      </div>
+      <Button size="lg">
+        <ChatLinesIcon className="size-5" />
+        Ask AI
+      </Button>
+
+      <UpdateMetersModal aircraft={aircraft} open={metersOpen} onClose={() => setMetersOpen(false)} />
+      <LogOilModal aircraft={aircraft} open={oilOpen} onClose={() => setOilOpen(false)} />
+    </header>
+  );
+}
