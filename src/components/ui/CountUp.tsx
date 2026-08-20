@@ -60,6 +60,8 @@ export function CountUp({
     setDisplay(format(0));
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
+    /* shouldAnimate is a mount-time constant (useState initializer) */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, delayMs, durationMs]);
 
   return <>{display}</>;

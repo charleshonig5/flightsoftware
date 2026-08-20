@@ -1,7 +1,8 @@
 import { fleetStats } from "@/lib/data/aircraft";
 import { Button } from "@/components/ui/Button";
 import { CountBadge } from "@/components/ui/Chip";
-import { AddCircleIcon, ChatLinesIcon } from "@/components/ui/icons";
+import { AskAiButton } from "./AskAiButton";
+import { AddCircleIcon } from "@/components/ui/icons";
 
 /** Page header: title + fleet counts on the left, primary actions on the right. */
 export function FleetHeader() {
@@ -25,10 +26,7 @@ export function FleetHeader() {
           <AddCircleIcon className="size-5" />
           Add Aircraft
         </Button>
-        <Button size="lg">
-          <ChatLinesIcon className="size-5" />
-          Ask AI
-        </Button>
+        <AskAiButton />
       </div>
     </header>
   );

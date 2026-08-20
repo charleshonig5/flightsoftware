@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import type { Aircraft } from "@/lib/data/aircraft";
-import { Button } from "@/components/ui/Button";
+
 import { Chip } from "@/components/ui/Chip";
 import { PillButton } from "@/components/ui/PillButton";
-import { ImageIcon, ChatLinesIcon } from "@/components/ui/icons";
+import { ImageIcon } from "@/components/ui/icons";
 import { UpdateMetersModal } from "./UpdateMetersModal";
 import { LogOilModal } from "./LogOilModal";
+import { AskAiButton } from "@/components/layout/AskAiButton";
 
 /** Aircraft page header: photo placeholder, identity, quick actions, Ask AI. */
 export function AircraftHeader({ aircraft }: { aircraft: Aircraft }) {
@@ -35,10 +36,7 @@ export function AircraftHeader({ aircraft }: { aircraft: Aircraft }) {
           </div>
         </div>
       </div>
-      <Button size="lg">
-        <ChatLinesIcon className="size-5" />
-        Ask AI
-      </Button>
+      <AskAiButton />
 
       <UpdateMetersModal aircraft={aircraft} open={metersOpen} onClose={() => setMetersOpen(false)} />
       <LogOilModal aircraft={aircraft} open={oilOpen} onClose={() => setOilOpen(false)} />
