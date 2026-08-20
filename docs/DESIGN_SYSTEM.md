@@ -525,16 +525,17 @@ Rules:
 - `bg-card rounded-card p-6`. Header (tail number + optional danger badge +
   model; right side: "Update Meters" + "Log Oil" pills 8px apart, then a 16px
   ↗ link 14px after in `ink-faint` — brightens on card hover, routes to the
-  aircraft page) → 2-col meter grid → "View all" link →
-  Maintenance Schedule header (+counts subtitle, "Full Schedule" pill) → item
-  list. All vertical gaps 14px.
+  aircraft page) → **24px** (`mt-6`) → meter grid (tiles 14px apart) →
+  8px → "View all" link → **24px** (`mt-6`) → Maintenance Schedule header
+  (+counts subtitle, "Full Schedule" pill) → 14px → item list (rows 14px
+  apart).
 - **Meter collapse (grid view only):** the card shows the first 4 meters; when
   an aircraft has more, a "View all"/"Collapse" caption link (8px below the
   grid) height-animates the remainder open (200ms, same grid-rows technique as
   the sidebar tree). Aircraft with ≤4 meters get no link, and the
-  meters→schedule gap becomes 34px (`mt-8.5`) to preserve the rhythm — exactly
-  as the Figma Cessna card shows. **List view always renders every meter with
-  no link** (same 34px gap rule applies).
+  meters→schedule gap becomes 44px (`mt-11`) to visually match the link cards'
+  8 + 13 + 24 stack. **List view always renders every meter with no link**
+  (same 44px gap rule applies).
 
 ## Fake data
 
@@ -593,6 +594,7 @@ every count updates itself.
 | 2026-08-15 | components | Maintenance-row status accent bars slimmed 6px → 4px (`w-1`). |
 | 2026-08-15 | components | Accent bars became true left borders (`border-l-4`) so they curl around the row's rounded corners and taper, instead of clipping flat. |
 | 2026-08-15 | components | Secondary (outline) buttons per Figma `88-4371`: border changed brand → `divider` hairline; brand text/icon and `brand-soft` hover unchanged. |
+| 2026-08-15 | components | AircraftCard vertical rhythm opened up: header→meters 14→24, View-all→schedule 14→24 (link-less cards 34→44 to stay visually equal). |
 | 2026-08-15 | type | `text-headline` reduced 32/41 → 28/36 — all page titles and KPI counts step down together; skeletons resized (headline lines h-9, hero-button lines corrected to h-10). |
 | 2026-08-15 | type | Meter readings reduced 24→18: `MeterTile` values now use `text-title`; the orphaned `text-stat` token retired (tiles resize to 85px by content). Skeleton value lines shrunk to match. |
 | 2026-08-15 | components | Tooltips reshaped: centered above the trigger, `max-w-40` + `p-2.5` so copy wraps into a compact block (was long/skinny, right-aligned). `align` prop removed. Shadow unchanged. |

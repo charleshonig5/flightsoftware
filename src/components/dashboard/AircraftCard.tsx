@@ -82,7 +82,7 @@ export function AircraftCard({
         </div>
       </header>
 
-      <div className={`mt-3.5 grid gap-3.5 ${meterCols}`}>
+      <div className={`mt-6 grid gap-3.5 ${meterCols}`}>
         {visibleMeters.map((meter, index) => (
           <MeterTile key={meter.label} meter={meter} index={index} onEdit={editHandler(meter)} />
         ))}
@@ -113,8 +113,9 @@ export function AircraftCard({
         </button>
       )}
 
-      {/* Figma keeps a 34px meters→schedule gap when there's no "View all" link */}
-      <div className={`flex items-start justify-between ${collapsible ? "mt-3.5" : "mt-8.5"}`}>
+      {/* Link cards: grid → 8 → View all → 24 → header (≈45 total);
+          link-less cards match with a straight 44 (mt-11) */}
+      <div className={`flex items-start justify-between ${collapsible ? "mt-6" : "mt-11"}`}>
         <div className="flex flex-col gap-1">
           <h3 className="text-body">Maintenance Schedule</h3>
           <p className="text-caption text-ink-muted">
