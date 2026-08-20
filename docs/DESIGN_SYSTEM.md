@@ -141,8 +141,12 @@ Rules:
   - `--shadow-pop` (`0 4px 12px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06)`):
     floating overlays (tooltips, pickers, menus) that need separation from
     content they cover.
-- Status accent bars on list rows: 6px wide (`w-1.5`), full height, soft status
-  color, clipped by the row's `rounded-tile` + `overflow-hidden`.
+- Status accents on list rows: a true 4px **left border** (`border-l-4`, soft
+  status color) — as a border it follows the row's `rounded-tile` radius, so
+  the color curls around the left corners and tapers instead of clipping flat.
+  (This is the lone sanctioned border — the "no borders" rule means no
+  *hairline outlines* on surfaces.) Row content compensates with `pl-5`
+  (border 4 + 20 = the 24px text inset).
 
 ## 5. Motion & interaction — ✅ LOCKED (v0)
 
@@ -510,7 +514,7 @@ Rules:
   85px tall by content.
 
 ### `dashboard/MaintenanceItem` — schedule row
-- `bg-tile rounded-tile`, 6px status accent bar on the left edge.
+- `bg-tile rounded-tile`, 4px left-border status accent (curls around the corners).
 - Content padding `px-6 py-3.5` — the status chip is inset 24px from the right
   edge; only the corner arrow sits at the 14px inset (`top-3.5 right-3.5`).
 - Left column: category (caption muted) → title (body semibold) → chip row
@@ -586,6 +590,8 @@ every count updates itself.
 | 2026-08-15 | components | Gauge rendered 48×24 (same 60×30 geometry, scaled) with the percent label flush at its base — clears the Edit affordance in the shorter tiles. |
 | 2026-08-15 | tokens | Modal scrim gains its Figma-speced 17px backdrop blur (`--blur-scrim`) — was missing from the original implementation. |
 | 2026-08-15 | tokens | `--blur-scrim` softened 17px → 12px (~30% weaker) by request. |
+| 2026-08-15 | components | Maintenance-row status accent bars slimmed 6px → 4px (`w-1`). |
+| 2026-08-15 | components | Accent bars became true left borders (`border-l-4`) so they curl around the row's rounded corners and taper, instead of clipping flat. |
 | 2026-08-15 | type | `text-headline` reduced 32/41 → 28/36 — all page titles and KPI counts step down together; skeletons resized (headline lines h-9, hero-button lines corrected to h-10). |
 | 2026-08-15 | type | Meter readings reduced 24→18: `MeterTile` values now use `text-title`; the orphaned `text-stat` token retired (tiles resize to 85px by content). Skeleton value lines shrunk to match. |
 | 2026-08-15 | components | Tooltips reshaped: centered above the trigger, `max-w-40` + `p-2.5` so copy wraps into a compact block (was long/skinny, right-aligned). `align` prop removed. Shadow unchanged. |

@@ -3,9 +3,9 @@ import { Chip } from "@/components/ui/Chip";
 import { ArrowUpRightIcon } from "@/components/ui/icons";
 
 const barColor = {
-  danger: "bg-danger-soft",
-  warning: "bg-warning-soft",
-  success: "bg-success-soft",
+  danger: "border-danger-soft",
+  warning: "border-warning-soft",
+  success: "border-success-soft",
 } as const;
 
 /**
@@ -26,14 +26,15 @@ export function MaintenanceItem({
     <div
       data-interactive
       onClick={onClick}
-      className={`group/row relative cursor-pointer overflow-hidden rounded-tile transition-colors duration-150 hover:bg-chip-neutral/60 ${
-        surface === "page" ? "bg-card" : "bg-tile"
-      }`}
+      className={`group/row relative cursor-pointer overflow-hidden rounded-tile border-l-4 transition-colors duration-150 hover:bg-chip-neutral/60 ${
+        barColor[item.status.level]
+      } ${surface === "page" ? "bg-card" : "bg-tile"}`}
     >
-      <div className={`absolute inset-y-0 left-0 w-1.5 ${barColor[item.status.level]}`} />
+      {/* Accent is a true left border, so it curls around the rounded corners
+          and tapers instead of getting clipped flat */}
       {/* Page rows tuck the status chip at the 14px inset; card rows use 24 */}
       <div
-        className={`flex items-end justify-between py-3.5 pl-6 ${
+        className={`flex items-end justify-between py-3.5 pl-5 ${
           surface === "page" ? "pr-3.5" : "pr-6"
         }`}
       >
