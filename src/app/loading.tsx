@@ -5,7 +5,7 @@ function MeterTileSkeleton() {
   return (
     <div className="flex flex-col gap-1 rounded-tile bg-tile p-3.5">
       <Skeleton className="h-3 w-12 rounded-full" />
-      <Skeleton className="h-8 w-28 rounded-full" />
+      <Skeleton className="h-6 w-24 rounded-full" />
       <Skeleton className="h-3 w-20 rounded-full" />
     </div>
   );
@@ -57,15 +57,15 @@ export default function DashboardLoading() {
     <>
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-2">
-          <Skeleton className="h-10 w-44 rounded-full" />
+          <Skeleton className="h-9 w-40 rounded-full" />
           <div className="flex gap-3.5">
             <Skeleton className="h-5.5 w-20 rounded-full" />
             <Skeleton className="h-5.5 w-28 rounded-full" />
           </div>
         </div>
         <div className="flex gap-3.5">
-          <Skeleton className="h-9 w-32 rounded-full" />
-          <Skeleton className="h-9 w-24 rounded-full" />
+          <Skeleton className="h-10 w-32 rounded-full" />
+          <Skeleton className="h-10 w-24 rounded-full" />
         </div>
       </div>
 
@@ -73,7 +73,7 @@ export default function DashboardLoading() {
         {Array.from({ length: 4 }, (_, index) => (
           <div key={index} className="rounded-card bg-card p-6 pb-4">
             <Skeleton className="h-3 w-24 rounded-full" />
-            <Skeleton className="mt-3.5 h-10 w-28 rounded-full" />
+            <Skeleton className="mt-3.5 h-9 w-26 rounded-full" />
           </div>
         ))}
       </div>

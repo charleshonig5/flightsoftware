@@ -95,9 +95,8 @@ system: **Regular (400)**, **Medium (500 — button labels only)**, and
 |---|---|---|---|
 | `text-caption` | 10 / 13 | 400 | Chips, labels, meta lines, units, small buttons, links like "View all" |
 | `text-body` | 14 / 18 | 400 / 500 / 600 | Model names, section headers, nav items, header counts (400); button labels (500); list-item titles (600) |
-| `text-title` | 18 / 23 | 600 | Card headings (tail numbers), section titles, sidebar logo |
-| `text-stat` | 24 / 31 | 600 | Large meter readings, KPI counts |
-| `text-headline` | 32 / 41 | 600 | Page titles ("Fleet Status", tail numbers), KPI counts |
+| `text-title` | 18 / 23 | 600 | Card headings (tail numbers), section titles, sidebar logo, meter readings |
+| `text-headline` | 28 / 36 | 600 | Page titles ("Fleet Status", tail numbers), KPI counts |
 
 Rules:
 - SemiBold is reserved for identity/emphasis: tail numbers, stat values, item titles.
@@ -235,7 +234,7 @@ Rules:
   `px-8.5 pb-8.5`.
 
 ### `layout/FleetHeader` — page header
-- Title `text-stat` semibold; 8px below: count badges (`CountBadge` body size,
+- Title `text-headline` semibold; 8px below: count badges (`CountBadge` body size,
   `surface="page"`) each with a `text-body text-ink-muted` label, 4px apart;
   groups 14px apart.
 - Actions (right, 14px apart, both `h-9 px-3.5 rounded-full text-body
@@ -332,7 +331,8 @@ Rules:
 - Never hand-roll these styles inline — use the component.
 
 ### `ui/Modal` — lightbox modal (the one way modals work)
-- Scrim: `bg-ink/80`, full viewport, click to dismiss.
+- Scrim: `bg-ink/80` with a 17px backdrop blur (`--blur-scrim` →
+  `backdrop-blur-scrim`), full viewport, click to dismiss.
 - Panel: 464px (max-w-full) `bg-card rounded-card p-6`, centered.
 - Header row: title `text-title` semibold + 16px `CloseIcon` in `ink-faint`
   (hover `ink-muted`) top-right.
@@ -578,6 +578,9 @@ every count updates itself.
 | 2026-08-15 | all | Maintenance Schedule tab locked from Figma `65-15600`: schedule timeline (page-surface `MaintenanceItem` rows), `StatusSelect` dropdown pattern, `SearchInput` extracted (shared with logs). Maintenance data extended to full schedules (747: 14 items, N314: 6, 822: 4, N551: 11) with counts now **derived from items** (`withCounts`); dashboard cards cap at 3 rows. |
 | 2026-08-15 | motion | `card-nav-hover` custom variant: the aircraft-card ↗ nudge/brighten now suppresses while hovering interactive children (tiles, pills, rows) — the nav cue only shows where clicking navigates. |
 | 2026-08-15 | all | Calendar picker (`ui/DateField`) added to both modals; form-field pattern extracted to `ui/TextField` (both modals share it). Consistency audit: calendar toggle hover corrected to `brand` (icon-affordance family); hover states across modal surfaces reduced to the four documented families. |
+| 2026-08-15 | tokens | Modal scrim gains its Figma-speced 17px backdrop blur (`--blur-scrim`) — was missing from the original implementation. |
+| 2026-08-15 | type | `text-headline` reduced 32/41 → 28/36 — all page titles and KPI counts step down together; skeletons resized (headline lines h-9, hero-button lines corrected to h-10). |
+| 2026-08-15 | type | Meter readings reduced 24→18: `MeterTile` values now use `text-title`; the orphaned `text-stat` token retired (tiles resize to 85px by content). Skeleton value lines shrunk to match. |
 | 2026-08-15 | components | Tooltips reshaped: centered above the trigger, `max-w-40` + `p-2.5` so copy wraps into a compact block (was long/skinny, right-aligned). `align` prop removed. Shadow unchanged. |
 | 2026-08-15 | components | Tab control rows raised to 40px per Figma `65-15769`: `SearchInput` 278×40 `pl-4`, `StatusSelect` `h-10 px-4`, "Add Item"/"Log Maintenance" → `Button size="lg"`. |
 | 2026-08-15 | components | Dropdown menus: selected option now shows a right-aligned `CheckIcon` (new glyph) alongside its brand text — standard for all menus. |

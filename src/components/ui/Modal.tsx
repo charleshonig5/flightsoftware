@@ -61,7 +61,7 @@ export function Modal({
   return createPortal(
     <div
       onClick={onClose}
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-ink/80 p-6 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-ink/80 p-6 backdrop-blur-scrim ${
         open ? "animate-scrim-in" : "animate-scrim-out"
       }`}
     >

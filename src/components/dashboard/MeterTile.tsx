@@ -35,7 +35,7 @@ export function MeterTile({
     >
       <div className="flex flex-col gap-1">
         <p className="text-caption">{meter.label}</p>
-        <p className="flex items-baseline gap-2 text-stat font-semibold">
+        <p className="flex items-baseline gap-2 text-title font-semibold">
           {/* tabular-nums keeps digits from jittering while the value counts up */}
           <span className="tabular-nums">
             <CountUp value={meter.value} delayMs={index * 80} entrance={entrance} />

@@ -45,10 +45,11 @@
   --text-body--line-height: 18px;
   --text-title: 18px; /* card headings (tail numbers) */
   --text-title--line-height: 23px;
-  --text-stat: 24px; /* big meter values, dashboard page title */
-  --text-stat--line-height: 31px;
-  --text-headline: 32px; /* page titles, KPI counts */
-  --text-headline--line-height: 41px;
+  --text-headline: 28px; /* page titles, KPI counts */
+  --text-headline--line-height: 36px;
+
+  /* ---- Blur ---- */
+  --blur-scrim: 17px; /* modal lightbox backdrop */
 
   /* ---- Elevation ---- */
   --shadow-pop: 0 4px 12px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06); /* floating overlays (tooltips, pickers) */
