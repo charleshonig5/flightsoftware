@@ -220,11 +220,11 @@ The conversational surface of Flight. Locked from Figma `85-1565`; message
 bubbles/threads will extend this section when designed.
 
 ### Surface & motion
-- The chat is a **sidecar, never an overlay**: a 424px white panel
+- The chat is a **sidecar, never an overlay**: a 400px white panel
   (`bg-card` + `shadow-card`, full height, sticky) at the right edge of the
-  app layout. Opening animates its **width** 0 ↔ 424 (300ms `--ease-snap`),
+  app layout. Opening animates its **width** 0 ↔ 400 (300ms `--ease-snap`),
   so page content genuinely reflows beside it. Inner content is a fixed
-  424px column behind `overflow-hidden` — nothing squishes mid-slide.
+  400px column behind `overflow-hidden` — nothing squishes mid-slide.
 - State lives at the layout root (`AskAiProvider`): the panel persists
   across page navigation; every hero `AskAiButton` opens it; Escape or the
   header X closes it.
@@ -640,6 +640,7 @@ every count updates itself.
 | 2026-08-15 | components | Secondary (outline) buttons per Figma `88-4371`: border changed brand → `divider` hairline; brand text/icon and `brand-soft` hover unchanged. |
 | 2026-08-15 | components | AircraftCard vertical rhythm opened up: header→meters 14→24, View-all→schedule 14→24 (link-less cards 34→44 to stay visually equal). |
 | 2026-08-20 | all | Ask AI sidecar locked from Figma `85-1565`: `AskAiPanel` (424px width-animated sidecar, content reflows live), `AskAiProvider` layout context, `AskAiButton` replacing inline hero buttons; new `SuggestArrowIcon`/`ComposeIcon`/`ArrowUpIcon`/`MagicPenIcon`. `react-hooks/set-state-in-effect` lint rule disabled centrally (deliberate reset-on-open pattern). |
+| 2026-08-20 | components | Ask AI sidecar slimmed 424 → 400px (inner column `w-100`). |
 | 2026-08-15 | type | `text-headline` reduced 32/41 → 28/36 — all page titles and KPI counts step down together; skeletons resized (headline lines h-9, hero-button lines corrected to h-10). |
 | 2026-08-15 | type | Meter readings reduced 24→18: `MeterTile` values now use `text-title`; the orphaned `text-stat` token retired (tiles resize to 85px by content). Skeleton value lines shrunk to match. |
 | 2026-08-15 | components | Tooltips reshaped: centered above the trigger, `max-w-40` + `p-2.5` so copy wraps into a compact block (was long/skinny, right-aligned). `align` prop removed. Shadow unchanged. |

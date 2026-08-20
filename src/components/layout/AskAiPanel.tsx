@@ -49,10 +49,10 @@ export function AskAiPanel() {
       aria-label="Ask AI"
       aria-hidden={!open}
       className="sticky top-0 h-screen shrink-0 overflow-hidden bg-card shadow-card transition-[width] duration-300 ease-(--ease-snap)"
-      style={{ width: open ? 424 : 0 }}
+      style={{ width: open ? 400 : 0 }}
     >
       {/* fixed-width inner so content never squishes while the panel animates */}
-      <div className="flex h-full w-[424px] flex-col px-6 pt-8.5 pb-6">
+      <div className="flex h-full w-100 flex-col px-6 pt-8.5 pb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ChatLinesIcon className="size-5" />
