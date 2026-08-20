@@ -184,8 +184,8 @@ Rules:
   grids, and surface nesting — e.g. tile stand-ins are real `bg-tile` boxes so
   heights emerge from content). Text stand-ins are `rounded-full` bars at the
   nearest scale height to their type step: caption→`h-3`, body→`h-4.5`,
-  title→`h-6`, stat→`h-8`; component stand-ins use real component heights
-  (chips `h-5.5`, pills `h-7.5`, buttons `h-9`).
+  title→`h-6`, headline→`h-9`; component stand-ins use real component heights
+  (chips `h-5.5`, pills `h-7.5`, `md` buttons `h-9`, `lg` buttons `h-10`).
 
 ### Transitions
 
@@ -241,11 +241,10 @@ Rules:
 - Title `text-headline` semibold; 8px below: count badges (`CountBadge` body size,
   `surface="page"`) each with a `text-body text-ink-muted` label, 4px apart;
   groups 14px apart.
-- Actions (right, 14px apart, both `h-9 px-3.5 rounded-full text-body
-  font-medium` with 20px icon + 6px gap):
-  - **Brand outline**: `border-brand text-brand bg-card`, hover `bg-brand-soft`.
-  - **Brand gradient**: `bg-linear-to-r/srgb from-brand to-brand-strong`
-    white text, hover `opacity-85`.
+- Actions (right, 14px apart): `Button size="lg"` (40px, `px-4`) — outline
+  "Add Aircraft" with `AddCircleIcon`, primary "Ask AI" with `ChatLinesIcon`;
+  20px icons, 6px gap. Styles live on the `ui/Button` spec — don't restate
+  them here.
 
 ### `dashboard/KpiCard` — fleet stat card
 - `bg-card rounded-card p-6 pb-4`, 104px tall by content (24 + 14 label +
