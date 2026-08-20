@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { allTailNumbers, currentUser } from "@/lib/data/aircraft";
@@ -67,9 +68,9 @@ export function Sidebar() {
 
   return (
     <aside className="sticky top-0 flex h-screen w-[237px] shrink-0 flex-col bg-card shadow-card">
-      <div className="flex items-center gap-3.5 px-8.5 pt-11">
-        <span className="size-5 rounded-full bg-linear-to-r/srgb from-brand to-brand-strong" />
-        <span className="text-title font-semibold">Maggneto</span>
+      <div className="px-8.5 pt-11">
+        {/* Official lockup (108×23) — asset lives in /public, not hotlinked */}
+        <Image src="/maggneto-lockup.svg" alt="Maggneto" width={108} height={23} priority />
       </div>
 
       <nav className="mt-7.5 flex flex-col gap-1.5">
