@@ -332,7 +332,7 @@ Rules:
 - Never hand-roll these styles inline — use the component.
 
 ### `ui/Modal` — lightbox modal (the one way modals work)
-- Scrim: `bg-ink/80` with a 17px backdrop blur (`--blur-scrim` →
+- Scrim: `bg-ink/80` with a 12px backdrop blur (`--blur-scrim` →
   `backdrop-blur-scrim`), full viewport, click to dismiss.
 - Panel: 464px (max-w-full) `bg-card rounded-card p-6`, centered.
 - Header row: title `text-title` semibold + 16px `CloseIcon` in `ink-faint`
@@ -585,6 +585,7 @@ every count updates itself.
 | 2026-08-15 | all | Calendar picker (`ui/DateField`) added to both modals; form-field pattern extracted to `ui/TextField` (both modals share it). Consistency audit: calendar toggle hover corrected to `brand` (icon-affordance family); hover states across modal surfaces reduced to the four documented families. |
 | 2026-08-15 | components | Gauge rendered 48×24 (same 60×30 geometry, scaled) with the percent label flush at its base — clears the Edit affordance in the shorter tiles. |
 | 2026-08-15 | tokens | Modal scrim gains its Figma-speced 17px backdrop blur (`--blur-scrim`) — was missing from the original implementation. |
+| 2026-08-15 | tokens | `--blur-scrim` softened 17px → 12px (~30% weaker) by request. |
 | 2026-08-15 | type | `text-headline` reduced 32/41 → 28/36 — all page titles and KPI counts step down together; skeletons resized (headline lines h-9, hero-button lines corrected to h-10). |
 | 2026-08-15 | type | Meter readings reduced 24→18: `MeterTile` values now use `text-title`; the orphaned `text-stat` token retired (tiles resize to 85px by content). Skeleton value lines shrunk to match. |
 | 2026-08-15 | components | Tooltips reshaped: centered above the trigger, `max-w-40` + `p-2.5` so copy wraps into a compact block (was long/skinny, right-aligned). `align` prop removed. Shadow unchanged. |

@@ -49,7 +49,7 @@
   --text-headline--line-height: 36px;
 
   /* ---- Blur ---- */
-  --blur-scrim: 17px; /* modal lightbox backdrop */
+  --blur-scrim: 12px; /* modal lightbox backdrop */
 
   /* ---- Elevation ---- */
   --shadow-pop: 0 4px 12px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06); /* floating overlays (tooltips, pickers) */
