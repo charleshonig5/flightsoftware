@@ -490,11 +490,13 @@ Rules:
   The logs table's "View" pill follows the same hover rule.
 
 ### `ui/Gauge` — semicircular usage meter
-- 60×30 SVG; ring outer r=30 / inner r=22.5 → 7.5px stroke on a 26.25
-  centerline, flat-cut ends (no round caps); track in `ink-faint`.
+- Rendered **48×24** (`w-12 h-6`) from the original 60×30 viewBox (ring outer
+  r=30 / inner r=22.5, 7.5 stroke on a 26.25 centerline — scales to ~6 visual),
+  flat-cut ends (no round caps); track in `ink-faint`. Sized down with the
+  18px meter values so it clears the Edit affordance.
 - Arc color derives from percent: `<50` success-soft, `50–89` warning-soft,
   `≥90` danger-soft (see `gaugeLevel()`).
-- Percent label centered 4px above the base (`bottom-1`) in
+- Percent label centered **flush with the gauge base** (`bottom-0`) in
   `text-caption text-ink-muted`.
 
 ### `dashboard/MeterTile` — stat tile
@@ -578,6 +580,7 @@ every count updates itself.
 | 2026-08-15 | all | Maintenance Schedule tab locked from Figma `65-15600`: schedule timeline (page-surface `MaintenanceItem` rows), `StatusSelect` dropdown pattern, `SearchInput` extracted (shared with logs). Maintenance data extended to full schedules (747: 14 items, N314: 6, 822: 4, N551: 11) with counts now **derived from items** (`withCounts`); dashboard cards cap at 3 rows. |
 | 2026-08-15 | motion | `card-nav-hover` custom variant: the aircraft-card ↗ nudge/brighten now suppresses while hovering interactive children (tiles, pills, rows) — the nav cue only shows where clicking navigates. |
 | 2026-08-15 | all | Calendar picker (`ui/DateField`) added to both modals; form-field pattern extracted to `ui/TextField` (both modals share it). Consistency audit: calendar toggle hover corrected to `brand` (icon-affordance family); hover states across modal surfaces reduced to the four documented families. |
+| 2026-08-15 | components | Gauge rendered 48×24 (same 60×30 geometry, scaled) with the percent label flush at its base — clears the Edit affordance in the shorter tiles. |
 | 2026-08-15 | tokens | Modal scrim gains its Figma-speced 17px backdrop blur (`--blur-scrim`) — was missing from the original implementation. |
 | 2026-08-15 | type | `text-headline` reduced 32/41 → 28/36 — all page titles and KPI counts step down together; skeletons resized (headline lines h-9, hero-button lines corrected to h-10). |
 | 2026-08-15 | type | Meter readings reduced 24→18: `MeterTile` values now use `text-title`; the orphaned `text-stat` token retired (tiles resize to 85px by content). Skeleton value lines shrunk to match. |
