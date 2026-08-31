@@ -420,7 +420,9 @@ Unchanged from v1: all data lives in `src/lib/data/aircraft.ts` (`fleet`,
 fully typed; stats and sidebar derive from it) plus `activity.ts`. The current
 user is `Charles Honig <charles@maggneto.com>`. Keep additions realistic:
 FAA-style tail numbers, real aircraft models, plausible hours/intervals;
-engine count drives meter sets.
+engine count drives meter sets. Aircraft photos (`photo`, rendered
+object-cover in the header slot) live in `public/aircraft/` — **CC0-licensed
+imagery only** (sourced via Openverse), type-accurate to the airframe.
 
 ---
 
@@ -467,4 +469,5 @@ engine count drives meter sets.
 | 2026-08-31 | 7 | Plane-page header identity block aligned to the card pattern: model line muted → ink, 6px tail→model gap. |
 | 2026-08-31 | 4 | Glow finalized as fully static: sides + bottom only (permanent clip), painted under the masks, strip cover extended past the card edges — identical shadow at every scroll position, no seams, no morphing. |
 | 2026-08-31 | 7 | Search fields: icon swaps to a one-click clear ✕ while a query exists. |
+| 2026-08-31 | 7 | Plane-page photo slot filled with CC0, type-accurate aircraft photos for all four airframes (placeholder icon remains the fallback). |
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |

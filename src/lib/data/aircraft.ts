@@ -41,6 +41,8 @@ export interface Aircraft {
   model: string;
   /** Optional alert badge shown next to the tail number */
   badge?: string;
+  /** Header photo (public path, CC0-licensed imagery) */
+  photo?: string;
   /** Registry details shown on the aircraft page header */
   spec: AircraftSpec;
   meters: Meter[];
@@ -85,6 +87,7 @@ export const fleet: Aircraft[] = [
   {
     tailNumber: "N747CN",
     model: "Boeing 747-400 (1998)",
+    photo: "/aircraft/n747cn.jpg",
     badge: "Needs Attention",
     spec: { make: "Boeing", model: "747-400", year: "1998", serialNumber: "29137", category: "Jet" },
     meters: [
@@ -243,6 +246,7 @@ export const fleet: Aircraft[] = [
   {
     tailNumber: "N314CN",
     model: "Cessna 172S Skyhawk SP",
+    photo: "/aircraft/n314cn.jpg",
     spec: { make: "Cessna", model: "172S", year: "2005", serialNumber: "172S10234", category: "Piston" },
     meters: [
       { label: "Hobbs", value: "3,210.7", unit: "hrs", meta: "Never updated", percent: 25 },
@@ -321,6 +325,7 @@ export const fleet: Aircraft[] = [
   {
     tailNumber: "822CN",
     model: "Cirrus SR22 G6",
+    photo: "/aircraft/822cn.jpg",
     spec: { make: "Cirrus", model: "SR22 G6", year: "2019", serialNumber: "4783", category: "Piston" },
     meters: [
       { label: "Hobbs", value: "812.4", unit: "hrs", meta: "Updated 3d ago", percent: 25 },
@@ -383,6 +388,7 @@ export const fleet: Aircraft[] = [
   {
     tailNumber: "N551KA",
     model: "Beechcraft King Air 350i (2015)",
+    photo: "/aircraft/n551ka.jpg",
     badge: "Needs Attention",
     spec: { make: "Beechcraft", model: "King Air 350i", year: "2015", serialNumber: "FL-987", category: "Turboprop" },
     meters: [
