@@ -472,4 +472,5 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Plane-page photo slot filled with CC0, type-accurate aircraft photos for all four airframes (placeholder icon remains the fallback). |
 | 2026-08-31 | 5, 7 | KPI count-up removed (unnecessary); all count pills (sidebar + tab badges) unified on the shared `CountBadge` at the 14px tab-badge metrics — bg varies by surface only. |
 | 2026-08-31 | 7 | Plane-page header photo stretches to the identity column's height — top edge aligns with the title, bottom edge with the pill row. |
+| 2026-08-31 | 3 | Plane-page header → tab bar gap 64 → 46px, matching the dashboard's KPI → tabs rhythm. |
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |

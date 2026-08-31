@@ -141,7 +141,8 @@ export function AircraftTabs({
         <div className="h-6" />
         <div className="rounded-t-card border-x border-t border-divider bg-card px-10.75 pt-8.25">
           {header}
-          <div className={`relative border-b border-divider ${header ? "mt-16" : ""}`}>
+          {/* 46px to the tab bar — same rhythm as the dashboard's KPI → tabs gap */}
+          <div className={`relative border-b border-divider ${header ? "mt-11.5" : ""}`}>
             <nav
               ref={navRef}
               onScroll={updateFades}
