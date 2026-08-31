@@ -319,9 +319,14 @@ only rows slide underneath. Three pieces:
    holding the toolbar (via the `toolbar` prop / inline in Logs) and the
    active filter chips. Its `pt-8.5` spans the sheet body's top padding and
    `-mt-8.5` cancels it at rest (white-on-white, invisible), so its pinned
-   position **is** its rest position. Bottom padding: `pb-3.5` when chips are
-   showing (14px to the card), `pb-6` after a toolbar with no chips, none
-   when the block is empty (dashboard, unfiltered).
+   position **is** its rest position. `-mx-10.75` + `px-10.75` stretch the
+   white mask across the sheet gutters: the card's 58px `shadow-card` glow
+   would otherwise climb the gutters beside the pinned block and clip at the
+   tab rule (a moving grey band). **Any pinned opaque mask must be at least
+   as wide as the shadow bleed of the content scrolling beneath it.** Bottom
+   padding: `pb-3.5` when chips are showing (14px to the card), `pb-6` after
+   a toolbar with no chips, none when the block is empty (dashboard,
+   unfiltered).
 2. **Column header** — sticky at `top: calc(var(--cap-h) + var(--pre-h))`,
    directly under the block. `--pre-h` is the block's measured height,
    published onto the table root by a ResizeObserver (same pattern as
@@ -504,3 +509,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Tables: whole-row click opens the item modal (schedule table); column headers stick beneath the cap via a measured `--cap-h` (both tables). |
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |
 | 2026-08-31 | 7 | Pinned-table scroll model (both tables): toolbar + filter chips + card top + column header all pin at their rest position — nothing above the rows moves on scroll; rows slide underneath. Pre-table block publishes `--pre-h`; header edge-overlay keeps the card's top stroke/corners fixed. Chips always visible while filtering. |
+| 2026-08-31 | 7 | Scroll-clip audit: pre-table blocks widened across the sheet gutters (`-mx/px-10.75`) — the table card's 58px glow was climbing the unmasked gutters beside the pinned block and clipping at the tab rule. Rule recorded: pinned masks must cover the shadow bleed of whatever scrolls beneath. All other surfaces (fleet cards, activity, overview, caps) verified clean via 10× shadow boost. |

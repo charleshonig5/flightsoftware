@@ -133,11 +133,15 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
           (-mt-8.5 cancels it at rest, white-on-white), so the block — and
           the card top below it — pin exactly at their rest position: the
           table never moves on scroll, rows just slide underneath. Toolbar
-          and active filter chips live here, always visible. */}
+          and active filter chips live here, always visible. -mx/px-10.75
+          stretch the white mask across the sheet gutters so the card's
+          58px glow can't climb past the visible card top while pinned. */}
       <div
         ref={preRef}
         style={{ top: "var(--cap-h, 0px)" }}
-        className={`sticky z-10 -mt-8.5 bg-card pt-8.5 ${hasChips ? "pb-3.5" : "pb-6"}`}
+        className={`sticky z-10 -mx-10.75 -mt-8.5 bg-card px-10.75 pt-8.5 ${
+          hasChips ? "pb-3.5" : "pb-6"
+        }`}
       >
         {/* Toolbar: action + search clustered at the standard 14px control gap */}
         <div className="flex items-center gap-3.5">
