@@ -16,19 +16,20 @@ export function MaintenanceSchedule({ aircraft }: { aircraft: Aircraft }) {
   const [query, setQuery] = useState("");
 
   return (
-    <div>
-      {/* Toolbar: action + search clustered at the standard 14px control gap */}
-      <div className="flex items-center gap-3.5">
-        <Button variant="outline" size="lg">
-          <AddCircleIcon className="size-5" />
-          Add Item
-        </Button>
-        <SearchInput value={query} onChange={setQuery} placeholder="Search Maintenance Schedule" />
-      </div>
-
-      <div className="mt-6">
-        <FleetScheduleTable aircraft={aircraft} query={query} />
-      </div>
-    </div>
+    <FleetScheduleTable
+      aircraft={aircraft}
+      query={query}
+      toolbar={
+        /* Toolbar: action + search clustered at the standard 14px control gap.
+           Rendered inside the table's pinned block so it never scrolls away. */
+        <div className="flex items-center gap-3.5">
+          <Button variant="outline" size="lg">
+            <AddCircleIcon className="size-5" />
+            Add Item
+          </Button>
+          <SearchInput value={query} onChange={setQuery} placeholder="Search Maintenance Schedule" />
+        </div>
+      }
+    />
   );
 }

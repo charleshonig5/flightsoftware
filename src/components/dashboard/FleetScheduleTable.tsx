@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { fleet, type Aircraft, type MaintenanceItem, type StatusLevel } from "@/lib/data/aircraft";
 import { Chip } from "@/components/ui/Chip";
 import {
@@ -64,10 +64,13 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
 export function FleetScheduleTable({
   aircraft,
   query,
+  toolbar,
 }: {
   aircraft?: Aircraft;
   /** Optional keyword filter (plane-page search bar) — ANDs with column filters */
   query?: string;
+  /** Optional toolbar (action + search) — rendered inside the pinned block above the table */
+  toolbar?: React.ReactNode;
 }) {
   const filter = useColumnFilters(EMPTY_FILTERS);
   const [detail, setDetail] = useState<{ open: boolean; item: MaintenanceItem | null }>({
@@ -115,6 +118,24 @@ export function FleetScheduleTable({
   /* Remounting the row list when the result set changes replays the cascade */
   const rowsKey = `${q}|${FILTER_KEYS.map((key) => filter.filters[key].join(",")).join("|")}`;
 
+  /* Everything above the rows is pinned (Airtable pattern): the pre-table
+     block (toolbar + filter chips) sits at its rest position and never
+     moves; the column header pins right below it. The header's offset
+     needs the block's measured height, published as --pre-h. */
+  const rootRef = useRef<HTMLDivElement>(null);
+  const preRef = useRef<HTMLDivElement>(null);
+  const hasChips = activeKeys.length > 0;
+  useEffect(() => {
+    const root = rootRef.current;
+    const pre = preRef.current;
+    if (!root || !pre) return;
+    const publish = () => root.style.setProperty("--pre-h", `${pre.offsetHeight}px`);
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(pre);
+    return () => observer.disconnect();
+  }, []);
+
   const headerCell = (key: FilterKey) => (
     <FilterHeaderCell
       key={key}
@@ -131,21 +152,44 @@ export function FleetScheduleTable({
   );
 
   return (
-    <>
-      <FilterChips
-        activeKeys={activeKeys}
-        labels={FILTER_LABELS}
-        filters={filter.filters}
-        onClear={filter.clear}
-      />
+    <div ref={rootRef}>
+      {/* Pinned pre-table block: pt-8.5 spans the sheet body's top padding
+          (-mt-8.5 cancels it at rest, white-on-white), so the block — and
+          the card top below it — pin exactly at their rest position: the
+          table never moves on scroll, rows just slide underneath. Toolbar
+          and active filter chips live here, always visible. */}
+      <div
+        ref={preRef}
+        style={{ top: "var(--cap-h, 0px)" }}
+        className={`sticky z-10 -mt-8.5 bg-card pt-8.5 ${
+          hasChips ? "pb-3.5" : toolbar ? "pb-6" : ""
+        }`}
+      >
+        {toolbar}
+        {hasChips && (
+          <div className={toolbar ? "mt-6" : ""}>
+            <FilterChips
+              activeKeys={activeKeys}
+              labels={FILTER_LABELS}
+              filters={filter.filters}
+              onClear={filter.clear}
+            />
+          </div>
+        )}
+      </div>
 
       <div className="rounded-field border border-divider bg-card shadow-card">
-        {/* sticky: pins just below the sticky cap (--cap-h measured by the
-            tab components) so column labels + filters survive long scrolls */}
+        {/* Column header: pinned right below the pre-table block. The edge
+            overlay re-draws the card's top stroke + corners so the card top
+            reads as fixed while its real edge is masked above. */}
         <div
-          style={{ top: "var(--cap-h, 0px)" }}
+          style={{ top: "calc(var(--cap-h, 0px) + var(--pre-h, 0px))" }}
           className={`sticky z-10 grid ${TABLE_COLS} items-center rounded-t-field border-b border-divider bg-card px-6 py-3.25`}
         >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-px -top-px bottom-0 rounded-t-field border-x border-t border-divider"
+          />
           <span className="text-body text-ink-muted">Service Name</span>
           {headerCell("aircraft")}
           {headerCell("status")}
@@ -198,6 +242,6 @@ export function FleetScheduleTable({
           onClose={() => setDetail((d) => ({ ...d, open: false }))}
         />
       </div>
-    </>
+    </div>
   );
 }

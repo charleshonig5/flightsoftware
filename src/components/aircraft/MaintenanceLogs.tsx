@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Aircraft, MaintenanceLog } from "@/lib/data/aircraft";
 import { Button } from "@/components/ui/Button";
 import {
@@ -94,6 +94,24 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
   /* Remounting the row list when the result set changes replays the cascade */
   const rowsKey = `${q}|${FILTER_KEYS.map((key) => filter.filters[key].join(",")).join("|")}`;
 
+  /* Everything above the rows is pinned (Airtable pattern): the pre-table
+     block (toolbar + filter chips) sits at its rest position and never
+     moves; the column header pins right below it. The header's offset
+     needs the block's measured height, published as --pre-h. */
+  const rootRef = useRef<HTMLDivElement>(null);
+  const preRef = useRef<HTMLDivElement>(null);
+  const hasChips = activeKeys.length > 0;
+  useEffect(() => {
+    const root = rootRef.current;
+    const pre = preRef.current;
+    if (!root || !pre) return;
+    const publish = () => root.style.setProperty("--pre-h", `${pre.offsetHeight}px`);
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(pre);
+    return () => observer.disconnect();
+  }, []);
+
   const headerCell = (key: FilterKey) => (
     <FilterHeaderCell
       key={key}
@@ -110,31 +128,49 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
   );
 
   return (
-    <div>
-      {/* Toolbar: action + search clustered at the standard 14px control gap */}
-      <div className="flex items-center gap-3.5">
-        <Button variant="outline" size="lg">
-          <AddCircleIcon className="size-5" />
-          Log Maintenance
-        </Button>
-        <SearchInput value={query} onChange={setQuery} placeholder="Search Maintenance History" />
+    <div ref={rootRef}>
+      {/* Pinned pre-table block: pt-8.5 spans the sheet body's top padding
+          (-mt-8.5 cancels it at rest, white-on-white), so the block — and
+          the card top below it — pin exactly at their rest position: the
+          table never moves on scroll, rows just slide underneath. Toolbar
+          and active filter chips live here, always visible. */}
+      <div
+        ref={preRef}
+        style={{ top: "var(--cap-h, 0px)" }}
+        className={`sticky z-10 -mt-8.5 bg-card pt-8.5 ${hasChips ? "pb-3.5" : "pb-6"}`}
+      >
+        {/* Toolbar: action + search clustered at the standard 14px control gap */}
+        <div className="flex items-center gap-3.5">
+          <Button variant="outline" size="lg">
+            <AddCircleIcon className="size-5" />
+            Log Maintenance
+          </Button>
+          <SearchInput value={query} onChange={setQuery} placeholder="Search Maintenance History" />
+        </div>
+        {hasChips && (
+          <div className="mt-6">
+            <FilterChips
+              activeKeys={activeKeys}
+              labels={FILTER_LABELS}
+              filters={filter.filters}
+              onClear={filter.clear}
+            />
+          </div>
+        )}
       </div>
 
-      <div className="mt-6">
-        <FilterChips
-          activeKeys={activeKeys}
-          labels={FILTER_LABELS}
-          filters={filter.filters}
-          onClear={filter.clear}
-        />
-
-        <div className="rounded-field border border-divider bg-card shadow-card">
-        {/* sticky: pins just below the sticky cap (--cap-h measured by the
-            tab components) so column labels + filters survive long scrolls */}
+      <div className="rounded-field border border-divider bg-card shadow-card">
+          {/* Column header: pinned right below the pre-table block. The edge
+              overlay re-draws the card's top stroke + corners so the card top
+              reads as fixed while its real edge is masked above. */}
           <div
-            style={{ top: "var(--cap-h, 0px)" }}
+            style={{ top: "calc(var(--cap-h, 0px) + var(--pre-h, 0px))" }}
             className={`sticky z-10 grid ${TABLE_COLS} items-center rounded-t-field border-b border-divider bg-card px-6 py-3.25`}
           >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-x-px -top-px bottom-0 rounded-t-field border-x border-t border-divider"
+            />
             <span className="text-body text-ink-muted">Title</span>
             {headerCell("date")}
             {headerCell("type")}
@@ -173,7 +209,6 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
           {logs.length === 0 && (
             <p className="px-6 py-6 text-body text-ink-muted">No records match the current filters.</p>
           )}
-        </div>
       </div>
     </div>
   );

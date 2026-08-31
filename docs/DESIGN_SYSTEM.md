@@ -310,10 +310,33 @@ Mechanic filterable, Date by year; fixed newest-first order; brand "View"
 pills; its v1 search + sort retired).
 `rounded-field border-divider bg-card shadow-card`. Columns
 `352/114/157/199/146/79 fr` (Service Name · Aircraft · Status · Type · Last
-Service · Action), `px-6` gutters. Header 45px, muted 14 Regular — and
-**sticky**: it pins just below the sticky cap (`top: var(--cap-h)`, a CSS
-variable the tab components publish from a ResizeObserver on the cap), so
-column labels and filters survive long scrolls. Rows are always ordered
+Service · Action), `px-6` gutters. Header 45px, muted 14 Regular.
+
+**Pinned-table scroll model** (Airtable pattern — both tables): everything
+above the rows is pinned at its rest position and **never moves on scroll**;
+only rows slide underneath. Three pieces:
+1. **Pre-table block** — a sticky div (`top: var(--cap-h)`, `z-10 bg-card`)
+   holding the toolbar (via the `toolbar` prop / inline in Logs) and the
+   active filter chips. Its `pt-8.5` spans the sheet body's top padding and
+   `-mt-8.5` cancels it at rest (white-on-white, invisible), so its pinned
+   position **is** its rest position. Bottom padding: `pb-3.5` when chips are
+   showing (14px to the card), `pb-6` after a toolbar with no chips, none
+   when the block is empty (dashboard, unfiltered).
+2. **Column header** — sticky at `top: calc(var(--cap-h) + var(--pre-h))`,
+   directly under the block. `--pre-h` is the block's measured height,
+   published onto the table root by a ResizeObserver (same pattern as
+   `--cap-h`, which the tab components publish from the cap).
+3. **Edge overlay** — an absolute, aria-hidden child of the header
+   (`-inset-x-px -top-px bottom-0 rounded-t-field border-x border-t`) that
+   re-draws the card's top stroke + corners: the card's real top edge scrolls
+   away behind the block, but the visible top edge stays fixed. At rest the
+   overlay's 1px borders sit exactly on the card's own borders (invisible).
+Net effect: filters, search, chips, card top, and column titles are always
+visible; adding a chip simply grows the pinned stack (and the card shifts
+down — expected). Never mask scrolled content below the tab rule with
+opaque bands: content must disappear exactly at the rule.
+
+Rows are always ordered
 danger→warning→success, 48px pitch, hairline-separated, and the **whole row
 is clickable** (opens the maintenance-item modal; interactive children
 exempt, same as aircraft cards) — the brand service-name link and the
@@ -328,9 +351,10 @@ muted 10px "Filter by X" title, checkbox list (16px `rounded-check` boxes,
 hairline off / brand fill + white check on, 10px ink labels, `gap-2` rows),
 hairline divider, then **Apply** (10 Medium brand) and **Clear all** (10
 Medium muted) at `gap-3.5`. Apply commits; Esc/outside click dismisses.
-Active filters render as **quiet chips** 20px under the tab row (14px above
-the table): `bg-brand-soft` + muted 10px `"Column: values"` text with a 10px
-✕ (`gap-2`) that clears the column. A column with an active filter keeps its
+Active filters render as **quiet chips** inside the pinned pre-table block
+(14px above the table, 24px under a toolbar): `bg-brand-soft` + muted 10px
+`"Column: values"` text with a 10px ✕ (`gap-2`) that clears the column.
+`FilterChips` carries no positioning of its own — the caller places it. A column with an active filter keeps its
 header label ink. Last Service filters by year; Status by
 Overdue/Upcoming/Current.
 
@@ -479,3 +503,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 3 | Plane-page header → tab bar gap 64 → 46px, matching the dashboard's KPI → tabs rhythm. |
 | 2026-08-31 | 7 | Tables: whole-row click opens the item modal (schedule table); column headers stick beneath the cap via a measured `--cap-h` (both tables). |
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |
+| 2026-08-31 | 7 | Pinned-table scroll model (both tables): toolbar + filter chips + card top + column header all pin at their rest position — nothing above the rows moves on scroll; rows slide underneath. Pre-table block publishes `--pre-h`; header edge-overlay keeps the card's top stroke/corners fixed. Chips always visible while filtering. |

@@ -135,7 +135,8 @@ export function FilterHeaderCell({
   );
 }
 
-/** Quiet active-filter chips, 20px under the tab/header row (14px above the table). */
+/** Quiet active-filter chips. Positioning belongs to the caller — tables pin
+ *  these in a sticky band under the cap so filter state survives scrolling. */
 export function FilterChips<K extends string>({
   activeKeys,
   labels,
@@ -149,7 +150,7 @@ export function FilterChips<K extends string>({
 }) {
   if (activeKeys.length === 0) return null;
   return (
-    <div className="-mt-3.5 mb-3.5 flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {activeKeys.map((key) => (
         <span
           key={key}
