@@ -1,8 +1,8 @@
 <svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="108" height="23" viewBox="0 0 108 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="maggneto-lockup 1" clip-path="url(#clip0_0_4)">
+<g id="maggneto-lockup 1" clip-path="url(#clip0_0_54)">
 <g id="Vector">
 <path d="M18.6764 0H4.30994C1.92963 0 0 1.93077 0 4.3125V18.6875C0 21.0692 1.92963 23 4.30994 23H18.6764C21.0567 23 22.9864 21.0692 22.9864 18.6875V4.3125C22.9864 1.93077 21.0567 0 18.6764 0Z" fill="#0A84FF"/>
-<path d="M18.6764 0H4.30994C1.92963 0 0 1.93077 0 4.3125V18.6875C0 21.0692 1.92963 23 4.30994 23H18.6764C21.0567 23 22.9864 21.0692 22.9864 18.6875V4.3125C22.9864 1.93077 21.0567 0 18.6764 0Z" fill="url(#paint0_linear_0_4)"/>
+<path d="M18.6764 0H4.30994C1.92963 0 0 1.93077 0 4.3125V18.6875C0 21.0692 1.92963 23 4.30994 23H18.6764C21.0567 23 22.9864 21.0692 22.9864 18.6875V4.3125C22.9864 1.93077 21.0567 0 18.6764 0Z" fill="url(#paint0_linear_0_54)"/>
 </g>
 <g id="Frame">
 <path id="Vector_2" d="M7.90092 11.5L6.26614 6.18482C10.1767 7.32265 13.8644 9.12019 17.1703 11.5C13.8647 13.8801 10.1772 15.6781 6.26674 16.8163L7.90092 11.5ZM7.90092 11.5H12.3904" stroke="white" stroke-width="1.09375" stroke-linecap="round" stroke-linejoin="round"/>
@@ -19,11 +19,11 @@
 </g>
 </g>
 <defs>
-<linearGradient id="paint0_linear_0_4" x1="0" y1="11.5" x2="22.9864" y2="11.5" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_0_54" x1="0" y1="11.5" x2="22.9864" y2="11.5" gradientUnits="userSpaceOnUse">
 <stop stop-color="#4A78F1"/>
 <stop offset="1" stop-color="#2460FF"/>
 </linearGradient>
-<clipPath id="clip0_0_4">
+<clipPath id="clip0_0_54">
 <rect width="108" height="23" fill="white"/>
 </clipPath>
 </defs>

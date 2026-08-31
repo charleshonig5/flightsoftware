@@ -13,6 +13,7 @@ import {
   AircraftIcon,
   ChevronUpIcon,
   DashboardIcon,
+  HelpIcon,
   LogoutIcon,
   ProfileIcon,
   SettingsIcon,
@@ -35,7 +36,8 @@ function NavItem({
   onClick?: () => void;
 }) {
   const rowClasses = `flex h-11.5 w-full cursor-pointer items-center gap-2 rounded-nav px-3.5 text-body transition-colors duration-150 ${
-    active ? "bg-brand-soft text-brand" : "text-ink hover:bg-tile"
+    // hover uses the standard darker grey — the tile grey would vanish on the page bg
+    active ? "bg-brand-soft text-brand" : "text-ink hover:bg-chip-neutral"
   }`;
   return (
     <div className="relative px-5">
@@ -67,7 +69,9 @@ export function Sidebar() {
     : null;
 
   return (
-    <aside className="sticky top-0 flex h-screen w-[237px] shrink-0 flex-col bg-card shadow-card">
+    // v2: the sidebar blends into the page background — the white sheet
+    // floats on top of it. No fill, no shadow.
+    <aside className="sticky top-0 flex h-screen w-[237px] shrink-0 flex-col">
       <div className="px-8.5 pt-11">
         {/* Official lockup (108×23) — asset lives in /public, not hotlinked */}
         <Image src="/maggneto-lockup.svg" alt="Maggneto" width={108} height={23} priority />
@@ -88,7 +92,7 @@ export function Sidebar() {
             onClick={() => setAircraftOpen((open) => !open)}
             trailing={
               <>
-                <CountBadge>{allTailNumbers.length}</CountBadge>
+                <CountBadge surface="page">{allTailNumbers.length}</CountBadge>
                 <ChevronUpIcon
                   className={`size-4 text-ink-muted transition-transform duration-200 ${
                     aircraftOpen ? "" : "rotate-180"
@@ -151,16 +155,29 @@ export function Sidebar() {
         <NavItem icon={<SettingsIcon className="size-4" />} label="Settings" />
       </nav>
 
-      <div className="mt-auto flex items-center justify-between px-8.5 pb-8.5">
-        <span className="text-body text-ink-muted">{currentUser.name}</span>
-        <button
-          type="button"
-          aria-label="Log out"
-          onClick={() => setSignOutOpen(true)}
-          className="cursor-pointer text-ink-muted transition-colors duration-150 hover:text-ink"
-        >
-          <LogoutIcon className="size-4" />
-        </button>
+      {/* icons top-align with the name line (Figma), not the block center */}
+      <div className="mt-auto flex items-start justify-between px-8.5 pb-8.5">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-body">{currentUser.name}</span>
+          <span className="text-caption text-ink-muted">{currentUser.email}</span>
+        </div>
+        <div className="flex items-center gap-3.5">
+          <button
+            type="button"
+            aria-label="Help"
+            className="cursor-pointer text-ink-muted transition-colors duration-150 hover:text-ink"
+          >
+            <HelpIcon className="size-4" />
+          </button>
+          <button
+            type="button"
+            aria-label="Log out"
+            onClick={() => setSignOutOpen(true)}
+            className="cursor-pointer text-ink-muted transition-colors duration-150 hover:text-ink"
+          >
+            <LogoutIcon className="size-4" />
+          </button>
+        </div>
       </div>
 
       <Modal open={signOutOpen} onClose={() => setSignOutOpen(false)} title="Sign Out">

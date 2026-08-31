@@ -79,7 +79,7 @@ const withCounts = (items: MaintenanceItem[]) => ({
   items: [...items].sort((a, b) => SEVERITY[a.status.level] - SEVERITY[b.status.level]),
 });
 
-export const currentUser = { name: "Charles Honig" };
+export const currentUser = { name: "Charles Honig", email: "charles@maggneto.com" };
 
 export const fleet: Aircraft[] = [
   {
@@ -93,10 +93,10 @@ export const fleet: Aircraft[] = [
       { label: "Tach 2 (L)", value: "42,625.3", unit: "hrs", meta: "Updated 20d ago", percent: 75 },
       { label: "Tach 3", value: "41,735.1", unit: "hrs", meta: "Updated 20d ago", percent: 100 },
       { label: "Tach 4", value: "49,551.3", unit: "hrs", meta: "Updated 20d ago", percent: 25 },
-      { label: "Oil 1 (L)", value: "0.19", unit: "qt/hr", meta: "Next change in 157 hrs", percent: 75 },
-      { label: "Oil 2 (R)", value: "0.20", unit: "qt/hr", meta: "Next change in 132 hrs", percent: 100 },
-      { label: "Oil 3", value: "0.21", unit: "qt/hr", meta: "Next change in 121 hrs", percent: 25 },
-      { label: "Oil 4", value: "0.22", unit: "qt/hr", meta: "Next change in 184 hrs", percent: 75 },
+      { label: "Oil 1 (L)", value: ".19", unit: "qt/hr", meta: "Next change in 157 hrs", percent: 75 },
+      { label: "Oil 2 (R)", value: ".20", unit: "qt/hr", meta: "Next change in 132 hrs", percent: 100 },
+      { label: "Oil 3", value: ".21", unit: "qt/hr", meta: "Next change in 121 hrs", percent: 25 },
+      { label: "Oil 4", value: ".22", unit: "qt/hr", meta: "Next change in 184 hrs", percent: 75 },
     ],
     logs: [
       { title: "Nav Database Currency Update", date: "2026-06-27", type: "Equipment", component: "Avionics", totalTime: 51268.1, mechanic: "Skyline Avionics Group" },
@@ -279,7 +279,7 @@ export const fleet: Aircraft[] = [
     meters: [
       { label: "Hobbs", value: "812.4", unit: "hrs", meta: "Updated 3d ago", percent: 25 },
       { label: "Tach", value: "795.2", unit: "hrs", meta: "Updated 3d ago", percent: 25 },
-      { label: "Oil", value: "0.08", unit: "qt/hr", meta: "Next change in 41 hrs", percent: 25 },
+      { label: "Oil", value: ".08", unit: "qt/hr", meta: "Next change in 41 hrs", percent: 25 },
     ],
     logs: [
       { title: "Oil & Filter Change", date: "2026-07-08", type: "Maintenance", component: "Engine", totalTime: 803.1, mechanic: "Cascade Aircraft Services" },
@@ -327,8 +327,8 @@ export const fleet: Aircraft[] = [
       { label: "Hobbs", value: "4,812.6", unit: "hrs", meta: "Updated 5d ago", percent: 75 },
       { label: "Tach 1 (L)", value: "4,655.1", unit: "hrs", meta: "Updated 5d ago", percent: 50 },
       { label: "Tach 2 (R)", value: "4,649.8", unit: "hrs", meta: "Updated 5d ago", percent: 50 },
-      { label: "Oil 1 (L)", value: "0.11", unit: "qt/hr", meta: "Next change in 92 hrs", percent: 25 },
-      { label: "Oil 2 (R)", value: "0.13", unit: "qt/hr", meta: "Next change in 87 hrs", percent: 25 },
+      { label: "Oil 1 (L)", value: ".11", unit: "qt/hr", meta: "Next change in 92 hrs", percent: 25 },
+      { label: "Oil 2 (R)", value: ".13", unit: "qt/hr", meta: "Next change in 87 hrs", percent: 25 },
     ],
     logs: [
       { title: "Oil & Filter Change — Both Engines", date: "2026-06-30", type: "Maintenance", component: "Engine", totalTime: 4798.3, mechanic: "Textron Aviation Service" },
@@ -443,7 +443,7 @@ export const fleetStats = {
       value: String(fleet.filter((aircraft) => aircraft.badge).length),
       unit: "Aircraft(s)",
       info: "Aircraft in your fleet with overdue or soon-due maintenance items.",
-      status: { level: "danger", label: "Need Attention" },
+      status: { level: "danger", label: "Need(s) attention" },
     },
     {
       icon: "overdue",

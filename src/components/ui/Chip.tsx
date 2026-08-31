@@ -1,6 +1,6 @@
 import type { StatusLevel } from "@/lib/data/aircraft";
 
-export type ChipTone = StatusLevel | "neutral" | "neutral-on-card" | "tile";
+export type ChipTone = StatusLevel | "neutral" | "neutral-on-card" | "tile" | "quiet";
 
 const toneClasses: Record<ChipTone, string> = {
   danger: "bg-danger-soft text-danger",
@@ -12,6 +12,8 @@ const toneClasses: Record<ChipTone, string> = {
   "neutral-on-card": "bg-chip-neutral text-ink-muted",
   /* info chips on modals use the tile fill */
   tile: "bg-tile text-ink-muted",
+  /* v2 quiet badge: brand tint fill, muted text (KPI labels) */
+  quiet: "bg-brand-soft text-ink-muted",
 };
 
 /**
@@ -51,7 +53,8 @@ export function Chip({
 }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1.5 text-caption leading-none whitespace-nowrap ${toneClasses[tone]} ${className}`}
+      /* v2 chip metrics: 8px/5px padding, 20px tall */
+      className={`inline-flex items-center rounded-full px-2 py-1.25 text-caption leading-none whitespace-nowrap ${toneClasses[tone]} ${className}`}
     >
       {children}
     </span>

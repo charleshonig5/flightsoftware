@@ -295,6 +295,17 @@ export function ChevronUpIcon({ className }: IconProps) {
   );
 }
 
+/** Circled question-mark help glyph. */
+export function HelpIcon({ className }: IconProps) {
+  return (
+    <StrokeIcon viewBox="0 0 16 16" className={className}>
+      <path d="M8 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 8C14.6667 4.3181 11.6819 1.33333 8 1.33333C4.3181 1.33333 1.33333 4.3181 1.33333 8C1.33333 11.6819 4.3181 14.6667 8 14.6667Z" />
+      <path d="M6.06 6C6.21674 5.55445 6.5261 5.17874 6.9333 4.93942C7.3405 4.70011 7.81926 4.61263 8.28478 4.69247C8.7503 4.77232 9.17255 5.01435 9.47672 5.37569C9.78089 5.73702 9.94737 6.19435 9.94667 6.66667C9.94667 8 7.94667 8.66667 7.94667 8.66667" />
+      <path d="M8 11.3333H8.00667" />
+    </StrokeIcon>
+  );
+}
+
 /** Log-out glyph (thin 0.67 stroke, per Figma). */
 export function LogoutIcon({ className }: IconProps) {
   return (
@@ -338,6 +349,61 @@ export function ChatLinesIcon({ className }: IconProps) {
       <path d="M5.83333 9.16667H14.1667" />
       <path d="M5.83333 12.5H10.8333" />
       <path d="M5.83333 5.83333H12.5" />
+    </StrokeIcon>
+  );
+}
+
+/** Gauge/speedometer — activity-feed chip for meter-reading events. */
+export function MeterActivityIcon({ className }: IconProps) {
+  return (
+    <StrokeIcon viewBox="0 0 14 14" className={className}>
+      <path d="M9.1 1.575C7.85236 1.0903 6.47599 1.0494 5.20177 1.45916C3.92755 1.86892 2.83301 2.70442 2.10175 3.8255C1.3705 4.94658 1.04703 6.28503 1.1856 7.61632C1.32416 8.94761 1.91634 10.1908 2.8628 11.1372C3.80925 12.0837 5.05239 12.6758 6.38368 12.8144C7.71497 12.953 9.05342 12.6295 10.1745 11.8982C11.2956 11.167 12.1311 10.0725 12.5408 8.79823C12.9506 7.52401 12.9097 6.14764 12.425 4.9" />
+      <path d="M7 8.16667C7.64433 8.16667 8.16667 7.64433 8.16667 7C8.16667 6.35567 7.64433 5.83333 7 5.83333C6.35567 5.83333 5.83333 6.35567 5.83333 7C5.83333 7.64433 6.35567 8.16667 7 8.16667Z" />
+      <path d="M7.81667 6.18333L11.0833 2.91667" />
+    </StrokeIcon>
+  );
+}
+
+/** Toolbox — activity-feed chip for maintenance-work events. */
+export function ToolboxIcon({ className }: IconProps) {
+  return (
+    <StrokeIcon viewBox="0 0 14 14" className={className}>
+      <path d="M9.33333 7V9.33333" />
+      <path d="M9.33333 3.5V2.33333C9.33333 2.02391 9.21042 1.72717 8.99162 1.50838C8.77283 1.28958 8.47609 1.16667 8.16667 1.16667H5.83333C5.52391 1.16667 5.22717 1.28958 5.00838 1.50838C4.78958 1.72717 4.66667 2.02391 4.66667 2.33333V3.5" />
+      <path d="M9.91667 3.5C10.2261 3.50007 10.5228 3.62303 10.7415 3.84183L12.4915 5.59183C12.7103 5.81058 12.8333 6.10727 12.8333 6.41667V11.0833C12.8333 11.3928 12.7104 11.6895 12.4916 11.9083C12.2728 12.1271 11.9761 12.25 11.6667 12.25H2.33333C2.02391 12.25 1.72717 12.1271 1.50838 11.9083C1.28958 11.6895 1.16667 11.3928 1.16667 11.0833V6.41667C1.16673 6.10727 1.28969 5.81058 1.5085 5.59183L3.2585 3.84183C3.47724 3.62303 3.77394 3.50007 4.08333 3.5H9.91667Z" />
+      <path d="M1.16667 8.16667H12.8333" />
+      <path d="M4.66667 7V9.33333" />
+    </StrokeIcon>
+  );
+}
+
+/** File with a check — activity-feed chip for records/certification events. */
+export function RecordsActivityIcon({ className }: IconProps) {
+  return (
+    <StrokeIcon viewBox="0 0 14 14" className={className}>
+      <path d="M3.5 12.8333C3.19058 12.8333 2.89383 12.7104 2.67504 12.4916C2.45625 12.2728 2.33333 11.9761 2.33333 11.6667V2.33333C2.33333 2.02391 2.45625 1.72717 2.67504 1.50838C2.89383 1.28958 3.19058 1.16667 3.5 1.16667H8.16667C8.35132 1.16637 8.53422 1.2026 8.70481 1.27328C8.8754 1.34396 9.03033 1.44769 9.16067 1.5785L11.2537 3.6715C11.3848 3.80188 11.4889 3.95695 11.5597 4.12776C11.6306 4.29857 11.667 4.48173 11.6667 4.66667V11.6667C11.6667 11.9761 11.5438 12.2728 11.325 12.4916C11.1062 12.7104 10.8094 12.8333 10.5 12.8333H3.5Z" />
+      <path d="M8.16667 1.16667V4.08333C8.16667 4.23804 8.22812 4.38642 8.33752 4.49581C8.44692 4.60521 8.59529 4.66667 8.75 4.66667H11.6667" />
+      <path d="M5.25 8.75L6.41667 9.91667L8.75 7.58333" />
+    </StrokeIcon>
+  );
+}
+
+/** Oil droplet — activity-feed chip for oil-log events. */
+export function OilDropIcon({ className }: IconProps) {
+  return (
+    <StrokeIcon viewBox="0 0 14 14" className={className}>
+      <path d="M7 1.46C7 1.46 3.06 5.9 3.06 8.75C3.06 10.93 4.82 12.69 7 12.69C9.18 12.69 10.94 10.93 10.94 8.75C10.94 5.9 7 1.46 7 1.46Z" />
+    </StrokeIcon>
+  );
+}
+
+/** Alert triangle — activity-feed chip for status-change events (due → overdue). */
+export function AlertTriangleIcon({ className }: IconProps) {
+  return (
+    <StrokeIcon viewBox="0 0 14 14" className={className}>
+      <path d="M6.06 2.3L1.25 10.62C0.83 11.34 1.35 12.25 2.19 12.25H11.81C12.65 12.25 13.17 11.34 12.75 10.62L7.94 2.3C7.52 1.57 6.48 1.57 6.06 2.3Z" />
+      <path d="M7 5.54V7.88" />
+      <path d="M7 10.2H7.01" />
     </StrokeIcon>
   );
 }

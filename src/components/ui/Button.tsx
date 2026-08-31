@@ -1,5 +1,5 @@
 const base =
-  "flex cursor-pointer items-center justify-center gap-1.5 rounded-full text-body font-medium whitespace-nowrap transition-all duration-150 active:scale-[0.97]";
+  "flex cursor-pointer items-center justify-center gap-1.5 rounded-full text-body font-medium whitespace-nowrap shadow-card transition-all duration-150 active:scale-[0.97]";
 
 const sizes = {
   /* standard: tab-bar actions, modal footers */

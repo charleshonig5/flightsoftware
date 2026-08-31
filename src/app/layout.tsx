@@ -30,8 +30,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <AskAiProvider>
           <div className="flex min-h-screen">
             <Sidebar />
-            {/* 54px content gutters, 44px top offset — from the Figma frames */}
-            <main className="min-w-0 flex-1 px-13.5 pt-11 pb-13.5">{children}</main>
+            {/* v2: pages own their surface — the dashboard renders the white
+                sheet; not-yet-redesigned pages carry their v1 padding */}
+            <main className="min-w-0 flex-1">{children}</main>
             <AskAiPanel />
           </div>
         </AskAiProvider>

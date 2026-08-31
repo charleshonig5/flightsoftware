@@ -21,7 +21,9 @@ export default async function AircraftPage({ params }: AircraftPageProps) {
   if (!aircraft) notFound();
 
   return (
-    <>
+    // Page padding lives here now — the root layout's <main> is bare so the
+    // dashboard sheet can own its margins.
+    <div className="px-13.5 pt-11 pb-13.5">
       <AircraftHeader aircraft={aircraft} />
       <div className="mt-16">
         {/* Suspense: AircraftTabs reads ?tab= via useSearchParams on a prerendered page */}
@@ -29,6 +31,6 @@ export default async function AircraftPage({ params }: AircraftPageProps) {
           <AircraftTabs aircraft={aircraft} />
         </Suspense>
       </div>
-    </>
+    </div>
   );
 }

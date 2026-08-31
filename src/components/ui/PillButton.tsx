@@ -1,38 +1,33 @@
 import Link from "next/link";
 
-/* Hover is standardized: soft fills darken to chip-neutral with text fixed at
-   ink-muted (interactive greys never darken past ink-muted); the brand-outline
-   flavor washes brand-soft. */
+/* v2 pill: white fill, hairline border, brand Medium label; hover washes
+   brand-soft (same grammar as the outline button and "View item" pill). */
 const baseClasses =
-  "inline-flex h-7.5 shrink-0 cursor-pointer items-center justify-center rounded-full px-2.5 text-caption whitespace-nowrap transition-colors duration-150 active:scale-[0.97]";
+  "inline-flex h-7.5 shrink-0 cursor-pointer items-center justify-center rounded-full border px-2.5 text-caption font-medium whitespace-nowrap transition-colors duration-150 active:scale-[0.97]";
 
 const styleClasses = {
-  /* soft pill on a white card: gray fill */
-  card: "bg-tile text-ink-muted hover:bg-chip-neutral",
-  /* soft pill on the gray page: white fill */
-  page: "bg-card text-ink-muted hover:bg-chip-neutral",
-  /* brand-outline micro-CTA ("Link Record") */
-  "brand-outline": "border border-brand bg-card text-brand hover:bg-brand-soft",
+  default: "border-divider bg-card text-brand hover:bg-brand-soft",
+  /* micro-CTA ("Link Record"): same pill with a brand border */
+  "brand-outline": "border-brand bg-card text-brand hover:bg-brand-soft",
 } as const;
 
-/** Soft pill button used for card-level actions ("Update Meters", "Log Oil", "Full Schedule"). */
+/** Pill button used for card-level actions ("Update Meters", "Log Oil"). */
 export function PillButton({
   children,
   href,
   onClick,
-  surface = "card",
   variant,
 }: {
   children: React.ReactNode;
   /** Renders as a link when given (e.g. → aircraft page). */
   href?: string;
   onClick?: () => void;
-  /** Surface the soft pill sits on: gray fill on a white card, white fill on the gray page. */
+  /** Deprecated v1 prop — the v2 pill looks the same on every surface. */
   surface?: "card" | "page";
-  /** "brand-outline" overrides the soft styling for micro-CTAs. */
+  /** "brand-outline" swaps the hairline for a brand border. */
   variant?: "brand-outline";
 }) {
-  const pillClasses = `${baseClasses} ${styleClasses[variant ?? surface]}`;
+  const pillClasses = `${baseClasses} ${styleClasses[variant ?? "default"]}`;
   if (href) {
     return (
       <Link href={href} className={pillClasses}>

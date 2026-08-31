@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /*
- * Flight CRM design tokens — v0, extracted from the Figma dashboard
- * (file LuaXriGgwjSXjovjZU4w0t, node 65:14564).
+ * Flight CRM design tokens — v2, extracted from the Figma dashboard
+ * (file LuaXriGgwjSXjovjZU4w0t, v2 node 102:5689; v1 base 65:14564).
  * Rules and usage guidance live in docs/DESIGN_SYSTEM.md.
  * Any change here must update that doc in the same commit.
  */
@@ -20,7 +20,7 @@
   /* ---- Color: brand ---- */
   --color-brand: #4a78f1; /* primary brand blue: active nav, outline buttons, brand icons */
   --color-brand-strong: #2460ff; /* gradient end for brand fills */
-  --color-brand-soft: #f3f6ff; /* active nav pill background */
+  --color-brand-soft: #ebf1ff; /* v2 brand tint: active nav pill, tab/KPI badges, outline-button hover */
 
   /* ---- Color: lines ---- */
   --color-divider: #e8e8e8; /* hairline separators (sidebar tree line) */
@@ -53,9 +53,11 @@
 
   /* ---- Elevation ---- */
   --shadow-pop: 0 4px 12px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06); /* floating overlays (tooltips, pickers) */
-  --shadow-card: 0 0 58px 0 rgb(113 113 113 / 0.05); /* ambient glow on top-level surfaces (cards, KPI cards, sidebar) */
+  --shadow-card: 0 0 58px 0 rgb(113 113 113 / 0.05); /* ambient glow on top-level surfaces (main sheet, tables, sidebar) */
+  --shadow-card-soft: 0 0 29px 0 rgb(113 113 113 / 0.05); /* lighter glow for panels nested inside a sheet (KPI bar) */
 
   /* ---- Radii ---- */
+  --radius-check: 4px; /* checkboxes */
   --radius-nav: 8px; /* sidebar nav pills */
   --radius-field: 8px; /* form fields */
   --radius-tile: 10px; /* inset tiles, list rows */

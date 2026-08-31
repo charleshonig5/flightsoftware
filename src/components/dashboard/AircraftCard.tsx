@@ -9,33 +9,46 @@ import { PillButton } from "@/components/ui/PillButton";
 import { ArrowUpRightIcon } from "@/components/ui/icons";
 import { UpdateMetersModal, isUpdatableMeter } from "@/components/aircraft/UpdateMetersModal";
 import { LogOilModal } from "@/components/aircraft/LogOilModal";
-import { MaintenanceItemModal } from "@/components/aircraft/MaintenanceItemModal";
 import { MeterTile } from "./MeterTile";
-import { MaintenanceItem } from "./MaintenanceItem";
 
-/** Meters shown while the card is collapsed; "View all" reveals the rest. */
-const COLLAPSED_METER_COUNT = 4;
+const MAX_GRID_COLS = 4;
 
-/** Full aircraft overview card: header, meter tiles, maintenance schedule. */
-export function AircraftCard({
-  aircraft,
-  layout = "grid",
-}: {
-  aircraft: Aircraft;
-  /** Dashboard view: full-width "list" cards fit 4 meter tiles per row */
-  layout?: "grid" | "list";
-}) {
-  const { maintenance, meters } = aircraft;
-  const [expanded, setExpanded] = useState(false);
+/* Fewer than 4 meters: the tiles widen to share the full row. */
+const gridColsClass = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+  4: "grid-cols-4",
+} as const;
+
+/**
+ * Corner rounding + border-overlap margins for a tile in the flush meter grid.
+ * Every cell carries a full hairline border; -1px margins collapse shared
+ * edges. Only cells actually sitting on a grid corner get rounded (a partial
+ * last row leaves the bottom-right corner square, matching Figma).
+ */
+function tileShape(index: number, count: number, cols: number) {
+  const col = index % cols;
+  const row = Math.floor(index / cols);
+  const lastRow = Math.floor((count - 1) / cols);
+  const classes = ["rounded-none"];
+  if (col > 0) classes.push("-ml-px");
+  if (row > 0) classes.push("-mt-px");
+  if (index === 0) classes.push("rounded-tl-field");
+  if (row === 0 && (col === cols - 1 || index === count - 1)) classes.push("rounded-tr-field");
+  if (col === 0 && row === lastRow) classes.push("rounded-bl-field");
+  if (index === count - 1 && col === cols - 1) classes.push("rounded-br-field");
+  return classes.join(" ");
+}
+
+/** v2 aircraft card: full-width header + flush 4-across meter grid. */
+export function AircraftCard({ aircraft }: { aircraft: Aircraft }) {
+  const { meters } = aircraft;
   const [metersModal, setMetersModal] = useState<{ open: boolean; focusMeter?: string }>({
     open: false,
   });
   const [oilModal, setOilModal] = useState<{ open: boolean; focusOilMeter?: string }>({
     open: false,
-  });
-  const [itemModal, setItemModal] = useState<{ open: boolean; item: Aircraft["maintenance"]["items"][number] | null }>({
-    open: false,
-    item: null,
   });
   const router = useRouter();
 
@@ -45,21 +58,19 @@ export function AircraftCard({
       : () => setOilModal({ open: true, focusOilMeter: meter.label });
 
   /* The whole card navigates to the aircraft page — except clicks on
-     interactive children (buttons, links, maintenance rows). */
+     interactive children (buttons, links, meter tiles). */
   const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest("button, a, [data-interactive]")) return;
     router.push(`/aircraft/${aircraft.tailNumber}`);
   };
-  /* List view always shows every meter — collapsing only applies to grid view */
-  const collapsible = layout === "grid" && meters.length > COLLAPSED_METER_COUNT;
-  const visibleMeters = collapsible ? meters.slice(0, COLLAPSED_METER_COUNT) : meters;
-  const extraMeters = collapsible ? meters.slice(COLLAPSED_METER_COUNT) : [];
-  const meterCols = layout === "list" ? "grid-cols-4" : "grid-cols-2";
 
   return (
-    <section onClick={handleCardClick} className="group/card cursor-pointer rounded-card bg-card p-6 shadow-card">
+    <section
+      onClick={handleCardClick}
+      className="group/card cursor-pointer rounded-field border border-divider bg-card p-6 shadow-card"
+    >
       <header className="flex items-start justify-between">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-2">
             <h2 className="text-title font-semibold">{aircraft.tailNumber}</h2>
             {aircraft.badge && <Chip tone="danger">{aircraft.badge}</Chip>}
@@ -82,57 +93,16 @@ export function AircraftCard({
         </div>
       </header>
 
-      <div className={`mt-6 grid gap-3.5 ${meterCols}`}>
-        {visibleMeters.map((meter, index) => (
-          <MeterTile key={meter.label} meter={meter} index={index} onEdit={editHandler(meter)} />
-        ))}
-      </div>
-      {collapsible && (
-        <div
-          className={`grid transition-[grid-template-rows] duration-200 ease-out ${
-            expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-          }`}
-        >
-          <div className="overflow-hidden">
-            <div className={`grid gap-3.5 pt-3.5 ${meterCols}`}>
-              {extraMeters.map((meter, index) => (
-                <MeterTile key={meter.label} meter={meter} index={index} onEdit={editHandler(meter)} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {collapsible && (
-        <button
-          type="button"
-          onClick={() => setExpanded((open) => !open)}
-          className="mt-2 block cursor-pointer text-caption text-ink-muted transition-colors duration-150 hover:text-ink"
-        >
-          {expanded ? "Collapse" : "View all"}
-        </button>
-      )}
-
-      {/* Link cards: grid → 8 → View all → 24 → header (≈45 total);
-          link-less cards match with a straight 44 (mt-11) */}
-      <div className={`flex items-start justify-between ${collapsible ? "mt-6" : "mt-11"}`}>
-        <div className="flex flex-col gap-1">
-          <h3 className="text-body">Maintenance Schedule</h3>
-          <p className="text-caption text-ink-muted">
-            {maintenance.overdue} overdue, {maintenance.upcoming} upcoming, {maintenance.current} current
-          </p>
-        </div>
-        <PillButton href={`/aircraft/${aircraft.tailNumber}?tab=maintenance-schedule`}>
-          Full Schedule
-        </PillButton>
-      </div>
-
-      <div className="mt-3.5 flex flex-col gap-3.5">
-        {maintenance.items.slice(0, 3).map((item) => (
-          <MaintenanceItem
-            key={item.title}
-            item={item}
-            onClick={() => setItemModal({ open: true, item })}
+      <div
+        className={`mt-6 grid ${gridColsClass[Math.min(meters.length, MAX_GRID_COLS) as keyof typeof gridColsClass]}`}
+      >
+        {meters.map((meter, index) => (
+          <MeterTile
+            key={meter.label}
+            meter={meter}
+            index={index}
+            shapeClassName={tileShape(index, meters.length, Math.min(meters.length, MAX_GRID_COLS))}
+            onEdit={editHandler(meter)}
           />
         ))}
       </div>
@@ -148,11 +118,6 @@ export function AircraftCard({
         open={oilModal.open}
         focusOilMeter={oilModal.focusOilMeter}
         onClose={() => setOilModal({ open: false })}
-      />
-      <MaintenanceItemModal
-        item={itemModal.item}
-        open={itemModal.open}
-        onClose={() => setItemModal((m) => ({ ...m, open: false }))}
       />
     </section>
   );
