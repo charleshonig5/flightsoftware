@@ -306,10 +306,9 @@ export function HelpIcon({ className }: IconProps) {
   );
 }
 
-/** Log-out glyph (thin 0.67 stroke, per Figma). */
 export function LogoutIcon({ className }: IconProps) {
   return (
-    <StrokeIcon viewBox="0 0 16 16" strokeWidth={0.666667} className={className}>
+    <StrokeIcon viewBox="0 0 16 16" className={className}>
       <path d="M10.6667 11.3333L14 8L10.6667 4.66667" />
       <path d="M14 8H6" />
       <path d="M6 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H6" />

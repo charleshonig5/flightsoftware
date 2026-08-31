@@ -51,7 +51,9 @@ export function AskAiPanel() {
     <aside
       aria-label="Ask AI"
       aria-hidden={!open}
-      className="sticky top-0 h-screen shrink-0 overflow-hidden transition-[width] duration-300 ease-(--ease-snap)"
+      /* z-40: above the sheet's sticky cap (z-20) and glow layer (z-30) so
+         overflowing content can never paint over the open panel */
+      className="sticky top-0 z-40 h-screen shrink-0 overflow-hidden transition-[width] duration-300 ease-(--ease-snap)"
       style={{ width: open ? 408 : 0 }}
     >
       {/* fixed-width inner so content never squishes while the panel animates */}
@@ -85,15 +87,18 @@ export function AskAiPanel() {
           <div className="mt-11 flex flex-col gap-8.5">
             {/* width-capped so the prompt breaks after "your", per Figma */}
             <h2 className="max-w-60.5 text-headline font-normal">Ask about your aircraft(s).</h2>
-            <div className="flex flex-col items-start gap-3.5">
-              {SUGGESTIONS.map((text) => (
+            {/* keyed by open state so the chips cascade in on every panel open,
+                starting as the 300ms slide finishes revealing them */}
+            <div key={open ? "open" : "closed"} className="flex flex-col items-start gap-3.5">
+              {SUGGESTIONS.map((text, index) => (
                 <button
                   key={text}
                   type="button"
                   onClick={() => pickSuggestion(text)}
-                  className="flex cursor-pointer items-center gap-2 rounded-tile bg-brand-soft px-3.5 py-2.75 transition-colors duration-150 hover:bg-brand/15"
+                  style={{ animationDelay: `${120 + index * 30}ms` }}
+                  className="group/sug flex cursor-pointer items-center gap-2 rounded-tile bg-brand-soft px-3.5 py-2.75 transition-colors duration-150 hover:bg-brand/15 animate-row-in"
                 >
-                  <SuggestArrowIcon className="size-5 -scale-y-100 text-ink-muted" />
+                  <SuggestArrowIcon className="size-5 -scale-y-100 text-ink-muted transition-transform duration-150 ease-(--ease-snap) group-hover/sug:translate-x-0.5" />
                   <span className="text-body whitespace-nowrap">{text}</span>
                 </button>
               ))}
@@ -114,12 +119,17 @@ export function AskAiPanel() {
               {/* pen and send sit flush on the same bottom edge (Figma) */}
               <div className="mt-5.25 flex items-end justify-between">
                 <MagicPenIcon className="size-4 text-ink-muted" />
+                {/* keyed by draft state: the send circle pops awake when a
+                    draft first exists */}
                 <button
+                  key={draft.trim() === "" ? "idle" : "armed"}
                   type="button"
                   aria-label="Send"
                   disabled={draft.trim() === ""}
                   onClick={() => setDraft("")}
-                  className="flex size-8 items-center justify-center rounded-full bg-linear-to-r/srgb from-brand to-brand-strong text-white transition-all duration-150 disabled:opacity-50 [&:not(:disabled)]:cursor-pointer [&:not(:disabled)]:hover:opacity-85 [&:not(:disabled)]:active:scale-[0.97]"
+                  className={`flex size-8 items-center justify-center rounded-full bg-linear-to-r/srgb from-brand to-brand-strong text-white transition-all duration-150 disabled:opacity-50 [&:not(:disabled)]:cursor-pointer [&:not(:disabled)]:hover:opacity-85 [&:not(:disabled)]:active:scale-[0.97] ${
+                    draft.trim() === "" ? "" : "animate-chip-in"
+                  }`}
                 >
                   <ArrowUpIcon className="size-5.5" />
                 </button>

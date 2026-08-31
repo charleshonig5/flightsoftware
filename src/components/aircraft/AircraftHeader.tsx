@@ -20,12 +20,14 @@ export function AircraftHeader({ aircraft }: { aircraft: Aircraft }) {
         <div className="flex h-26.25 w-38 shrink-0 items-center justify-center rounded-tile border border-divider bg-tile">
           <ImageIcon className="size-6 text-ink-faint" />
         </div>
-        <div className="flex flex-col">
+        {/* Identity block matches the aircraft-card pattern (scaled up):
+            SemiBold tail + chip, ink model line at the 6px gap */}
+        <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-2">
             <h1 className="text-headline font-semibold">{aircraft.tailNumber}</h1>
             {aircraft.badge && <Chip tone="danger">{aircraft.badge}</Chip>}
           </div>
-          <p className="text-body text-ink-muted">{aircraft.model}</p>
+          <p className="text-body">{aircraft.model}</p>
           <div className="mt-4.5 flex items-center gap-2">
             <PillButton surface="page" onClick={() => setMetersOpen(true)}>
               Update Meters

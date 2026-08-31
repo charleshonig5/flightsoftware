@@ -65,6 +65,13 @@ export const activityMonths: ActivityMonth[] = [
         kind: "oil",
       },
       {
+        text: "Logged oil at 11.0 qts with 2 qts added across all four engines on",
+        tail: "N747CN",
+        time: "8:05 AM",
+        date: "Aug 9, 2026",
+        kind: "oil",
+      },
+      {
         text: "Completed Left Body Gear Brake Pack Replacement and linked work order #4471 with 6 photos on",
         tail: "N747CN",
         time: "3:47 PM",
@@ -82,6 +89,13 @@ export const activityMonths: ActivityMonth[] = [
         time: "11:08 AM",
         date: "Jul 29, 2026",
         kind: "records",
+      },
+      {
+        text: "Updated Hobbs from 806.9 to 812.4 and Tach from 789.8 to 795.2 on",
+        tail: "822CN",
+        time: "5:41 PM",
+        date: "Jul 21, 2026",
+        kind: "meters",
       },
       {
         text: "Changed Oil & Filter interval from 50 to 45 hours on",
@@ -116,6 +130,13 @@ export const activityMonths: ActivityMonth[] = [
         date: "Jun 12, 2026",
         kind: "fleet",
       },
+      {
+        text: "Completed 100-Hour Inspection with no discrepancies on",
+        tail: "N314CN",
+        time: "1:26 PM",
+        date: "Jun 4, 2026",
+        kind: "maintenance",
+      },
     ],
   },
   {
@@ -142,6 +163,13 @@ export const activityMonths: ActivityMonth[] = [
         date: "May 6, 2026",
         kind: "oil",
       },
+      {
+        text: "Uploaded 4 photos to the Wing Gear Tire Replacement log on",
+        tail: "N747CN",
+        time: "3:12 PM",
+        date: "May 2, 2026",
+        kind: "records",
+      },
     ],
   },
   {
@@ -153,6 +181,13 @@ export const activityMonths: ActivityMonth[] = [
         time: "6:00 AM",
         date: "Apr 22, 2026",
         kind: "status",
+      },
+      {
+        text: "Updated Tach from 1,839.5 to 1,847.0 on",
+        tail: "N314CN",
+        time: "10:05 AM",
+        date: "Apr 14, 2026",
+        kind: "meters",
       },
       {
         text: "Uploaded the airworthiness certificate and updated the registration records on",

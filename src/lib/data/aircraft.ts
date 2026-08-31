@@ -108,6 +108,8 @@ export const fleet: Aircraft[] = [
       { title: "ELT Battery Replacement", date: "2026-03-28", type: "Equipment", component: "Emergency Systems", totalTime: 51033.0, mechanic: "Skyline Avionics Group" },
       { title: "Cabin Pressure Controller Check", date: "2026-03-09", type: "Inspection", component: "Environmental", totalTime: 50978.6, mechanic: "Delta TechOps" },
       { title: "Fuel Quantity Indication Test", date: "2026-02-17", type: "Inspection", component: "Fuel System", totalTime: 50912.3, mechanic: "AAR Aircraft Services" },
+      { title: "IRU 2 Replacement", date: "2026-01-06", type: "Equipment", component: "Avionics", totalTime: 50820.4, mechanic: "Skyline Avionics Group" },
+      { title: "Windshield Wiper Motor Replacement", date: "2025-12-15", type: "Maintenance", component: "Environmental", totalTime: 50769.8, mechanic: "AAR Aircraft Services" },
     ],
     maintenance: withCounts([
       {
@@ -208,6 +210,34 @@ export const fleet: Aircraft[] = [
         lastDone: "Last Mar 14, 2019",
         status: { level: "success", label: "Due in 3 years" },
       },
+      {
+        category: "Fuel System",
+        title: "Fuel Quantity Indication Test",
+        interval: "Every 6 months",
+        lastDone: "Last Feb 17, 2026",
+        status: { level: "warning", label: "Due in 2 weeks" },
+      },
+      {
+        category: "Engine",
+        title: "Engine 1 Oil Filter Analysis",
+        interval: "Every 300 hours",
+        lastDone: "Last May 30, 2026",
+        status: { level: "success", label: "204 hours remaining" },
+      },
+      {
+        category: "Avionics",
+        title: "Weather Radar Calibration",
+        interval: "Every 1 year",
+        lastDone: "Last Oct 20, 2025",
+        status: { level: "success", label: "Due in 2 months" },
+      },
+      {
+        category: "APU",
+        title: "APU Hot Section Borescope",
+        interval: "Every 1,200 hours",
+        lastDone: "Last Jan 15, 2026",
+        status: { level: "success", label: "Due in 9 months" },
+      },
     ]),
   },
   {
@@ -226,6 +256,8 @@ export const fleet: Aircraft[] = [
       { title: "Oil & Filter Change", date: "2025-11-21", type: "Maintenance", component: "Engine", totalTime: 3078.4, mechanic: "Valley Aero Maintenance" },
       { title: "Main Tire Replacement", date: "2025-10-03", type: "Maintenance", component: "Landing Gear", totalTime: 3044.0, mechanic: "Cascade Aircraft Services" },
       { title: "Transponder Certification", date: "2025-08-15", type: "Equipment", component: "Avionics", totalTime: 3009.7, mechanic: "Skyline Avionics Group" },
+      { title: "Carburetor Heat Box Repair", date: "2025-06-27", type: "Maintenance", component: "Engine", totalTime: 2981.3, mechanic: "Cascade Aircraft Services" },
+      { title: "Seat Rail AD Inspection", date: "2025-05-02", type: "Inspection", component: "Airframe", totalTime: 2957.8, mechanic: "Valley Aero Maintenance" },
     ],
     maintenance: withCounts([
       {
@@ -270,6 +302,20 @@ export const fleet: Aircraft[] = [
         lastDone: "Last Oct 2, 2025",
         status: { level: "success", label: "Due in 14 months" },
       },
+      {
+        category: "Airframe",
+        title: "Seat Rail AD Inspection",
+        interval: "Every 100 hours",
+        lastDone: "Last Jun 4, 2026",
+        status: { level: "success", label: "47 hours remaining" },
+      },
+      {
+        category: "Ignition",
+        title: "Magneto 500-Hour Inspection",
+        interval: "Every 500 hours",
+        lastDone: "Last Jan 24, 2026",
+        status: { level: "success", label: "Due in 4 months" },
+      },
     ]),
   },
   {
@@ -286,6 +332,8 @@ export const fleet: Aircraft[] = [
       { title: "Avionics Database Update", date: "2026-04-19", type: "Equipment", component: "Avionics", totalTime: 761.5, mechanic: "Cirrus Authorized Service" },
       { title: "Annual Inspection", date: "2026-02-02", type: "Inspection", component: "Airframe", totalTime: 724.8, mechanic: "Cirrus Authorized Service" },
       { title: "CAPS Line Cutter Replacement", date: "2025-12-10", type: "Equipment", component: "Airframe Parachute", totalTime: 693.2, mechanic: "Cirrus Authorized Service" },
+      { title: "Pitot-Static System Check", date: "2025-09-30", type: "Inspection", component: "Instruments", totalTime: 668.9, mechanic: "Skyline Avionics Group" },
+      { title: "Brake Linings Replacement", date: "2025-09-18", type: "Maintenance", component: "Landing Gear", totalTime: 655.4, mechanic: "Cascade Aircraft Services" },
     ],
     maintenance: withCounts([
       {
@@ -316,6 +364,20 @@ export const fleet: Aircraft[] = [
         lastDone: "Last Jun 10, 2019",
         status: { level: "success", label: "Due in 3 years" },
       },
+      {
+        category: "Instruments",
+        title: "Pitot-Static System Check",
+        interval: "Every 2 years",
+        lastDone: "Last Sep 30, 2025",
+        status: { level: "success", label: "Due in 14 months" },
+      },
+      {
+        category: "Airframe",
+        title: "TKS Fluid System Flush",
+        interval: "Every 1 year",
+        lastDone: "Last Nov 5, 2025",
+        status: { level: "success", label: "Due in 3 months" },
+      },
     ]),
   },
   {
@@ -337,6 +399,8 @@ export const fleet: Aircraft[] = [
       { title: "Windshield Heat Element Repair", date: "2025-12-02", type: "Maintenance", component: "Environmental", totalTime: 4544.9, mechanic: "Textron Aviation Service" },
       { title: "Pitot-Static System Check", date: "2024-09-20", type: "Inspection", component: "Instruments", totalTime: 4038.7, mechanic: "Skyline Avionics Group" },
       { title: "Transponder Certification", date: "2024-05-03", type: "Equipment", component: "Avionics", totalTime: 3897.2, mechanic: "Skyline Avionics Group" },
+      { title: "Battery Capacity Check", date: "2026-04-18", type: "Inspection", component: "Electrical", totalTime: 4712.0, mechanic: "Textron Aviation Service" },
+      { title: "Fuel Control Unit Adjustment (R)", date: "2025-10-30", type: "Maintenance", component: "Engine", totalTime: 4479.1, mechanic: "Textron Aviation Service" },
     ],
     maintenance: withCounts([
       {
@@ -415,6 +479,27 @@ export const fleet: Aircraft[] = [
         interval: "Every 2 years",
         lastDone: "Last Jul 29, 2025",
         status: { level: "success", label: "Due in 1 year" },
+      },
+      {
+        category: "Engine",
+        title: "Hot Section Inspection (Both)",
+        interval: "Every 1,800 hours",
+        lastDone: "Last Jun 6, 2024",
+        status: { level: "warning", label: "Due in 60 hours" },
+      },
+      {
+        category: "Propeller",
+        title: "Prop Blade De-Ice Boot Check",
+        interval: "Every 1 year",
+        lastDone: "Last Dec 2, 2025",
+        status: { level: "success", label: "Due in 4 months" },
+      },
+      {
+        category: "Avionics",
+        title: "ADS-B Performance Check",
+        interval: "Every 2 years",
+        lastDone: "Last Jul 8, 2026",
+        status: { level: "success", label: "Due in 2 years" },
       },
     ]),
   },

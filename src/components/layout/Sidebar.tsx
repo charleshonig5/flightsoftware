@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,7 +19,9 @@ import {
   SettingsIcon,
 } from "@/components/ui/icons";
 
-/** Sidebar nav row: 46px pill, active state gets the brand-soft fill + edge indicator. */
+/** Sidebar nav row: 46px pill. The active fill/edge render once in Sidebar
+ *  as a measured overlay that slides between rows (tab-underline pattern) —
+ *  rows only carry their text color and a `data-nav-target` to measure. */
 function NavItem({
   icon,
   label,
@@ -37,13 +39,12 @@ function NavItem({
 }) {
   const rowClasses = `flex h-11.5 w-full cursor-pointer items-center gap-2 rounded-nav px-3.5 text-body transition-colors duration-150 ${
     // hover uses the standard darker grey — the tile grey would vanish on the page bg
-    active ? "bg-brand-soft text-brand" : "text-ink hover:bg-chip-neutral"
+    active ? "text-brand" : "text-ink hover:bg-chip-neutral"
   }`;
   return (
     <div className="relative px-5">
-      {active && <span className="absolute inset-y-0 left-0 w-0.5 rounded-r bg-brand" />}
       {href ? (
-        <Link href={href} className={rowClasses}>
+        <Link href={href} data-nav-target={href} className={rowClasses}>
           <span className="size-4 shrink-0">{icon}</span>
           {label}
           {trailing && <span className="ml-auto flex items-center gap-1.5">{trailing}</span>}
@@ -68,10 +69,56 @@ export function Sidebar() {
     ? decodeURIComponent(pathname.split("/")[2] ?? "")
     : null;
 
+  /* The active pill + edge bar are one overlay that slides between rows.
+     Measured before paint (no slide on first render); re-measured after the
+     tree's 200ms collapse/expand so a tail target lands where it settles. */
+  const asideRef = useRef<HTMLElement>(null);
+  const [pill, setPill] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const activeKey = pathname === "/" ? "/" : activeTail ? `/aircraft/${activeTail}` : null;
+  const treeHidden = !aircraftOpen && activeKey !== "/";
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const aside = asideRef.current;
+      const target = aside?.querySelector<HTMLElement>(`[data-nav-target="${activeKey}"]`);
+      if (!aside || !target || treeHidden) {
+        setPill(null);
+        return;
+      }
+      const a = aside.getBoundingClientRect();
+      const r = target.getBoundingClientRect();
+      setPill({ top: r.top - a.top, left: r.left - a.left, width: r.width, height: r.height });
+    };
+    measure();
+    const timer = setTimeout(measure, 230);
+    return () => clearTimeout(timer);
+  }, [activeKey, treeHidden]);
+
   return (
     // v2: the sidebar blends into the page background — the white sheet
     // floats on top of it. No fill, no shadow.
-    <aside className="sticky top-0 flex h-screen w-[237px] shrink-0 flex-col">
+    <aside ref={asideRef} className="sticky top-0 flex h-screen w-[237px] shrink-0 flex-col">
+      {/* Sliding active indicator: brand-soft pill + brand edge bar (-z so
+          row content and hovers paint above it) */}
+      {pill && (
+        <>
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -z-10 rounded-nav bg-brand-soft transition-all duration-250 ease-(--ease-snap)"
+            style={{ top: pill.top, left: pill.left, width: pill.width, height: pill.height }}
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-0 -z-10 w-0.5 rounded-r bg-brand transition-all duration-250 ease-(--ease-snap)"
+            style={{ top: pill.top, height: pill.height }}
+          />
+        </>
+      )}
       <div className="px-8.5 pt-11">
         {/* Official lockup (108×23) — asset lives in /public, not hotlinked */}
         <Image src="/maggneto-lockup.svg" alt="Maggneto" width={108} height={23} priority />
@@ -119,12 +166,13 @@ export function Sidebar() {
                           href={`/aircraft/${tail}`}
                           className="relative flex h-8 items-center pr-5 pl-19 text-body"
                         >
-                          {active && (
-                            <>
-                              <span className="absolute -inset-y-px left-16 right-5 rounded-nav bg-brand-soft" />
-                              <span className="absolute -inset-y-px left-0 w-0.5 rounded-r bg-brand" />
-                            </>
-                          )}
+                          {/* invisible span matching the pill bounds — the
+                              sliding overlay measures against it */}
+                          <span
+                            aria-hidden
+                            data-nav-target={`/aircraft/${tail}`}
+                            className="pointer-events-none absolute -inset-y-px left-16 right-5"
+                          />
                           <span
                             className={`relative transition-colors duration-150 ${
                               active ? "text-brand" : "text-ink-muted hover:text-ink"

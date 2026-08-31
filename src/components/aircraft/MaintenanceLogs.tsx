@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { Aircraft, MaintenanceLog } from "@/lib/data/aircraft";
 import { Button } from "@/components/ui/Button";
 import {
@@ -8,6 +8,7 @@ import {
   FilterHeaderCell,
   useColumnFilters,
 } from "@/components/ui/columnFilters";
+import { SearchInput } from "@/components/ui/SearchInput";
 import { AddCircleIcon } from "@/components/ui/icons";
 
 /* Column widths from the Figma table (title 278, date 131, type 128,
@@ -57,6 +58,7 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
 /** Maintenance Logs tab — the v2 schedule-table pattern for the work history. */
 export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
   const filter = useColumnFilters(EMPTY_FILTERS);
+  const [query, setQuery] = useState("");
 
   /* Fixed default order: newest first. */
   const allLogs = useMemo(
@@ -74,13 +76,23 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
     } satisfies Record<FilterKey, string[]>;
   }, [allLogs]);
 
-  const logs = allLogs.filter((log) =>
-    FILTER_KEYS.every(
-      (key) => filter.filters[key].length === 0 || filter.filters[key].includes(rowValue(key, log)),
-    ),
+  const q = query.trim().toLowerCase();
+  const logs = allLogs.filter(
+    (log) =>
+      FILTER_KEYS.every(
+        (key) =>
+          filter.filters[key].length === 0 || filter.filters[key].includes(rowValue(key, log)),
+      ) &&
+      (q === "" ||
+        [log.title, log.type, log.component, log.mechanic, formatDate(log.date)].some((field) =>
+          field.toLowerCase().includes(q),
+        )),
   );
 
   const activeKeys = FILTER_KEYS.filter((key) => filter.filters[key].length > 0);
+
+  /* Remounting the row list when the result set changes replays the cascade */
+  const rowsKey = `${q}|${FILTER_KEYS.map((key) => filter.filters[key].join(",")).join("|")}`;
 
   const headerCell = (key: FilterKey) => (
     <FilterHeaderCell
@@ -99,17 +111,13 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
 
   return (
     <div>
-      <div className="flex items-start justify-between">
-        <div className="flex flex-col gap-0.5">
-          <h3 className="text-body font-semibold">Maintenance Logs</h3>
-          <p className="text-body text-ink-muted">
-            {logs.length} record{logs.length === 1 ? "" : "s"} showing
-          </p>
-        </div>
+      {/* Toolbar: action + search clustered at the standard 14px control gap */}
+      <div className="flex items-center gap-3.5">
         <Button variant="outline" size="lg">
           <AddCircleIcon className="size-5" />
           Log Maintenance
         </Button>
+        <SearchInput value={query} onChange={setQuery} placeholder="Search Maintenance History" />
       </div>
 
       <div className="mt-6">
@@ -130,10 +138,12 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
             {headerCell("mechanic")}
             <span className="text-body text-ink-muted">Photos</span>
           </div>
-          {logs.map((log) => (
+          <div key={rowsKey}>
+          {logs.map((log, index) => (
             <div
               key={`${log.date}-${log.title}`}
-              className={`grid h-12 ${TABLE_COLS} items-center border-b border-divider px-6 last:border-b-0`}
+              style={{ animationDelay: `${Math.min(index, 20) * 12}ms` }}
+              className={`grid h-12 ${TABLE_COLS} items-center border-b border-divider px-6 transition-colors duration-150 last:border-b-0 hover:bg-tile animate-row-in`}
             >
               <button
                 type="button"
@@ -154,6 +164,7 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
               </button>
             </div>
           ))}
+          </div>
           {logs.length === 0 && (
             <p className="px-6 py-6 text-body text-ink-muted">No records match the current filters.</p>
           )}

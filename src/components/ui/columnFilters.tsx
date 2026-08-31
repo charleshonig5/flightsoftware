@@ -95,7 +95,7 @@ export function FilterHeaderCell({
         <FilterLinesIcon className="size-4" />
       </button>
       {open && (
-        <div className="absolute top-full left-0 z-10 mt-1.5 min-w-31.5 rounded-field border border-divider bg-card pt-3.25 shadow-card">
+        <div className="absolute top-full left-0 z-10 mt-1.5 min-w-31.5 origin-top-left rounded-field border border-divider bg-card pt-3.25 shadow-card animate-pop-in">
           <p className="px-3.25 text-caption leading-2.75 whitespace-nowrap text-ink-muted">
             Filter by {label}
           </p>
@@ -153,7 +153,7 @@ export function FilterChips<K extends string>({
       {activeKeys.map((key) => (
         <span
           key={key}
-          className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-2 py-1.25 text-caption leading-none whitespace-nowrap text-ink-muted"
+          className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-2 py-1.25 text-caption leading-none whitespace-nowrap text-ink-muted animate-chip-in"
         >
           {labels[key]}: {filters[key].join(", ")}
           <button

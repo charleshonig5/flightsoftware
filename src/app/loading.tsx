@@ -45,7 +45,7 @@ function AircraftCardSkeleton() {
 /** v2 dashboard skeleton — sheet with greeting, KPI bar, tabs, aircraft cards. */
 export default function DashboardLoading() {
   return (
-    <div className="my-6 mr-6 rounded-card border border-divider bg-card px-10.75 pt-8.25 pb-10.75 shadow-card">
+    <div className="my-6 mr-6 min-h-[calc(100vh-48px)] rounded-card border border-divider bg-card px-10.75 pt-8.25 pb-10.75 shadow-card">
       {/* greeting row: headline left, two buttons right */}
       <div className="flex items-center justify-between">
         <Skeleton className="h-9 w-72 rounded-full" />
@@ -56,11 +56,11 @@ export default function DashboardLoading() {
       </div>
 
       {/* KPI bar: one bordered panel with four segmented cells */}
-      <div className="mt-6 flex items-stretch rounded-field border border-divider">
+      <div className="mt-8.5 flex items-stretch rounded-field border border-divider">
         {Array.from({ length: 4 }, (_, index) => (
           <div
             key={index}
-            className={`flex-1 p-6 ${index > 0 ? "border-l border-divider" : ""}`}
+            className={`flex-1 p-6 pb-5 ${index > 0 ? "border-l border-divider" : ""}`}
           >
             <Skeleton className="h-3 w-24 rounded-full" />
             <Skeleton className="mt-3.5 h-9 w-20 rounded-full" />

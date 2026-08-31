@@ -1,6 +1,9 @@
 # Flight CRM — Design System v2
 
-> **Status: v2 dashboard LOCKED** (Figma node `102:5689`, file `LuaXriGgwjSXjovjZU4w0t`).
+> **Status: v2 core LOCKED** (file `LuaXriGgwjSXjovjZU4w0t`) — dashboard
+> `102:5689`, aircraft cards `101:3`, tooltip + filters `107:9826`, activity
+> feed `117:581`, Ask AI sidecar `123:2`. Plane-page inner tabs beyond
+> Overview/Logs/Schedule/Activity still await their frames.
 > This document is the single source of truth for v2 design **rules**; the
 > `@theme` block in [`src/app/globals.css`](../src/app/globals.css) is the
 > single source of truth for token **values**. Any change to one must update
@@ -50,12 +53,12 @@ white **sheet**:
 | Token | Value | Usage |
 |---|---|---|
 | `--color-page` | `#f7f8fa` | App background **and** the sidebar (which is unfilled) |
-| `--color-card` | `#ffffff` | The sheet, nested panels, aircraft cards, sliding-toggle indicator, sidebar count badge |
-| `--color-tile` | `#f7f8fa` | Inset tiles on a white surface: meter tiles, tab count badges, view-toggle pill track |
+| `--color-card` | `#ffffff` | The sheet, nested panels, aircraft cards, overlays, paddles, sidebar count badge |
+| `--color-tile` | `#f7f8fa` | Inset fills on a white surface: tab count badges, composer, tile/row hover wash |
 | `--color-chip-neutral` | `#f1f1f1` | Neutral chip fill; the standard **darker-grey hover** (pills, sidebar nav rows) |
 | `--color-brand` | `#4a78f1` | Active nav & tab labels, outline-button text, links, brand icons, gradient start |
 | `--color-brand-strong` | `#2460ff` | Gradient end for brand fills (primary buttons) |
-| `--color-brand-soft` | `#ebf1ff` | Brand tint: active sidebar pill, KPI "quiet" chips, outline-button hover |
+| `--color-brand-soft` | `#ebf1ff` | Brand tint: active sidebar pill, KPI "quiet" chips, filter chips, activity icon chips, Ask AI suggestions, outline-button/pill hover |
 | `--color-divider` | `#e8e8e8` | **The v2 hairline.** Sheet/panel/table borders, row separators, tab underline track, tree line |
 | `--color-ink` | `#000000` | Primary text |
 | `--color-ink-muted` | `#909090` | Secondary text: labels, units, inactive tabs, timestamps, email, footer icons |
@@ -82,10 +85,10 @@ Face: **Geist** (`--font-sans`), Geist Mono available but unused in v2.
 
 | Token | Size/Line | Weight in v2 | Usage |
 |---|---|---|---|
-| `text-caption` | 10/13 | Regular (Medium only in "View item" pills) | Chips, badges, meta, timestamps, email, tile labels |
+| `text-caption` | 10/13 | Regular (Medium in "View" pills + popover Apply/Clear) | Chips, badges, meta, timestamps, email, tile labels |
 | `text-body` | 14/18 | Regular (Medium in buttons/pills) | Default text: nav, tabs, table cells, labels, units, activity sentences |
-| `text-title` | 18/23 | SemiBold | Card headings (tail numbers), Ask AI empty-state title |
-| `text-headline` | 28/36 | **Regular** for the greeting, **SemiBold** for KPI counts | Page greeting, KPI numbers |
+| `text-title` | 18/23 | SemiBold for headings, **Regular** for meter values | Card headings (tail numbers), meter tile values |
+| `text-headline` | 28/36 | **Regular** for greetings/prompts, **SemiBold** for KPI counts + the plane-page tail | Page greeting, Ask AI prompt, KPI numbers, plane-page title |
 
 Rules:
 
@@ -99,20 +102,44 @@ Rules:
 
 Sheet geometry (dashboard, `src/app/page.tsx`):
 
-- Sheet margins: **24px** top/bottom/right (`my-6 mr-6`); sidebar (237px) is the left edge.
+- Sheet margins: **24px** top (the cap's ground strip) / bottom (the body's
+  `mb-6`) / right (`mr-6` on the page wrapper); sidebar (237px) is the left
+  edge.
+- **Locked top cap**: the sheet is split into a sticky cap and a scrolling
+  body. The cap = the 24px ground strip + the sheet's rounded top edge with
+  its top/side hairlines, holding the page header (+ KPI bar on the
+  dashboard) and tab bar — it never moves. The body continues the card
+  downward (side/bottom hairlines, `rounded-b-card`, `mb-6`) and scrolls
+  with the page — the bottom reads as an open-ended scroll, never an inner
+  scrollbox. A `min-h-screen` on the column (which already contains the 24px
+  top strip and the body's 24px bottom margin, with `flex-1` on the body)
+  keeps short pages at full height with **equal 24px top/bottom margins**.
+  The card's glow lives **once, on a dedicated empty layer** — absolutely
+  positioned to the card's exact layout bounds (`inset-x-0 top-6 bottom-6`),
+  `rounded-card shadow-card`, pointer-events-none, painting below the sticky
+  mask. It is **statically clipped to sides + bottom only**
+  (`clip-path: inset(0 -58px -58px)`) so its shape is identical at every
+  scroll position — a scrolling card must never have a morphing shadow. The
+  sticky's ground strip carries a small opaque cover extending past the card
+  edges (`-left-14 -right-6`) so the side halo can never peek beside it
+  while pinned. Net rules: the halo borders only white, never animates, and
+  the card intentionally has no top halo (invisible at 5%, and consistent).
 - Sheet gutters: **43px** left/right (`px-10.75`), **33px** top (`pt-8.25`), **43px** bottom (`pb-10.75`).
-- Vertical rhythm inside the sheet: greeting row → **24px** (`mt-6`) → KPI bar
-  → **46px** (`mt-11.5`) → tab row → **34px** (`mt-8.5`) → tab content.
+- Vertical rhythm inside the sheet: greeting row → **34px** (`mt-8.5`) → KPI
+  bar → **46px** (`mt-11.5`) → tab row → **34px** (`mt-8.5`) → tab content.
 
 Component spacing:
 
-- KPI cells: `p-6` (24px); label row → count row gap lands the cell at exactly **112px** tall.
+- KPI cells: `p-6 pb-5` (24px, optical 20px bottom); label row → count row gap lands the cell at **108px** tall.
 - Tab row: **34px** between tabs (`gap-8.5`), label→badge gap 4px (`gap-1`), 36px total height (label 18 + 14 below, `pb-3.5`).
 - Table: header `px-6 py-3.25` (24/13 → 45px tall); rows `h-12` (48px pitch, matches Figma's 38px row + 10px gap with centered dividers).
 - Sidebar: 34px gutters (`px-8.5`), logo at top 44 (`pt-11`), nav pills 46px tall (`h-11.5`) with 14px inner padding (`px-3.5`), tree rows 32px (`h-8`), footer `pb-8.5`.
 - Aircraft pages sit on the **same sheet shell as the dashboard**
-  (`my-6 mr-6` + 43/33/43 gutters) — the root layout's `<main>` is bare so
-  each screen owns its surface. Their v1 "surface inversion" pieces were
+  (same margins + 43/33/43 gutters) — the root layout's `<main>` is bare so
+  each screen owns its surface, using the locked-cap architecture above —
+  header + tab bar in the cap, tab content scrolling beneath and tucking
+  under the tab rule. The dashboard pins the same way (greeting + KPI bar +
+  tab bar in the cap). Their v1 "surface inversion" pieces were
   re-grounded for the white sheet: photo placeholder = tile fill + hairline,
   search/dropdown fields and maintenance rows = white + hairline (rows keep
   the 4px status accent as the left border), dropdown menus use the v2
@@ -125,7 +152,7 @@ Component spacing:
 | `--radius-check` | 4px | Checkboxes |
 | `--radius-nav` | 8px | Sidebar nav pills |
 | `--radius-field` | 8px | Form fields, **KPI bar**, **fleet table**, **tooltips**, **filter popovers** (nested panels + v2 overlays) |
-| `--radius-tile` | 10px | Meter tiles, list rows, photos |
+| `--radius-tile` | 10px | Meter tiles (standalone), photo placeholder, Ask AI suggestion chips |
 | `--radius-card` | 14px | The sheet, aircraft cards, **"View item" pills**, modals |
 | `rounded-full` | — | Chips, badges, buttons, pill buttons, toggle |
 
@@ -138,7 +165,7 @@ Elevation:
 
 | Token | Value | Usage |
 |---|---|---|
-| `--shadow-card` | `0 0 58px rgb(113 113 113 / 5%)` | Ambient glow: the sheet, tables, aircraft cards, **all buttons**, **v2 overlays (tooltips, filter popovers, dropdowns)**, **modal panels** |
+| `--shadow-card` | `0 0 58px rgb(113 113 113 / 5%)` | Ambient glow: the sheet (via its glow layer), tables, aircraft cards, **all buttons**, **v2 overlays (tooltips, filter popovers, dropdowns)**, **modal panels**, the Ask AI sidecar, paddles, activity icon chips |
 | `--shadow-card-soft` | `0 0 29px rgb(113 113 113 / 5%)` | Half-strength glow for panels nested inside the sheet (KPI bar) |
 | `--shadow-pop` | `0 4px 12px 8%, 0 1px 3px 6%` | Legacy v1 overlays not yet redesigned (dropdown pickers) |
 | `--blur-scrim` | 12px | Modal lightbox backdrop blur |
@@ -149,8 +176,8 @@ The sidebar has **no elevation** (it *is* the ground plane).
 
 Unchanged from v1 (all tokens in `@theme`): gauge fill (900ms
 `--ease-out-back`, first app load only), modal in/out pop, scrim fade,
-skeleton shimmer, grid↔list View Transitions morph (450ms `--ease-snap`),
-card-nav arrow nudge via the `card-nav-hover` custom variant.
+skeleton shimmer, card-nav arrow nudge via the `card-nav-hover` custom
+variant.
 
 v2 additions:
 
@@ -160,9 +187,35 @@ v2 additions:
 - Standard hover grammar: interactive grey elements darken to
   `chip-neutral`; muted text/icons rise to `ink`; white brand-labeled
   controls (pills, outline buttons) tint `brand-soft`; meter tiles wash
-  `bg-tile`. Sortable table headers darken to `ink` and flip their
-  `FilterLines` icon when descending.
+  `bg-tile`. Filterable table headers hold `ink` while their column has an
+  active filter or an open popover.
 - Snappy always: optimistic UI, no artificial spinners over fake data.
+
+**Micro-interactions** (entrance-only, all on existing easings, all disabled
+under reduced motion):
+
+- `animate-pop-in` (150ms `ease-snap`, `origin-top-left`): filter popovers
+  scale in from their trigger. No exit animation — overlays close instantly.
+- `animate-tab-in` (200ms `ease-snap`): the entering tab panel fades in with
+  a 6px rise on every tab switch (content keyed by tab), both pages.
+- `animate-row-in` (250ms `ease-snap`): table rows cascade with a 12ms/row
+  stagger (capped at row 20); the row list is keyed by the filter/search
+  signature so the cascade replays when the result set changes.
+- `animate-chip-in` (200ms `ease-out-back`): filter chips mount with a
+  slight overshoot; they clear instantly.
+- **Row hover**: schedule/logs rows wash `bg-tile` (150ms), matching tiles.
+- **Sidebar active pill**: the brand-soft pill + edge bar are one measured
+  overlay that slides between nav rows (250ms `ease-snap`, tab-underline
+  mechanism; positioned pre-paint so first render doesn't animate, hidden
+  while a tail target is inside the collapsed tree).
+- **KPI count-up**: the four KPI numbers run through `CountUp` (80ms
+  stagger), first app load only — same latch as the meter tiles.
+- **Activity cascade**: feed rows use the row cascade with a running index
+  across month groups.
+- **Ask AI**: suggestion chips cascade in on every panel open (120ms base +
+  30ms/chip, timed to the 300ms slide); the suggestion arrow nudges 2px on
+  hover (card-arrow grammar); the send circle pops awake (`chip-in`) when a
+  draft first exists. Overflow paddles also mount with `chip-in`.
 
 v1 retirements: the grid/list view toggle and its View Transitions morph are
 gone — the Aircraft(s) tab has exactly one layout (full-width stacked cards).
@@ -195,9 +248,10 @@ inner column so nothing squishes. Gutters match the sheet: `px-6 pt-8.25`.
 ### Sidebar (`src/components/layout/Sidebar.tsx`)
 Fixed 237px, sticky, **transparent** — blends with `bg-page`. Logo lockup
 (108×23, `public/maggneto-lockup.svg`). Nav pills: 46px, active =
-`bg-brand-soft text-brand` + 2px brand edge bar; inactive hover =
-`bg-chip-neutral`. Aircraft tree: hairline spine, 32px rows, active row gets
-the brand-soft pill + edge bar. Count badge: **white** fill on the grey ground
+`text-brand` under the **sliding indicator overlay** (§5: one brand-soft
+pill + 2px edge bar gliding between rows); inactive hover =
+`bg-chip-neutral`. Aircraft tree: hairline spine, 32px rows; the same
+overlay serves active tail rows. Count badge: **white** fill on the grey ground
 (`CountBadge surface="page"`). Footer: stacked name (`text-body`, ink) +
 email (`text-caption`, muted) with 2px gap; right side Help + Logout icons
 (16px, `gap-3.5`, muted → ink on hover, **top-aligned with the name line**);
@@ -215,11 +269,28 @@ fill, divider hairline, **brand** Medium text, `hover:bg-brand-soft`. Sizes:
 
 ### KPI bar (`dashboard/KpiBar.tsx`)
 **One** panel: `rounded-field border-divider bg-card shadow-card-soft`, four
-`flex-1 p-6` cells split by `border-l` hairlines, 112px tall. Cell anatomy:
+`flex-1 p-6 pb-5` cells split by `border-l` hairlines, 108px tall — the
+bottom pad is optically corrected to 20px because the count's 36px line box
+carries ~7px of dead leading under the 28px digits (24px read ~31px).
+Cell anatomy:
 label row (14px icon + `gap-2` + caption muted label), info icon top-right
 (faint → brand on hover, tooltip), count row `mt-3.5` — 28 SemiBold count,
-baseline-aligned 14px unit (`gap-2`), and a **quiet** chip bottom-right
+baseline-aligned 14px unit (`gap-2.5`), and a **quiet** chip bottom-right
 (lifted `mb-1.5` to sit on the unit's text box).
+
+### Tab overflow (plane pages, `aircraft/AircraftTabs.tsx`)
+Mercury-style: the tab row never wraps or shrinks — it scrolls horizontally
+with the scrollbar hidden (`scrollbar-none` utility), and each clipped edge
+shows a 40px **card-white gradient fade** as the affordance (fading via
+150ms opacity). The active tab auto-scrolls into view (smooth, `nearest`) on
+selection, deep-link arrival, and width changes — a ResizeObserver re-runs
+measurement so the underline and fades stay correct while the Ask AI panel
+animates the content width. Navigation affordances: trackpad swipe /
+shift+wheel work natively; a **vertical wheel over the row scrolls it
+horizontally**; and **26px circular paddles** (the activity-chip surface:
+white, hairline, `shadow-card`, muted 14px chevron → ink + tile wash on
+hover, label-row centered) float over the fades and page the row 240px per
+click.
 
 ### Dashboard tabs (`dashboard/DashboardTabs.tsx`)
 `Aircraft(s) · Maintenance Schedule · Activity` on a hairline track. Labels
@@ -283,11 +354,16 @@ triangle (status changes, e.g. due → overdue), file-with-check
 (records/certification/config), aircraft (fleet changes) — then a column
 (`gap-1.5`) of muted 10px time + date (`gap-3.5`) over the 14px ink
 sentence. The sentence **ends with the aircraft tail as a brand link** with
-a 16px ↗ (`gap-0.5`) that deep-links to the aircraft page; no trailing
+a 16px ↗ (`gap-0.5`) that deep-links to the aircraft page — on link hover
+the arrow nudges up-right (the card nav-arrow grammar); no trailing
 period. Content format (locked): one impersonal sentence — **never any
 people or vendor names** — past-tense verb first, from→to values where
 applicable, the aircraft always last. Data: `src/lib/data/activity.ts`
 (`activityMonths`, newest first, reaching back several months).
+Plane pages get a **scoped Activity tab** (after Maintenance Schedule) —
+the same feed filtered to that aircraft, with empty months dropped and the
+tail link omitted (the sentence's trailing "on"/"as" connector, plus any
+comma before it, is trimmed since the plane is already the context).
 
 ### Aircraft cards (`dashboard/AircraftCard.tsx`) — locked (Figma `101:3`)
 Full-width cards stacked with 14px gaps (`FleetSection`), needs-attention
@@ -311,10 +387,18 @@ the parent passes corner shape). `p-3.5`, column `gap-2`: label 10 ink, value
 muted; sub-1 oil rates render bare-decimal (".22"). Edit affordance top-right
 (10px faint + 14px icon, `gap-2`, rises to muted on tile hover) and the gauge
 (60×30, brand→brand-strong gradient arc on a divider track, fully
-round-capped, staggered first-load draw-in) bottom-right — both inset **24px**
-from the tile's right edge, 14px from top/bottom. Whole tile opens its update
-modal; hover washes `bg-tile`. Grids with fewer than 4 meters widen their
-tiles to share the full row.
+round-capped, staggered first-load draw-in) bottom-right — both at the
+tile's uniform **14px** inset (optical correction: the frame drew 24px on
+the right, which read uneven against the 14px left padding). Whole tile
+opens its update modal; hover washes `bg-tile`. Grids with fewer than 4
+meters widen their tiles to share the full row.
+
+### Search field (`ui/SearchInput.tsx`)
+Keyword search: 40px white pill, 278px (`w-69.5`), hairline border, `px-4`
+with a trailing 16px faint SearchIcon, faint placeholder,
+`focus:outline-brand-soft`. Lives in the plane-page table toolbars (action
+button + search clustered at the 14px control gap); filters AND with the
+column popovers.
 
 ### Pill buttons (`ui/PillButton.tsx`)
 v2 pill: 30px tall, `px-2.5`, `rounded-full`, white fill + hairline border,
@@ -363,3 +447,21 @@ engine count drives meter sets.
 | 2026-08-31 | 7 | Plane-page Maintenance Schedule tab now renders the exact dashboard schedule table (scoped per aircraft); v1 card list, search, and status dropdown retired (`MaintenanceItem` deleted). |
 | 2026-08-31 | 7 | Plane-page Overview tab uses the dashboard cards' flush meter grid (extracted to shared `MeterGrid`); v1 spaced tile grid retired. |
 | 2026-08-31 | 7 | Maintenance Logs rebuilt on the schedule-table pattern (shared `columnFilters` extracted; both tables use it); v1 search + sorting retired, `SearchInput` deleted. |
+| 2026-08-31 | 3 | Sheets get a minimum height (viewport − 48px) so short pages keep equal 24px top/bottom margins instead of hugging content. |
+| 2026-08-31 | 3 | Locked-cap sheets on both pages: the sticky cap (ground strip + rounded sheet top + header/KPI/tabs) never moves; the sheet body scrolls with the page, open-ended at the bottom — no inner scrollbars. |
+| 2026-08-31 | 7 | Plane pages gain a scoped Activity tab (dashboard feed filtered per aircraft, tail links dropped). |
+| 2026-08-31 | 7 | Demo data expanded ~25–35%: schedule items 35→46, logs 25→34, activity 18→23 — all type-appropriate per airframe. |
+| 2026-08-31 | 7 | KPI cells: bottom padding optically corrected (`pb-5`, 20px) to balance the dead leading under the 28px counts; cells 112→108px. |
+| 2026-08-31 | 3 | Greeting → KPI bar gap upped 24 → 34px to join the 34px rhythm. |
+| 2026-08-31 | 7 | Plane-page tab headers de-titled: counts moved into dashboard-style tab badges (Maintenance Logs / Maintenance Schedule); toolbar = action button + keyword search clustered left at the 14px control gap (v2 pill field, ANDs with the column filters). |
+| 2026-08-31 | 3, 4 | Locked-cap sheets: single card glow on a dedicated layer hugging the card's exact bounds — cap/body shadowless, no clips; fixes shadow wash, seams at the ground boundary, and the phantom offset corner. |
+| 2026-08-31 | 7 | Meter tiles: Edit + gauge right inset evened to the tile's 14px padding (was Figma's 24px, read lopsided in the flush row). |
+| 2026-08-31 | 5, 7 | Plane-page tab overflow: Mercury pattern — hidden-scrollbar row, card-white edge fades, active tab auto-scrolled into view (new `scrollbar-none` utility). |
+| 2026-08-31 | 5, 7 | Tab overflow navigation: wheel-over-row scrolls horizontally; 26px circular paddles (activity-chip surface) in the fades page the row for mouse users. |
+| 2026-08-31 | 7 | LogoutIcon normalized to the standard 1px icon stroke (was a literal 0.67px from a v1 asset — read lighter than HelpIcon beside it). |
+| 2026-08-31 | 5 | Premium micro-interactions: popover pop-in, tab-panel entrances, staggered row cascades, table row hover, chip overshoot, sliding sidebar pill (four new animation tokens, reduced-motion guarded). |
+| 2026-08-31 | 5, 6 | Micro-interactions pass 2: KPI count-up, activity feed cascade, Ask AI suggestion cascade + arrow nudge + send-button wake, paddle entrances. Ask AI panel raised to z-40 (above the sheet's cap/glow layers). |
+| 2026-08-31 | 5, 7 | Activity tail-link arrows nudge up-right on hover, mirroring the aircraft-card nav arrow. |
+| 2026-08-31 | 7 | Plane-page header identity block aligned to the card pattern: model line muted → ink, 6px tail→model gap. |
+| 2026-08-31 | 4 | Glow finalized as fully static: sides + bottom only (permanent clip), painted under the masks, strip cover extended past the card edges — identical shadow at every scroll position, no seams, no morphing. |
+| 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |

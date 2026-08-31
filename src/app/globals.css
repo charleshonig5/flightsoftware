@@ -69,6 +69,12 @@
   --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoots, then settles */
   --animate-gauge-fill: gauge-fill 900ms var(--ease-out-back) both;
 
+  /* v2 micro-interactions: entrance-only accents on state changes */
+  --animate-pop-in: pop-in 150ms var(--ease-snap) both; /* popovers/dropdowns (pair with origin-top-*) */
+  --animate-tab-in: tab-in 200ms var(--ease-snap) both; /* entering tab panels */
+  --animate-row-in: row-in 250ms var(--ease-snap) both; /* table rows (staggered via animation-delay) */
+  --animate-chip-in: chip-in 200ms var(--ease-out-back) both; /* filter chips (slight overshoot) */
+
   --animate-shimmer: shimmer 1.8s ease-in-out infinite;
   --animate-scrim-in: scrim-in 200ms ease-out both;
   --animate-modal-in: modal-in 250ms var(--ease-out-back) both;
@@ -91,6 +97,32 @@
       background-position: -200% 0;
     }
   }
+  /* Micro-interaction entrances */
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+  @keyframes tab-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  @keyframes row-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+  @keyframes chip-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  }
+
   /* Modal lightbox: scrim fades, panel pops up on open and slips away on close. */
   @keyframes scrim-in {
     from {
@@ -116,6 +148,14 @@
   }
 }
 
+/* Scrollable rows that hide their scrollbar (Mercury-style tab overflow) */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Fires only when the card is hovered on its NAVIGABLE area — suppressed while
    any interactive child (buttons, tiles, rows, non-nav links) is hovered, so
    the ↗ nav cue never lies about what a click will do. */
@@ -127,23 +167,13 @@ body {
   font-family: var(--font-sans);
 }
 
-/* View transitions (grid ↔ list morph in FleetSection): snappy + smooth.
-   The old snapshot is dropped and the new one fills the morphing group box —
-   a single surface resizing reads smoother than two cross-fading snapshots. */
-::view-transition-group(*) {
-  animation-duration: 450ms;
-  animation-timing-function: var(--ease-snap);
-}
-::view-transition-old(*) {
-  display: none;
-}
-::view-transition-new(*) {
-  animation: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .animate-gauge-fill,
-  .animate-shimmer {
+  .animate-shimmer,
+  .animate-pop-in,
+  .animate-tab-in,
+  .animate-row-in,
+  .animate-chip-in {
     animation: none;
   }
   /* 1ms (not none) so animationend still fires and exiting modals unmount */
@@ -152,10 +182,5 @@ body {
   .animate-scrim-out,
   .animate-modal-out {
     animation-duration: 1ms;
-  }
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
   }
 }

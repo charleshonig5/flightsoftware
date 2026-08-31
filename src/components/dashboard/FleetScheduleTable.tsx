@@ -61,7 +61,14 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
  * v2 maintenance schedule table: filterable per column. Fleet-wide by
  * default; pass `aircraft` to scope it to one plane (identical UI).
  */
-export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
+export function FleetScheduleTable({
+  aircraft,
+  query,
+}: {
+  aircraft?: Aircraft;
+  /** Optional keyword filter (plane-page search bar) — ANDs with column filters */
+  query?: string;
+}) {
   const filter = useColumnFilters(EMPTY_FILTERS);
   const [detail, setDetail] = useState<{ open: boolean; item: MaintenanceItem | null }>({
     open: false,
@@ -86,13 +93,27 @@ export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
     } satisfies Record<FilterKey, string[]>;
   }, [allRows]);
 
-  const rows = allRows.filter((row) =>
-    FILTER_KEYS.every(
-      (key) => filter.filters[key].length === 0 || filter.filters[key].includes(rowValue(key, row)),
-    ),
+  const q = (query ?? "").trim().toLowerCase();
+  const rows = allRows.filter(
+    (row) =>
+      FILTER_KEYS.every(
+        (key) =>
+          filter.filters[key].length === 0 || filter.filters[key].includes(rowValue(key, row)),
+      ) &&
+      (q === "" ||
+        [
+          row.item.title,
+          row.item.category,
+          row.item.status.label,
+          row.item.lastDone,
+          row.aircraft.tailNumber,
+        ].some((field) => field.toLowerCase().includes(q))),
   );
 
   const activeKeys = FILTER_KEYS.filter((key) => filter.filters[key].length > 0);
+
+  /* Remounting the row list when the result set changes replays the cascade */
+  const rowsKey = `${q}|${FILTER_KEYS.map((key) => filter.filters[key].join(",")).join("|")}`;
 
   const headerCell = (key: FilterKey) => (
     <FilterHeaderCell
@@ -127,10 +148,12 @@ export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
           {headerCell("lastService")}
           <span className="text-body text-ink-muted">Action</span>
         </div>
-        {rows.map(({ aircraft: rowAircraft, item }) => (
+        <div key={rowsKey}>
+        {rows.map(({ aircraft: rowAircraft, item }, index) => (
           <div
             key={`${rowAircraft.tailNumber}-${item.title}`}
-            className={`grid h-12 ${TABLE_COLS} items-center border-b border-divider px-6 last:border-b-0`}
+            style={{ animationDelay: `${Math.min(index, 20) * 12}ms` }}
+            className={`grid h-12 ${TABLE_COLS} items-center border-b border-divider px-6 transition-colors duration-150 last:border-b-0 hover:bg-tile animate-row-in`}
           >
             <button
               type="button"
@@ -154,6 +177,7 @@ export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
             </button>
           </div>
         ))}
+        </div>
         {rows.length === 0 && (
           <p className="px-6 py-6 text-body text-ink-muted">No items match the current filters.</p>
         )}

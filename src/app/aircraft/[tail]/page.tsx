@@ -21,15 +21,18 @@ export default async function AircraftPage({ params }: AircraftPageProps) {
   if (!aircraft) notFound();
 
   return (
-    // v2 sheet: all page content sits on one white card, same as the dashboard
-    <div className="my-6 mr-6 rounded-card border border-divider bg-card px-10.75 pt-8.25 pb-10.75 shadow-card">
-      <AircraftHeader aircraft={aircraft} />
-      <div className="mt-16">
-        {/* Suspense: AircraftTabs reads ?tab= via useSearchParams on a prerendered page */}
-        <Suspense>
-          <AircraftTabs aircraft={aircraft} />
-        </Suspense>
-      </div>
+    // AircraftTabs renders the whole sheet: a sticky top cap (ground strip +
+    // rounded sheet top + header/tabs) that stays locked, and the sheet body
+    // scrolling the page normally beneath it.
+    <div className="mr-6">
+      {/* Suspense: AircraftTabs reads ?tab= via useSearchParams on a prerendered page */}
+      <Suspense>
+        {/* key: RSC-passed JSX lands in an array slot client-side and needs one */}
+        <AircraftTabs
+          aircraft={aircraft}
+          header={<AircraftHeader key="aircraft-header" aircraft={aircraft} />}
+        />
+      </Suspense>
     </div>
   );
 }

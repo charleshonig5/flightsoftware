@@ -54,13 +54,14 @@ export function MeterTile({
           event.stopPropagation();
           onEdit?.();
         }}
-        /* Figma insets: Edit + gauge sit 24px off the right edge, 14px off top/bottom */
-        className="absolute top-3.5 right-6 flex cursor-pointer items-center gap-2 text-caption text-ink-faint transition-colors duration-150 group-hover/tile:text-ink-muted"
+        /* Edit + gauge sit at the tile's uniform 14px inset (Figma drew 24 on
+           the right, but it reads uneven against the 14px left padding) */
+        className="absolute top-3.5 right-3.5 flex cursor-pointer items-center gap-2 text-caption text-ink-faint transition-colors duration-150 group-hover/tile:text-ink-muted"
       >
         Edit
         <EditIcon className="size-3.5" />
       </button>
-      <div className="absolute right-6 bottom-3.5">
+      <div className="absolute right-3.5 bottom-3.5">
         <Gauge percent={meter.percent} delayMs={index * 80} entrance={entrance} />
       </div>
     </div>

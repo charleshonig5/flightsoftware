@@ -6,14 +6,21 @@ import { DashboardTabs } from "@/components/dashboard/DashboardTabs";
 /** v2 dashboard: one white "sheet" floating on the page background. */
 export default function Dashboard() {
   return (
-    <div className="my-6 mr-6 rounded-card border border-divider bg-card px-10.75 pt-8.25 pb-10.75 shadow-card">
-      <FleetHeader />
-      <div className="mt-6">
-        <KpiBar kpis={fleetStats.kpis} />
-      </div>
-      <div className="mt-11.5">
-        <DashboardTabs />
-      </div>
+    /* DashboardTabs renders the whole sheet: a sticky top cap (ground strip +
+       rounded sheet top + greeting/KPI/tabs) that stays locked, and the sheet
+       body scrolling the page normally beneath it. */
+    <div className="mr-6">
+      <DashboardTabs
+        header={
+          /* key: RSC-passed JSX lands in an array slot client-side and needs one */
+          <div key="dashboard-header">
+            <FleetHeader />
+            <div className="mt-8.5">
+              <KpiBar kpis={fleetStats.kpis} />
+            </div>
+          </div>
+        }
+      />
     </div>
   );
 }
