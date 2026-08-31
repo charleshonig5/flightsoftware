@@ -396,9 +396,11 @@ meters widen their tiles to share the full row.
 ### Search field (`ui/SearchInput.tsx`)
 Keyword search: 40px white pill, 278px (`w-69.5`), hairline border, `px-4`
 with a trailing 16px faint SearchIcon, faint placeholder,
-`focus:outline-brand-soft`. Lives in the plane-page table toolbars (action
-button + search clustered at the 14px control gap); filters AND with the
-column popovers.
+`focus:outline-brand-soft`. With a query, the icon becomes a **one-click
+clear ✕** (muted → ink on hover, `chip-in` entrance) that empties and
+refocuses the field. Lives in the plane-page table toolbars (action button +
+search clustered at the 14px control gap); filters AND with the column
+popovers.
 
 ### Pill buttons (`ui/PillButton.tsx`)
 v2 pill: 30px tall, `px-2.5`, `rounded-full`, white fill + hairline border,
@@ -464,4 +466,5 @@ engine count drives meter sets.
 | 2026-08-31 | 5, 7 | Activity tail-link arrows nudge up-right on hover, mirroring the aircraft-card nav arrow. |
 | 2026-08-31 | 7 | Plane-page header identity block aligned to the card pattern: model line muted → ink, 6px tail→model gap. |
 | 2026-08-31 | 4 | Glow finalized as fully static: sides + bottom only (permanent clip), painted under the masks, strip cover extended past the card edges — identical shadow at every scroll position, no seams, no morphing. |
+| 2026-08-31 | 7 | Search fields: icon swaps to a one-click clear ✕ while a query exists. |
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |
