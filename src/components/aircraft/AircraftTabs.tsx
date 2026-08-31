@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Aircraft } from "@/lib/data/aircraft";
-import { MeterTile } from "@/components/dashboard/MeterTile";
+import { MeterGrid } from "@/components/dashboard/MeterGrid";
 import { MaintenanceLogs } from "./MaintenanceLogs";
 import { MaintenanceSchedule } from "./MaintenanceSchedule";
 import { UpdateMetersModal, isUpdatableMeter } from "./UpdateMetersModal";
@@ -90,22 +90,16 @@ export function AircraftTabs({ aircraft }: { aircraft: Aircraft }) {
 
       <div className="mt-8.5">
         {activeTab === "Overview" && (
-          <div className="grid grid-cols-2 items-start gap-3.5 xl:grid-cols-4">
-            {aircraft.meters.map((meter, index) => (
-              <MeterTile
-                key={meter.label}
-                meter={meter}
-                surface="page"
-                index={index}
-                entrance={false}
-                onEdit={
-                  isUpdatableMeter(meter)
-                    ? () => setMetersModal({ open: true, focusMeter: meter.label })
-                    : () => setOilModal({ open: true, focusOilMeter: meter.label })
-                }
-              />
-            ))}
-          </div>
+          /* Same flush meter grid as the dashboard aircraft cards */
+          <MeterGrid
+            meters={aircraft.meters}
+            entrance={false}
+            onEdit={(meter) =>
+              isUpdatableMeter(meter)
+                ? setMetersModal({ open: true, focusMeter: meter.label })
+                : setOilModal({ open: true, focusOilMeter: meter.label })
+            }
+          />
         )}
         {activeTab === "Maintenance Logs" && <MaintenanceLogs aircraft={aircraft} />}
         {activeTab === "Maintenance Schedule" && <MaintenanceSchedule aircraft={aircraft} />}

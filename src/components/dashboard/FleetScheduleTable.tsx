@@ -52,8 +52,11 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
   lastService: [],
 };
 
-/** v2 fleet-wide maintenance schedule: every item, filterable per column. */
-export function FleetScheduleTable() {
+/**
+ * v2 maintenance schedule table: filterable per column. Fleet-wide by
+ * default; pass `aircraft` to scope it to one plane (identical UI).
+ */
+export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [openKey, setOpenKey] = useState<FilterKey | null>(null);
   const [pending, setPending] = useState<string[]>([]);
@@ -65,11 +68,10 @@ export function FleetScheduleTable() {
 
   /* Fixed default order: overdue first, then upcoming, then current. */
   const allRows = useMemo(() => {
-    const all: Row[] = fleet.flatMap((aircraft) =>
-      aircraft.maintenance.items.map((item) => ({ aircraft, item })),
-    );
+    const source = aircraft ? [aircraft] : fleet;
+    const all: Row[] = source.flatMap((a) => a.maintenance.items.map((item) => ({ aircraft: a, item })));
     return all.sort((a, b) => STATUS_ORDER[a.item.status.level] - STATUS_ORDER[b.item.status.level]);
-  }, []);
+  }, [aircraft]);
 
   /* Distinct options per column, in first-seen order (status keeps severity order) */
   const options = useMemo(() => {

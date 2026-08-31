@@ -228,7 +228,10 @@ baseline-aligned 14px unit (`gap-2`), and a **quiet** chip bottom-right
 variant). Sliding 2px brand underline spans label + badge. Content starts
 `mt-8.5`.
 
-### Fleet schedule table (`dashboard/FleetScheduleTable.tsx`)
+### Schedule table (`dashboard/FleetScheduleTable.tsx`)
+One component, two scopes: fleet-wide on the dashboard's Maintenance
+Schedule tab, and per-aircraft on each plane page's tab (pass `aircraft`) —
+the UI is identical in both places.
 `rounded-field border-divider bg-card shadow-card`. Columns
 `352/114/157/199/146/79 fr` (Service Name · Aircraft · Status · Type · Last
 Service · Action), `px-6` gutters. Header 45px, muted 14 Regular. Rows are
@@ -294,7 +297,9 @@ cells sitting on an actual grid corner get `rounded-*-field` (a partial last
 row leaves its outer corner square). No maintenance preview, no collapse —
 that content lives in the Maintenance Schedule tab.
 
-### Meter tiles (`dashboard/MeterTile.tsx`)
+### Meter tiles (`dashboard/MeterTile.tsx` + `dashboard/MeterGrid.tsx`)
+The flush grid lives in the shared `MeterGrid` — used by dashboard aircraft
+cards and the plane page's Overview tab, so both always match.
 White surface + hairline border (standalone: `rounded-tile`; in a card grid
 the parent passes corner shape). `p-3.5`, column `gap-2`: label 10 ink, value
 18 **Regular** tabular-nums with baseline-aligned 10px muted unit, meta 10
@@ -350,3 +355,5 @@ engine count drives meter sets.
 | 2026-08-31 | 6 | Ask AI sidecar locked from Figma `123:2`: floating 384px sheet (24px top/right margins, top-rounded, hairline), 28px prompt, brand-soft suggestion chips, bordered 99px tile composer, animated width 0↔408. |
 | 2026-08-31 | 3 | Aircraft pages moved onto the dashboard's sheet shell; v1 white-on-grey surfaces (photo box, search, status dropdown, maintenance rows) re-grounded with v2 hairlines/tile fills. |
 | 2026-08-31 | 4 | Modal panels get the content-card surface: hairline border + `shadow-card` (matches sheet/cards/overlays). |
+| 2026-08-31 | 7 | Plane-page Maintenance Schedule tab now renders the exact dashboard schedule table (scoped per aircraft); v1 card list, search, and status dropdown retired (`MaintenanceItem` deleted). |
+| 2026-08-31 | 7 | Plane-page Overview tab uses the dashboard cards' flush meter grid (extracted to shared `MeterGrid`); v1 spaced tile grid retired. |
