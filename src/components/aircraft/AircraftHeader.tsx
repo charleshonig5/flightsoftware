@@ -17,8 +17,10 @@ export function AircraftHeader({ aircraft }: { aircraft: Aircraft }) {
   const [oilOpen, setOilOpen] = useState(false);
   return (
     <header className="flex items-start justify-between">
-      <div className="flex items-center gap-6">
-        <div className="flex h-26.25 w-38 shrink-0 items-center justify-center overflow-hidden rounded-tile border border-divider bg-tile">
+      {/* items-stretch: the photo spans the identity column's exact height,
+          top-aligned with the title and bottom-aligned with the pill row */}
+      <div className="flex items-stretch gap-6">
+        <div className="flex w-38 shrink-0 items-center justify-center overflow-hidden rounded-tile border border-divider bg-tile">
           {aircraft.photo ? (
             <Image
               src={aircraft.photo}
