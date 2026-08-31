@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { fleet, type Aircraft, type MaintenanceItem, type StatusLevel } from "@/lib/data/aircraft";
 import { Chip } from "@/components/ui/Chip";
-import { Checkbox } from "@/components/ui/Checkbox";
-import { CloseIcon, FilterLinesIcon } from "@/components/ui/icons";
+import {
+  FilterChips,
+  FilterHeaderCell,
+  useColumnFilters,
+} from "@/components/ui/columnFilters";
 import { MaintenanceItemModal } from "@/components/aircraft/MaintenanceItemModal";
 
 interface Row {
@@ -30,6 +33,8 @@ const FILTER_LABELS: Record<FilterKey, string> = {
   type: "Type",
   lastService: "Last Service",
 };
+
+const FILTER_KEYS = Object.keys(FILTER_LABELS) as FilterKey[];
 
 /** The value a row exposes to a filter column (Last Service filters by year). */
 function rowValue(key: FilterKey, { aircraft, item }: Row): string {
@@ -57,14 +62,11 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
  * default; pass `aircraft` to scope it to one plane (identical UI).
  */
 export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
-  const [filters, setFilters] = useState(EMPTY_FILTERS);
-  const [openKey, setOpenKey] = useState<FilterKey | null>(null);
-  const [pending, setPending] = useState<string[]>([]);
+  const filter = useColumnFilters(EMPTY_FILTERS);
   const [detail, setDetail] = useState<{ open: boolean; item: MaintenanceItem | null }>({
     open: false,
     item: null,
   });
-  const popoverRef = useRef<HTMLDivElement>(null);
 
   /* Fixed default order: overdue first, then upcoming, then current. */
   const allRows = useMemo(() => {
@@ -85,133 +87,36 @@ export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
   }, [allRows]);
 
   const rows = allRows.filter((row) =>
-    (Object.keys(filters) as FilterKey[]).every(
-      (key) => filters[key].length === 0 || filters[key].includes(rowValue(key, row)),
+    FILTER_KEYS.every(
+      (key) => filter.filters[key].length === 0 || filter.filters[key].includes(rowValue(key, row)),
     ),
   );
 
-  const activeKeys = (Object.keys(filters) as FilterKey[]).filter((key) => filters[key].length > 0);
+  const activeKeys = FILTER_KEYS.filter((key) => filter.filters[key].length > 0);
 
-  /* Popover dismissal: outside click or Escape */
-  useEffect(() => {
-    if (!openKey) return;
-    const onPointerDown = (event: PointerEvent) => {
-      if (!popoverRef.current?.closest("[data-filter-cell]")?.contains(event.target as Node)) {
-        setOpenKey(null);
-      }
-    };
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpenKey(null);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [openKey]);
-
-  const toggleOpen = (key: FilterKey) => {
-    if (openKey === key) {
-      setOpenKey(null);
-    } else {
-      setOpenKey(key);
-      setPending(filters[key]);
-    }
-  };
-
-  const togglePending = (value: string) =>
-    setPending((current) =>
-      current.includes(value) ? current.filter((v) => v !== value) : [...current, value],
-    );
-
-  const headerCell = (key: FilterKey) => {
-    const active = filters[key].length > 0;
-    return (
-      <div key={key} data-filter-cell className="relative">
-        <button
-          type="button"
-          onClick={() => toggleOpen(key)}
-          className={`flex cursor-pointer items-center gap-1.5 text-body transition-colors duration-150 ${
-            active || openKey === key ? "text-ink" : "text-ink-muted hover:text-ink"
-          }`}
-        >
-          {FILTER_LABELS[key]}
-          <FilterLinesIcon className="size-4" />
-        </button>
-        {openKey === key && (
-          <div
-            ref={popoverRef}
-            className="absolute top-full left-0 z-10 mt-1.5 min-w-31.5 rounded-field border border-divider bg-card pt-3.25 shadow-card"
-          >
-            <p className="px-3.25 text-caption leading-2.75 whitespace-nowrap text-ink-muted">
-              Filter by {FILTER_LABELS[key]}
-            </p>
-            <div className="mt-3.5 flex flex-col gap-2 px-3.25">
-              {options[key].map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => togglePending(option)}
-                  className="flex cursor-pointer items-center gap-2"
-                >
-                  <Checkbox checked={pending.includes(option)} />
-                  <span className="text-caption whitespace-nowrap text-ink">{option}</span>
-                </button>
-              ))}
-            </div>
-            <div className="mt-3.5 border-t border-divider" />
-            <div className="flex items-center gap-3.5 px-3.25 py-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setFilters((current) => ({ ...current, [key]: pending }));
-                  setOpenKey(null);
-                }}
-                className="cursor-pointer text-caption font-medium whitespace-nowrap text-brand"
-              >
-                Apply
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setPending([]);
-                  setFilters((current) => ({ ...current, [key]: [] }));
-                }}
-                className="cursor-pointer text-caption font-medium whitespace-nowrap text-ink-muted transition-colors duration-150 hover:text-ink"
-              >
-                Clear all
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
+  const headerCell = (key: FilterKey) => (
+    <FilterHeaderCell
+      key={key}
+      label={FILTER_LABELS[key]}
+      options={options[key]}
+      active={filter.filters[key].length > 0}
+      open={filter.openKey === key}
+      pending={filter.pending}
+      onToggleOpen={() => filter.toggleOpen(key)}
+      onTogglePending={filter.togglePending}
+      onApply={() => filter.apply(key)}
+      onClear={() => filter.clear(key)}
+    />
+  );
 
   return (
     <>
-      {activeKeys.length > 0 && (
-        /* Active-filter chips sit 20px under the tabs (14px above the table) */
-        <div className="-mt-3.5 mb-3.5 flex flex-wrap items-center gap-2">
-          {activeKeys.map((key) => (
-            <span
-              key={key}
-              className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-2 py-1.25 text-caption leading-none whitespace-nowrap text-ink-muted"
-            >
-              {FILTER_LABELS[key]}: {filters[key].join(", ")}
-              <button
-                type="button"
-                aria-label={`Clear ${FILTER_LABELS[key]} filter`}
-                onClick={() => setFilters((current) => ({ ...current, [key]: [] }))}
-                className="cursor-pointer transition-colors duration-150 hover:text-ink"
-              >
-                <CloseIcon className="size-2.5" />
-              </button>
-            </span>
-          ))}
-        </div>
-      )}
+      <FilterChips
+        activeKeys={activeKeys}
+        labels={FILTER_LABELS}
+        filters={filter.filters}
+        onClear={filter.clear}
+      />
 
       <div className="rounded-field border border-divider bg-card shadow-card">
         <div className={`grid ${TABLE_COLS} items-center border-b border-divider px-6 py-3.25`}>
@@ -222,9 +127,9 @@ export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
           {headerCell("lastService")}
           <span className="text-body text-ink-muted">Action</span>
         </div>
-        {rows.map(({ aircraft, item }) => (
+        {rows.map(({ aircraft: rowAircraft, item }) => (
           <div
-            key={`${aircraft.tailNumber}-${item.title}`}
+            key={`${rowAircraft.tailNumber}-${item.title}`}
             className={`grid h-12 ${TABLE_COLS} items-center border-b border-divider px-6 last:border-b-0`}
           >
             <button
@@ -234,7 +139,7 @@ export function FleetScheduleTable({ aircraft }: { aircraft?: Aircraft }) {
             >
               {item.title}
             </button>
-            <span className="truncate pr-3.5 text-body">{aircraft.tailNumber}</span>
+            <span className="truncate pr-3.5 text-body">{rowAircraft.tailNumber}</span>
             <span className="pr-3.5">
               <Chip tone={item.status.level}>{item.status.label}</Chip>
             </span>
