@@ -140,7 +140,12 @@ export function FleetScheduleTable({
       />
 
       <div className="rounded-field border border-divider bg-card shadow-card">
-        <div className={`grid ${TABLE_COLS} items-center border-b border-divider px-6 py-3.25`}>
+        {/* sticky: pins just below the sticky cap (--cap-h measured by the
+            tab components) so column labels + filters survive long scrolls */}
+        <div
+          style={{ top: "var(--cap-h, 0px)" }}
+          className={`sticky z-10 grid ${TABLE_COLS} items-center rounded-t-field border-b border-divider bg-card px-6 py-3.25`}
+        >
           <span className="text-body text-ink-muted">Service Name</span>
           {headerCell("aircraft")}
           {headerCell("status")}
@@ -153,7 +158,12 @@ export function FleetScheduleTable({
           <div
             key={`${rowAircraft.tailNumber}-${item.title}`}
             style={{ animationDelay: `${Math.min(index, 20) * 12}ms` }}
-            className={`grid h-12 ${TABLE_COLS} items-center border-b border-divider px-6 transition-colors duration-150 last:border-b-0 hover:bg-tile animate-row-in`}
+            /* whole row opens the item — interactive children exempt (card pattern) */
+            onClick={(event) => {
+              if ((event.target as HTMLElement).closest("button, a")) return;
+              setDetail({ open: true, item });
+            }}
+            className={`grid h-12 ${TABLE_COLS} cursor-pointer items-center border-b border-divider px-6 transition-colors duration-150 last:border-b-0 hover:bg-tile animate-row-in`}
           >
             <button
               type="button"

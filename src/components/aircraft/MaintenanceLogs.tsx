@@ -129,7 +129,12 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
         />
 
         <div className="rounded-field border border-divider bg-card shadow-card">
-          <div className={`grid ${TABLE_COLS} items-center border-b border-divider px-6 py-3.25`}>
+        {/* sticky: pins just below the sticky cap (--cap-h measured by the
+            tab components) so column labels + filters survive long scrolls */}
+          <div
+            style={{ top: "var(--cap-h, 0px)" }}
+            className={`sticky z-10 grid ${TABLE_COLS} items-center rounded-t-field border-b border-divider bg-card px-6 py-3.25`}
+          >
             <span className="text-body text-ink-muted">Title</span>
             {headerCell("date")}
             {headerCell("type")}

@@ -25,6 +25,20 @@ export function DashboardTabs({ header }: { header?: React.ReactNode }) {
   const navRef = useRef<HTMLElement>(null);
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
 
+  /* Publish the cap's height as --cap-h so table headers can stick beneath it */
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const capRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const cap = capRef.current;
+    const wrap = wrapRef.current;
+    if (!cap || !wrap) return;
+    const publish = () => wrap.style.setProperty("--cap-h", `${cap.offsetHeight}px`);
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(cap);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const measure = () => {
       const button = navRef.current?.querySelector<HTMLButtonElement>(
@@ -40,7 +54,7 @@ export function DashboardTabs({ header }: { header?: React.ReactNode }) {
   return (
     /* min-h-screen: the column already contains the 24px top strip and the
        body's 24px bottom margin, so full viewport height = equal margins. */
-    <div className="relative flex min-h-screen flex-col">
+    <div ref={wrapRef} className="relative flex min-h-screen flex-col">
       {/* The card's single glow: an empty layer on the card's exact layout
           bounds, statically clipped to sides + bottom only — its shape never
           changes with scroll, and it paints below the sticky mask. */}
@@ -52,7 +66,7 @@ export function DashboardTabs({ header }: { header?: React.ReactNode }) {
           greeting/KPI/tab bar — locked in place while the body scrolls.
           bg-page on the block itself keeps the rounded-corner notches ground-
           colored while white content slides behind them. */}
-      <div className="sticky top-0 z-20 bg-page">
+      <div ref={capRef} className="sticky top-0 z-20 bg-page">
         {/* strip cover extends past the card edges so the glow's side bands
             can never peek beside the ground strip while pinned */}
         <div aria-hidden className="absolute top-0 -left-14 -right-6 h-6 bg-page" />

@@ -310,12 +310,16 @@ Mechanic filterable, Date by year; fixed newest-first order; brand "View"
 pills; its v1 search + sort retired).
 `rounded-field border-divider bg-card shadow-card`. Columns
 `352/114/157/199/146/79 fr` (Service Name · Aircraft · Status · Type · Last
-Service · Action), `px-6` gutters. Header 45px, muted 14 Regular. Rows are
-always ordered danger→warning→success, 48px pitch, hairline-separated:
-service name is a brand link (opens the maintenance-item modal), status chips
-keep their **status** tones here, and the **"View item" pill** is
-`rounded-card` (14px!) white + hairline with 10px Medium brand text,
-`px-2.5 py-1.5`, `hover:bg-brand-soft`.
+Service · Action), `px-6` gutters. Header 45px, muted 14 Regular — and
+**sticky**: it pins just below the sticky cap (`top: var(--cap-h)`, a CSS
+variable the tab components publish from a ResizeObserver on the cap), so
+column labels and filters survive long scrolls. Rows are always ordered
+danger→warning→success, 48px pitch, hairline-separated, and the **whole row
+is clickable** (opens the maintenance-item modal; interactive children
+exempt, same as aircraft cards) — the brand service-name link and the
+**"View item" pill** (`rounded-card` 14px! white + hairline, 10px Medium
+brand, `px-2.5 py-1.5`, `hover:bg-brand-soft`) remain as explicit
+affordances. Status chips keep their **status** tones here.
 
 **Column filters** (Figma `107:9826`): the FilterLines icon on
 Aircraft/Status/Type/Last Service opens a **filter popover** — white +
@@ -473,4 +477,5 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 5, 7 | KPI count-up removed (unnecessary); all count pills (sidebar + tab badges) unified on the shared `CountBadge` at the 14px tab-badge metrics — bg varies by surface only. |
 | 2026-08-31 | 7 | Plane-page header photo stretches to the identity column's height — top edge aligns with the title, bottom edge with the pill row. |
 | 2026-08-31 | 3 | Plane-page header → tab bar gap 64 → 46px, matching the dashboard's KPI → tabs rhythm. |
+| 2026-08-31 | 7 | Tables: whole-row click opens the item modal (schedule table); column headers stick beneath the cap via a measured `--cap-h` (both tables). |
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |
