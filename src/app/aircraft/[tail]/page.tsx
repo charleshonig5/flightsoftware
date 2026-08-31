@@ -21,9 +21,8 @@ export default async function AircraftPage({ params }: AircraftPageProps) {
   if (!aircraft) notFound();
 
   return (
-    // Page padding lives here now — the root layout's <main> is bare so the
-    // dashboard sheet can own its margins.
-    <div className="px-13.5 pt-11 pb-13.5">
+    // v2 sheet: all page content sits on one white card, same as the dashboard
+    <div className="my-6 mr-6 rounded-card border border-divider bg-card px-10.75 pt-8.25 pb-10.75 shadow-card">
       <AircraftHeader aircraft={aircraft} />
       <div className="mt-16">
         {/* Suspense: AircraftTabs reads ?tab= via useSearchParams on a prerendered page */}

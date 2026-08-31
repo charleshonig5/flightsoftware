@@ -52,7 +52,7 @@ function StatusSelect({
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        className="flex h-10 w-41 cursor-pointer items-center justify-between rounded-full bg-card px-4 text-body whitespace-nowrap transition-colors duration-150 hover:bg-chip-neutral"
+        className="flex h-10 w-41 cursor-pointer items-center justify-between rounded-full border border-divider bg-card px-4 text-body whitespace-nowrap transition-colors duration-150 hover:bg-chip-neutral"
       >
         <span className={value === "all" ? "text-ink-faint" : "text-ink"}>
           {value === "all" ? "Select Status" : active.label}
@@ -62,7 +62,7 @@ function StatusSelect({
         />
       </button>
       {open && (
-        <div className="absolute top-full right-0 z-10 mt-1.5 w-max min-w-full rounded-tile bg-card p-1.5 shadow-pop animate-modal-in">
+        <div className="absolute top-full right-0 z-10 mt-1.5 w-max min-w-full rounded-field border border-divider bg-card p-1.5 shadow-card animate-modal-in">
           {STATUS_OPTIONS.map((option) => (
             <button
               key={option.value}

@@ -6,8 +6,8 @@ const TAB_WIDTHS = ["w-16", "w-28", "w-32", "w-8", "w-16", "w-10", "w-20", "w-20
 /** Aircraft page skeleton — header with photo/specs, tab bar, meter grid. */
 export default function AircraftLoading() {
   return (
-    // Matches the real page's padding wrapper (layout <main> is bare in v2)
-    <div className="px-13.5 pt-11 pb-13.5">
+    // Matches the real page's v2 sheet shell
+    <div className="my-6 mr-6 rounded-card border border-divider bg-card px-10.75 pt-8.25 pb-10.75 shadow-card">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-6">
           {/* photo placeholder matches the real 152×105 image box */}

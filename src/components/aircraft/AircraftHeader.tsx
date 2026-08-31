@@ -17,7 +17,7 @@ export function AircraftHeader({ aircraft }: { aircraft: Aircraft }) {
   return (
     <header className="flex items-start justify-between">
       <div className="flex items-center gap-6">
-        <div className="flex h-26.25 w-38 shrink-0 items-center justify-center rounded-tile bg-card">
+        <div className="flex h-26.25 w-38 shrink-0 items-center justify-center rounded-tile border border-divider bg-tile">
           <ImageIcon className="size-6 text-ink-faint" />
         </div>
         <div className="flex flex-col">

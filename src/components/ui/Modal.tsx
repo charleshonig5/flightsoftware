@@ -75,7 +75,7 @@ export function Modal({
         onAnimationEnd={(event) => {
           if (!open && event.target === event.currentTarget) setRendered(false);
         }}
-        className={`w-[464px] max-w-full rounded-card bg-card p-6 outline-none ${
+        className={`w-[464px] max-w-full rounded-card border border-divider bg-card p-6 shadow-card outline-none ${
           open ? "animate-modal-in" : "animate-modal-out"
         }`}
       >

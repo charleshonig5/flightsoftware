@@ -110,9 +110,13 @@ Component spacing:
 - Tab row: **34px** between tabs (`gap-8.5`), label→badge gap 4px (`gap-1`), 36px total height (label 18 + 14 below, `pb-3.5`).
 - Table: header `px-6 py-3.25` (24/13 → 45px tall); rows `h-12` (48px pitch, matches Figma's 38px row + 10px gap with centered dividers).
 - Sidebar: 34px gutters (`px-8.5`), logo at top 44 (`pt-11`), nav pills 46px tall (`h-11.5`) with 14px inner padding (`px-3.5`), tree rows 32px (`h-8`), footer `pb-8.5`.
-- Aircraft pages own their padding now (`px-13.5 pt-11 pb-13.5` on the page,
-  not the layout) — the root layout's `<main>` is bare so each screen decides
-  its surface.
+- Aircraft pages sit on the **same sheet shell as the dashboard**
+  (`my-6 mr-6` + 43/33/43 gutters) — the root layout's `<main>` is bare so
+  each screen owns its surface. Their v1 "surface inversion" pieces were
+  re-grounded for the white sheet: photo placeholder = tile fill + hairline,
+  search/dropdown fields and maintenance rows = white + hairline (rows keep
+  the 4px status accent as the left border), dropdown menus use the v2
+  overlay surface. Full plane-page restyle still awaits its Figma frames.
 
 ## 4. Radii, borders, elevation
 
@@ -134,7 +138,7 @@ Elevation:
 
 | Token | Value | Usage |
 |---|---|---|
-| `--shadow-card` | `0 0 58px rgb(113 113 113 / 5%)` | Ambient glow: the sheet, tables, aircraft cards, **all buttons**, **v2 overlays (tooltips, filter popovers)** |
+| `--shadow-card` | `0 0 58px rgb(113 113 113 / 5%)` | Ambient glow: the sheet, tables, aircraft cards, **all buttons**, **v2 overlays (tooltips, filter popovers, dropdowns)**, **modal panels** |
 | `--shadow-card-soft` | `0 0 29px rgb(113 113 113 / 5%)` | Half-strength glow for panels nested inside the sheet (KPI bar) |
 | `--shadow-pop` | `0 4px 12px 8%, 0 1px 3px 6%` | Legacy v1 overlays not yet redesigned (dropdown pickers) |
 | `--blur-scrim` | 12px | Modal lightbox backdrop blur |
@@ -344,3 +348,5 @@ engine count drives meter sets.
 | 2026-08-30 | 7 | Audit: third activity icon kind (file-with-check, records events) added from the frame's May group; Aircraft Status KPI chip copy → "Need(s) attention". |
 | 2026-08-30 | 7 | Activity feed: actors removed (impersonal sentences only); icon kinds expanded to six (gauge/droplet/toolbox/alert/file-check/aircraft); history extended back to March 2026. |
 | 2026-08-31 | 6 | Ask AI sidecar locked from Figma `123:2`: floating 384px sheet (24px top/right margins, top-rounded, hairline), 28px prompt, brand-soft suggestion chips, bordered 99px tile composer, animated width 0↔408. |
+| 2026-08-31 | 3 | Aircraft pages moved onto the dashboard's sheet shell; v1 white-on-grey surfaces (photo box, search, status dropdown, maintenance rows) re-grounded with v2 hairlines/tile fills. |
+| 2026-08-31 | 4 | Modal panels get the content-card surface: hairline border + `shadow-card` (matches sheet/cards/overlays). |
