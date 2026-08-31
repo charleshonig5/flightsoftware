@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Aircraft } from "@/lib/data/aircraft";
+import { CountBadge } from "@/components/ui/Chip";
 import { ChevronUpIcon } from "@/components/ui/icons";
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { MeterGrid } from "@/components/dashboard/MeterGrid";
@@ -158,9 +159,7 @@ export function AircraftTabs({
             >
               {tab}
               {tabCounts[tab] !== undefined && (
-                <span className="inline-flex items-center rounded-full bg-tile px-2 py-1 text-body leading-none text-ink-muted">
-                  {tabCounts[tab]}
-                </span>
+                <CountBadge textSize="body">{tabCounts[tab]}</CountBadge>
               )}
             </button>
           ))}

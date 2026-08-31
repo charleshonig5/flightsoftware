@@ -208,8 +208,6 @@ under reduced motion):
   overlay that slides between nav rows (250ms `ease-snap`, tab-underline
   mechanism; positioned pre-paint so first render doesn't animate, hidden
   while a tail target is inside the collapsed tree).
-- **KPI count-up**: the four KPI numbers run through `CountUp` (80ms
-  stagger), first app load only — same latch as the meter tiles.
 - **Activity cascade**: feed rows use the row cascade with a running index
   across month groups.
 - **Ask AI**: suggestion chips cascade in on every panel open (120ms base +
@@ -251,8 +249,9 @@ Fixed 237px, sticky, **transparent** — blends with `bg-page`. Logo lockup
 `text-brand` under the **sliding indicator overlay** (§5: one brand-soft
 pill + 2px edge bar gliding between rows); inactive hover =
 `bg-chip-neutral`. Aircraft tree: hairline spine, 32px rows; the same
-overlay serves active tail rows. Count badge: **white** fill on the grey ground
-(`CountBadge surface="page"`). Footer: stacked name (`text-body`, ink) +
+overlay serves active tail rows. Count badge: the shared `CountBadge`
+(`textSize="body"` — same 14px metrics as the tab badges), **white** fill on
+the grey ground (`surface="page"`). Footer: stacked name (`text-body`, ink) +
 email (`text-caption`, muted) with 2px gap; right side Help + Logout icons
 (16px, `gap-3.5`, muted → ink on hover, **top-aligned with the name line**);
 logout opens the Sign Out modal.
@@ -294,9 +293,10 @@ click.
 
 ### Dashboard tabs (`dashboard/DashboardTabs.tsx`)
 `Aircraft(s) · Maintenance Schedule · Activity` on a hairline track. Labels
-14 Regular: active `text-brand`, inactive muted. Count badges: `px-2 py-1`
-`rounded-full` **14px** text, always `bg-tile text-ink-muted` (no active
-variant). Sliding 2px brand underline spans label + badge. Content starts
+14 Regular: active `text-brand`, inactive muted. Count badges: the shared
+`CountBadge` (`textSize="body"`: `px-2 py-1` `rounded-full` 14px muted),
+always `bg-tile` (no active variant) — one component with the sidebar's
+badge, so all count pills stay aligned. Sliding 2px brand underline spans label + badge. Content starts
 `mt-8.5`.
 
 ### Schedule table (`dashboard/FleetScheduleTable.tsx`)
@@ -470,4 +470,5 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 4 | Glow finalized as fully static: sides + bottom only (permanent clip), painted under the masks, strip cover extended past the card edges — identical shadow at every scroll position, no seams, no morphing. |
 | 2026-08-31 | 7 | Search fields: icon swaps to a one-click clear ✕ while a query exists. |
 | 2026-08-31 | 7 | Plane-page photo slot filled with CC0, type-accurate aircraft photos for all four airframes (placeholder icon remains the fallback). |
+| 2026-08-31 | 5, 7 | KPI count-up removed (unnecessary); all count pills (sidebar + tab badges) unified on the shared `CountBadge` at the 14px tab-badge metrics — bg varies by surface only. |
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |

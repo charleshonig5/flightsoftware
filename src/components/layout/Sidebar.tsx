@@ -139,7 +139,9 @@ export function Sidebar() {
             onClick={() => setAircraftOpen((open) => !open)}
             trailing={
               <>
-                <CountBadge surface="page">{allTailNumbers.length}</CountBadge>
+                <CountBadge surface="page" textSize="body">
+                  {allTailNumbers.length}
+                </CountBadge>
                 <ChevronUpIcon
                   className={`size-4 text-ink-muted transition-transform duration-200 ${
                     aircraftOpen ? "" : "rotate-180"

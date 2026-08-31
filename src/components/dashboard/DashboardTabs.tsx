@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { fleet, fleetStats } from "@/lib/data/aircraft";
+import { CountBadge } from "@/components/ui/Chip";
 import { FleetSection } from "./FleetSection";
 import { FleetScheduleTable } from "./FleetScheduleTable";
 import { ActivityFeed } from "./ActivityFeed";
@@ -74,10 +75,8 @@ export function DashboardTabs({ header }: { header?: React.ReactNode }) {
               >
                 {label}
                 {count !== null && (
-                  /* badge stays tile/muted even on the active tab (Figma) — 14px text */
-                  <span className="inline-flex items-center rounded-full bg-tile px-2 py-1 text-body leading-none text-ink-muted">
-                    {count}
-                  </span>
+                  /* badge stays tile/muted even on the active tab (Figma) */
+                  <CountBadge textSize="body">{count}</CountBadge>
                 )}
               </button>
             );
