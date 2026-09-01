@@ -330,6 +330,7 @@ export const fleet: Aircraft[] = [
     meters: [
       { label: "Hobbs", value: "812.4", unit: "hrs", meta: "Updated 3d ago", percent: 25 },
       { label: "Tach", value: "795.2", unit: "hrs", meta: "Updated 3d ago", percent: 25 },
+      { label: "Prop", value: "812.4", unit: "hrs", meta: "Overhaul in 1,187 hrs", percent: 40 },
       { label: "Oil", value: ".08", unit: "qt/hr", meta: "Next change in 41 hrs", percent: 25 },
     ],
     logs: [
