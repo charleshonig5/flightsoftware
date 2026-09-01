@@ -236,7 +236,8 @@ gone — the Aircraft(s) tab has exactly one layout (full-width stacked cards).
 
 The sidecar is a **floating sheet**, mirroring the main sheet's grammar:
 **384px** white panel with 24px top and right margins, flush to the viewport
-bottom, only its **top corners** rounded (`rounded-t-field`), hairline
+bottom, only its **top corners** rounded (`rounded-t-card` — the main
+sheet's 14px, it is a top-level sheet), hairline
 border, `shadow-card`. It pushes content left — the outer width animates
 0 ↔ 408px (panel + right margin) over 300ms `ease-snap` with a fixed-width
 inner column so nothing squishes. Gutters match the sheet: `px-6 pt-8.25`.
@@ -289,8 +290,8 @@ Cell anatomy:
 label row (14px icon + `gap-2` + caption muted label), a top-right cluster
 (`gap-2.5`, 10px) of **weekly delta + info icon** (faint → brand on hover,
 tooltip), count row `mt-3.5` — 28 SemiBold count, baseline-aligned 14px
-unit (`gap-2.5`), and a **quiet** chip bottom-right (lifted `mb-1.5` to sit
-on the unit's text box).
+unit (`gap-2.5`), and a **quiet** chip bottom-right — the count row is
+`items-baseline`, so count, unit, and chip label share one baseline.
 
 **Weekly delta**: `TrendUpIcon` (chart-line trend glyph, 12px, mirrored
 `-scale-y-100` for down) + the amount, caption Medium, colored by
@@ -582,3 +583,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-09-01 | 1, 7 | KPI cells gain weekly trend deltas: new `TrendUpIcon` (chart-line glyph), caption Medium amount beside the info icon (14px gap), sentiment coloring (the sanctioned status-color exception), tooltip explains "vs last week", no-change renders nothing. `FleetKpi.delta` derives from a `lastWeek` snapshot. |
 | 2026-09-01 | 7 | Tooltip gains a `fit` variant (hugs one-liners; content now accepts rich nodes); KPI delta tooltips use it, with "Up/Down N" in the delta's sentiment color. |
 | 2026-09-01 | 3 | KPI corner cluster gap (delta -> info icon) 14 -> 10px. |
+| 2026-09-01 | 3, 7 | KPI count row baseline-unified (count, unit, and status-chip label on one baseline; mb-1.5 lift retired); Ask AI sidecar top corners 8 → 14px (`rounded-t-card`) to match the main sheet. |

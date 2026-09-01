@@ -58,7 +58,9 @@ export function AskAiPanel() {
     >
       {/* fixed-width inner so content never squishes while the panel animates */}
       <div className="h-full w-102 pt-6 pr-6">
-        <div className="flex h-full flex-col overflow-hidden rounded-t-field border border-divider bg-card px-6 pt-8.25 pb-3.75 shadow-card">
+        {/* rounded-t-card: the sidecar is a top-level sheet — its top corners
+            match the main content area's 14px, not the 8px field radius */}
+        <div className="flex h-full flex-col overflow-hidden rounded-t-card border border-divider bg-card px-6 pt-8.25 pb-3.75 shadow-card">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ChatLinesIcon className="size-5" />

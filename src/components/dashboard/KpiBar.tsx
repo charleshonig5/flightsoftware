@@ -67,15 +67,14 @@ function KpiCell({ kpi, first }: { kpi: FleetKpi; first: boolean }) {
           </span>
         </Tooltip>
       </span>
-      <div className="mt-3.5 flex items-end justify-between gap-2">
+      {/* one shared baseline: count, unit, and the status chip's label all
+          sit on the same line */}
+      <div className="mt-3.5 flex items-baseline justify-between gap-2">
         <p className="flex items-baseline gap-2.5 whitespace-nowrap">
           <span className="text-headline font-semibold">{kpi.value}</span>
           <span className="text-body">{kpi.unit}</span>
         </p>
-        {/* 6px lift bottom-aligns the chip with the unit word's text box */}
-        <span className="mb-1.5">
-          <Chip tone="quiet">{kpi.status.label}</Chip>
-        </span>
+        <Chip tone="quiet">{kpi.status.label}</Chip>
       </div>
     </div>
   );
