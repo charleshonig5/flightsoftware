@@ -55,6 +55,7 @@
   --shadow-pop: 0 4px 12px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06); /* floating overlays (tooltips, pickers) */
   --shadow-card: 0 0 58px 0 rgb(113 113 113 / 0.05); /* ambient glow on top-level surfaces (main sheet, tables, sidebar) */
   --shadow-card-soft: 0 0 29px 0 rgb(113 113 113 / 0.05); /* lighter glow for panels nested inside a sheet (KPI bar) */
+  --drop-shadow-card: 0 0 29px rgb(113 113 113 / 0.05); /* the site glow as a SILHOUETTE shadow — traces the painted shape (stepped grids), not the bounding box */
 
   /* ---- Radii ---- */
   --radius-check: 4px; /* checkboxes */

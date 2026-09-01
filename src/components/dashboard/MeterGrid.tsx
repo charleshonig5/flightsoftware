@@ -49,9 +49,10 @@ export function MeterGrid({
 }) {
   const cols = Math.min(meters.length, MAX_GRID_COLS) as keyof typeof gridColsClass;
   return (
-    /* one shadow behind the whole block (the site glow), not per tile —
-       rounded-field so the silhouette matches the grid's corner rounding */
-    <div className={`grid ${gridColsClass[cols]} rounded-field shadow-card`}>
+    /* one glow behind the whole block — drop-shadow traces the tiles'
+       painted silhouette, so a partial last row casts a stepped shadow,
+       never the empty bounding rectangle */
+    <div className={`grid ${gridColsClass[cols]} drop-shadow-card`}>
       {meters.map((meter, index) => (
         <MeterTile
           key={meter.label}
