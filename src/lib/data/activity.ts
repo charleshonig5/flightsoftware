@@ -7,12 +7,14 @@
 export type ActivityKind = "meters" | "oil" | "maintenance" | "status" | "records" | "fleet";
 
 /**
- * One sentence fragment. Plain strings are the scaffolding (verbs,
- * connectors, qualifiers) and render muted; `{ key }` fragments are the
- * scannable payload — the object acted on and the value/state it ended at —
- * and render ink. Per-kind emphasis pattern: meters → meter name + new
- * reading; oil → quantities; maintenance → task name; status → item name +
- * new state; records → record object + new value; fleet → aircraft model.
+ * One sentence fragment. Plain strings are the scaffolding (connectors,
+ * qualifiers) and render muted; `{ key }` fragments are the scannable
+ * payload and render ink: the **leading action verb** (merged with its
+ * object when adjacent — "Updated Hobbs", "Logged oil"), plus the object
+ * acted on and the value/state it ended at. Per-kind emphasis pattern:
+ * meters → verb + meter name, new reading; oil → "Logged oil" + quantities;
+ * maintenance → verb + task name; status → item name + new state; records →
+ * verb, record object + new value; fleet → "Added" + aircraft model.
  */
 export type ActivityFragment = string | { key: string };
 
@@ -42,8 +44,7 @@ export const activityMonths: ActivityMonth[] = [
     items: [
       {
         text: [
-          "Updated ",
-          { key: "Hobbs" },
+          { key: "Updated Hobbs" },
           " from 51,264.1 to ",
           { key: "51,270.4" },
           ", ",
@@ -79,7 +80,8 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Logged oil at ",
+          { key: "Logged oil" },
+          " at ",
           { key: "6.5 qts" },
           " with ",
           { key: "1 qt added" },
@@ -91,14 +93,14 @@ export const activityMonths: ActivityMonth[] = [
         kind: "oil",
       },
       {
-        text: ["Updated ", { key: "Hobbs" }, " from 4,807.9 to ", { key: "4,812.6" }, " on"],
+        text: [{ key: "Updated Hobbs" }, " from 4,807.9 to ", { key: "4,812.6" }, " on"],
         tail: "N551KA",
         time: "6:02 PM",
         date: "Aug 18, 2026",
         kind: "meters",
       },
       {
-        text: ["Logged oil at ", { key: "7.0 qts" }, ", oil added, on"],
+        text: [{ key: "Logged oil" }, " at ", { key: "7.0 qts" }, ", oil added, on"],
         tail: "822CN",
         time: "4:32 PM",
         date: "Aug 12, 2026",
@@ -106,7 +108,8 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Logged oil at ",
+          { key: "Logged oil" },
+          " at ",
           { key: "11.0 qts" },
           " with ",
           { key: "2 qts added" },
@@ -119,8 +122,7 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Completed ",
-          { key: "Left Body Gear Brake Pack Replacement" },
+          { key: "Completed Left Body Gear Brake Pack Replacement" },
           " and linked work order #4471 with 6 photos on",
         ],
         tail: "N747CN",
@@ -135,7 +137,8 @@ export const activityMonths: ActivityMonth[] = [
     items: [
       {
         text: [
-          "Changed the ",
+          { key: "Changed" },
+          " the ",
           { key: "Pitot-Static System Check" },
           " interval from every 2 years to ",
           { key: "every 24 calendar months" },
@@ -148,8 +151,7 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Updated ",
-          { key: "Hobbs" },
+          { key: "Updated Hobbs" },
           " from 806.9 to ",
           { key: "812.4" },
           " and ",
@@ -165,8 +167,7 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Changed ",
-          { key: "Oil & Filter" },
+          { key: "Changed Oil & Filter" },
           " interval from 50 to ",
           { key: "45 hours" },
           " on",
@@ -178,8 +179,7 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Completed ",
-          { key: "Transponder Certification" },
+          { key: "Completed Transponder Certification" },
           ", updated the ADS-B configuration, and cleared the avionics squawk on",
         ],
         tail: "N551KA",
@@ -194,7 +194,8 @@ export const activityMonths: ActivityMonth[] = [
     items: [
       {
         text: [
-          "Completed the ",
+          { key: "Completed" },
+          " the ",
           { key: "A-Check Package" },
           " covering 42 task cards with zero findings carried forward on",
         ],
@@ -204,14 +205,14 @@ export const activityMonths: ActivityMonth[] = [
         kind: "maintenance",
       },
       {
-        text: ["Added ", { key: "Beechcraft King Air 350i" }, " to the fleet as"],
+        text: [{ key: "Added Beechcraft King Air 350i" }, " to the fleet as"],
         tail: "N551KA",
         time: "10:22 AM",
         date: "Jun 12, 2026",
         kind: "fleet",
       },
       {
-        text: ["Completed ", { key: "100-Hour Inspection" }, " with no discrepancies on"],
+        text: [{ key: "Completed 100-Hour Inspection" }, " with no discrepancies on"],
         tail: "N314CN",
         time: "1:26 PM",
         date: "Jun 4, 2026",
@@ -224,8 +225,7 @@ export const activityMonths: ActivityMonth[] = [
     items: [
       {
         text: [
-          "Completed ",
-          { key: "100-Hour Inspection" },
+          { key: "Completed 100-Hour Inspection" },
           " with two minor discrepancies corrected on",
         ],
         tail: "N314CN",
@@ -234,14 +234,14 @@ export const activityMonths: ActivityMonth[] = [
         kind: "maintenance",
       },
       {
-        text: ["Updated ", { key: "Hobbs" }, " from 4,791.2 to ", { key: "4,798.5" }, " on"],
+        text: [{ key: "Updated Hobbs" }, " from 4,791.2 to ", { key: "4,798.5" }, " on"],
         tail: "N314CN",
         time: "8:47 AM",
         date: "May 19, 2026",
         kind: "meters",
       },
       {
-        text: ["Logged oil at ", { key: "6.0 qts" }, ", no oil added, on"],
+        text: [{ key: "Logged oil" }, " at ", { key: "6.0 qts" }, ", no oil added, on"],
         tail: "822CN",
         time: "5:12 PM",
         date: "May 6, 2026",
@@ -249,8 +249,7 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Uploaded ",
-          { key: "4 photos" },
+          { key: "Uploaded 4 photos" },
           " to the ",
           { key: "Wing Gear Tire Replacement" },
           " log on",
@@ -273,7 +272,7 @@ export const activityMonths: ActivityMonth[] = [
         kind: "status",
       },
       {
-        text: ["Updated ", { key: "Tach" }, " from 1,839.5 to ", { key: "1,847.0" }, " on"],
+        text: [{ key: "Updated Tach" }, " from 1,839.5 to ", { key: "1,847.0" }, " on"],
         tail: "N314CN",
         time: "10:05 AM",
         date: "Apr 14, 2026",
@@ -281,7 +280,8 @@ export const activityMonths: ActivityMonth[] = [
       },
       {
         text: [
-          "Uploaded the ",
+          { key: "Uploaded" },
+          " the ",
           { key: "airworthiness certificate" },
           " and updated the registration records on",
         ],
@@ -297,7 +297,8 @@ export const activityMonths: ActivityMonth[] = [
     items: [
       {
         text: [
-          "Changed the ",
+          { key: "Changed" },
+          " the ",
           { key: "Annual Inspection" },
           " due date from Mar 12, 2027 to ",
           { key: "Feb 28, 2027" },
@@ -309,7 +310,7 @@ export const activityMonths: ActivityMonth[] = [
         kind: "records",
       },
       {
-        text: ["Added ", { key: "Cirrus SR22 G6" }, " to the fleet as"],
+        text: [{ key: "Added Cirrus SR22 G6" }, " to the fleet as"],
         tail: "822CN",
         time: "9:14 AM",
         date: "Mar 3, 2026",

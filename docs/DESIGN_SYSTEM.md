@@ -394,11 +394,14 @@ triangle (status changes, e.g. due → overdue), file-with-check
 (records/certification/config), aircraft (fleet changes) — then a column
 (`gap-1.5`) of muted 10px time + date (`gap-3.5`) over the 14px sentence.
 **Scannable two-tone sentences**: the sentence base is `text-ink-muted`
-(verbs, connectors, qualifiers) and the **key fragments render ink** — the
-object acted on and the value/state it ended at. Emphasis pattern per kind:
-meters → meter name + new reading; oil → quantities ("6.5 qts", "1 qt
-added"); maintenance → task name; status → item name + new state; records →
-record object + new value; fleet → aircraft model. Sentences are typed
+(connectors, qualifiers) and the **key fragments render ink** — the
+**leading action verb** (merged with its object when adjacent: "Updated
+Hobbs", "Logged oil"), the object acted on, and the value/state it ended
+at. Scanning the ink fragments alone tells the story: "Logged oil · 6.5
+qts · 1 qt added". Emphasis pattern per kind: meters → verb + meter name,
+new reading; oil → "Logged oil" + quantities; maintenance → verb + task
+name; status → item name + new state; records → verb, record object + new
+value; fleet → "Added" + aircraft model. Sentences are typed
 fragment arrays (`ActivityFragment = string | { key }`) — emphasis is data,
 never regex. The sentence **ends with the aircraft tail as a brand link**
 with a 16px ↗ (`gap-0.5`) that deep-links to the aircraft page — on link
@@ -528,4 +531,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Scroll-clip audit: pre-table blocks widened across the sheet gutters (`-mx/px-10.75`) — the table card's 58px glow was climbing the unmasked gutters beside the pinned block and clipping at the tab rule. Rule recorded: pinned masks must cover the shadow bleed of whatever scrolls beneath. All other surfaces (fleet cards, activity, overview, caps) verified clean via 10× shadow boost. |
 | 2026-08-31 | 7 | Pinned header corner notches sealed: a square `-z-10 bg-card` mask behind the header (rows were peeking through the transparent notch outside the rounded corner arc). Full-platform red-content sweep: every scrolling surface, filtered and unfiltered, verified pixel-clean at the rule, corners, and gutters. |
 | 2026-08-31 | 7 | 1px scroll-start jump killed: header pin offset now includes the card's top border (`+ 1px`) so the pinned position equals the rest position exactly — header + stroke measured sub-pixel identical at 9 scroll depths on both pages. Rule: sticky offsets must account for every border between the measured ancestor and the pinned edge. |
-| 2026-08-31 | 7 | Activity sentences made scannable: muted scaffolding + ink key fragments (object acted on + ending value/state), per-kind emphasis pattern documented; `ActivityItem.text` restructured from string to typed fragment array. |
+| 2026-08-31 | 7 | Activity sentences made scannable: muted scaffolding + ink key fragments (leading action verb, object acted on, ending value/state), per-kind emphasis pattern documented; `ActivityItem.text` restructured from string to typed fragment array. |
