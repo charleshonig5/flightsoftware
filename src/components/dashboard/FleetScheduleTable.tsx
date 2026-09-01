@@ -188,6 +188,13 @@ export function FleetScheduleTable({
           style={{ top: "calc(var(--cap-h, 0px) + var(--pre-h, 0px))" }}
           className={`sticky z-10 grid ${TABLE_COLS} items-center rounded-t-field border-b border-divider bg-card px-6 py-3.25`}
         >
+          {/* square mask first (-z-10: under the labels, over scrolled rows):
+              the rounded bg leaves the corner notches transparent, so rows
+              would peek through them while pinned */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-px -top-px bottom-0 -z-10 bg-card"
+          />
           <div
             aria-hidden
             className="pointer-events-none absolute -inset-x-px -top-px bottom-0 rounded-t-field border-x border-t border-divider"

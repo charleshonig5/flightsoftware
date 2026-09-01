@@ -331,11 +331,15 @@ only rows slide underneath. Three pieces:
    directly under the block. `--pre-h` is the block's measured height,
    published onto the table root by a ResizeObserver (same pattern as
    `--cap-h`, which the tab components publish from the cap).
-3. **Edge overlay** — an absolute, aria-hidden child of the header
-   (`-inset-x-px -top-px bottom-0 rounded-t-field border-x border-t`) that
-   re-draws the card's top stroke + corners: the card's real top edge scrolls
-   away behind the block, but the visible top edge stays fixed. At rest the
-   overlay's 1px borders sit exactly on the card's own borders (invisible).
+3. **Edge overlay** — two absolute, aria-hidden children of the header
+   spanning `-inset-x-px -top-px bottom-0`: first a **square `-z-10 bg-card`
+   mask** (under the labels, over scrolled rows — the header's rounded bg
+   leaves the corner notches transparent, and rows would peek through them
+   while pinned), then the **stroke layer** (`rounded-t-field border-x
+   border-t`) that re-draws the card's top edge: the card's real top scrolls
+   away behind the block, but the visible top edge stays fixed. At rest both
+   layers are invisible (white-on-white; 1px borders sit exactly on the
+   card's own).
 Net effect: filters, search, chips, card top, and column titles are always
 visible; adding a chip simply grows the pinned stack (and the card shifts
 down — expected). Never mask scrolled content below the tab rule with
@@ -510,3 +514,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | all | Documentation audit: status header lists every locked frame; stale toggle/sort/View-Transitions references removed (dead view-transition CSS deleted from globals); type-ramp weights corrected (meter values Regular, plane tail SemiBold, Ask AI prompt headline); KPI cell numbers synced (108px); SearchInput documented; sidebar section points at the sliding indicator. |
 | 2026-08-31 | 7 | Pinned-table scroll model (both tables): toolbar + filter chips + card top + column header all pin at their rest position — nothing above the rows moves on scroll; rows slide underneath. Pre-table block publishes `--pre-h`; header edge-overlay keeps the card's top stroke/corners fixed. Chips always visible while filtering. |
 | 2026-08-31 | 7 | Scroll-clip audit: pre-table blocks widened across the sheet gutters (`-mx/px-10.75`) — the table card's 58px glow was climbing the unmasked gutters beside the pinned block and clipping at the tab rule. Rule recorded: pinned masks must cover the shadow bleed of whatever scrolls beneath. All other surfaces (fleet cards, activity, overview, caps) verified clean via 10× shadow boost. |
+| 2026-08-31 | 7 | Pinned header corner notches sealed: a square `-z-10 bg-card` mask behind the header (rows were peeking through the transparent notch outside the rounded corner arc). Full-platform red-content sweep: every scrolling surface, filtered and unfiltered, verified pixel-clean at the rule, corners, and gutters. |
