@@ -233,6 +233,7 @@ export function AircraftTabs({
           <MeterGrid
             meters={aircraft.meters}
             entrance={false}
+            glow
             onEdit={(meter) =>
               isUpdatableMeter(meter)
                 ? setMetersModal({ open: true, focusMeter: meter.label })

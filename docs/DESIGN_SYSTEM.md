@@ -172,7 +172,7 @@ Elevation:
 |---|---|---|
 | `--shadow-card` | `0 0 58px rgb(113 113 113 / 5%)` | Ambient glow: the sheet (via its glow layer), tables, aircraft cards, **all buttons**, **v2 overlays (tooltips, filter popovers, dropdowns)**, **modal panels**, the Ask AI sidecar, paddles, activity icon chips |
 | `--shadow-card-soft` | `0 0 29px rgb(113 113 113 / 5%)` | Half-strength glow for panels nested inside the sheet (KPI bar) |
-| `--drop-shadow-card` | `drop-shadow 0 0 29px rgb(113 113 113 / 5%)` | The site glow as a **silhouette** shadow (`filter: drop-shadow`): traces the painted shape, not the bounding box — required for stepped shapes like the meter grid's partial last row |
+| `--drop-shadow-card` | `drop-shadow 0 0 29px rgb(113 113 113 / 5%)` | The site glow as a **silhouette** shadow (`filter: drop-shadow`): traces the painted shape, not the bounding box — required for stepped shapes like the meter grid's partial last row. **Plane Overview only** — grids inside already-glowing dashboard cards stay flat |
 | `--shadow-pop` | `0 4px 12px 8%, 0 1px 3px 6%` | Legacy v1 overlays not yet redesigned (dropdown pickers) |
 | `--blur-scrim` | 12px | Modal lightbox backdrop blur |
 
@@ -444,10 +444,12 @@ nudges via `card-nav-hover`). Header: tail 18 SemiBold + status chip
 (`gap-2`), model 14 Regular below (`gap-1.5`); right side Update Meters /
 Log Oil pills (`gap-2`) + 16px nav arrow (`gap-3.5`). Below (`mt-6`) the
 **flush meter grid**: `grid-cols-4`, zero gap — every cell carries a full
-hairline border, `-ml-px`/`-mt-px` overlap collapses shared edges, and only
-cells sitting on an actual grid corner get `rounded-*-field` (a partial last
-row leaves its outer corner square). No maintenance preview, no collapse —
-that content lives in the Maintenance Schedule tab.
+hairline border, `-ml-px`/`-mt-px` overlap collapses shared edges, and a
+corner gets `rounded-*-field` whenever **both edges meeting at it are
+exposed** — so a partial last row rounds its stepped outer corners too
+(the lone last tile's bottom-right, the step corner above the gap), while
+the step's inner junctions stay square. No maintenance preview, no
+collapse — that content lives in the Maintenance Schedule tab.
 
 ### Meter tiles (`dashboard/MeterTile.tsx` + `dashboard/MeterGrid.tsx`)
 The flush grid lives in the shared `MeterGrid` — used by dashboard aircraft
@@ -558,3 +560,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 2, 7 | Today's date added under the dashboard greeting (muted 14, weekday + month + ordinal day, no year) — the reference point for the app's relative due labels. |
 | 2026-08-31 | 3 | Greeting date gap tightened to ~8px optical (`mt-0.5`); dashboard hero actions top-align with the greeting line instead of centering on the taller greeting + date block. |
 | 2026-08-31 | 6, 7 | Meter grid gets the site glow — as a true silhouette: new `--drop-shadow-card` token (`filter: drop-shadow`) traces the tiles' stepped shape, so a partial last row casts an L-shaped glow, never the empty bounding rectangle. |
+| 2026-08-31 | 6, 7 | Meter-grid glow scoped to the plane Overview only (dashboard cards already glow — no nested double glow); corner rule upgraded: any corner with two exposed edges rounds (stepped grids round their outer step corners, inner junctions stay square). |
