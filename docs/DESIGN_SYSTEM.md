@@ -389,7 +389,11 @@ hairline, `rounded-field`, `shadow-card`, 126px min width, 13px gutters:
 muted 10px "Filter by X" title, checkbox list (16px `rounded-check` boxes,
 hairline off / brand fill + white check on, 10px ink labels, `gap-2` rows),
 hairline divider, then **Apply** (10 Medium brand) and **Clear all** (10
-Medium muted) at `gap-3.5`. Apply commits; Esc/outside click dismisses.
+Medium muted) at `gap-3.5`. **Long lists scroll in place**: the options
+well caps at `max-h-40` (~6.5 rows — the half-cut row is the scroll cue),
+scrollbar hidden, with 24px card-white edge fades (the Mercury fade
+grammar) that appear only when more content lies in that direction; the
+title and the Apply/Clear footer never scroll. Apply commits; Esc/outside click dismisses.
 Active filters render as **quiet chips** inside the pinned pre-table block
 (14px above the table, 24px under a toolbar): `bg-brand-soft` + muted 10px
 `"Column: values"` text with a 10px ✕ (`gap-2`) that clears the column.
@@ -584,3 +588,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-09-01 | 7 | Tooltip gains a `fit` variant (hugs one-liners; content now accepts rich nodes); KPI delta tooltips use it, with "Up/Down N" in the delta's sentiment color. |
 | 2026-09-01 | 3 | KPI corner cluster gap (delta -> info icon) 14 -> 10px. |
 | 2026-09-01 | 3, 7 | KPI count row baseline-unified (count, unit, and status-chip label on one baseline; mb-1.5 lift retired); Ask AI sidecar top corners 8 → 14px (`rounded-t-card`) to match the main sheet. |
+| 2026-09-01 | 4, 7 | Filter popover option lists cap at max-h-40 with an inner scroll — hidden scrollbar, scroll-aware card-white edge fades, Apply/Clear pinned below (long Type lists no longer stretch the popover). |
