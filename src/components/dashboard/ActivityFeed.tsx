@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { activityMonths, type ActivityFragment, type ActivityKind } from "@/lib/data/activity";
 import {
   AircraftIcon,
   AlertTriangleIcon,
   ArrowUpRightIcon,
+  ChevronUpIcon,
   MeterActivityIcon,
   OilDropIcon,
   RecordsActivityIcon,
@@ -59,6 +63,17 @@ export function ActivityFeed({ tail }: { tail?: string }) {
         .filter(({ items }) => items.length > 0)
     : activityMonths;
 
+  /* Months are all open by default; the header chevron collapses one so a
+     long month can be tucked away — the count badge still tells its story */
+  const [collapsedMonths, setCollapsedMonths] = useState<ReadonlySet<string>>(new Set());
+  const toggleMonth = (month: string) =>
+    setCollapsedMonths((current) => {
+      const next = new Set(current);
+      if (next.has(month)) next.delete(month);
+      else next.add(month);
+      return next;
+    });
+
   /* Rows cascade across the whole feed (running index spans month groups) */
   let runningIndex = 0;
 
@@ -73,15 +88,33 @@ export function ActivityFeed({ tail }: { tail?: string }) {
   return (
     <div className="rounded-field border border-divider bg-card p-6 shadow-card">
       <div className="flex flex-col gap-8.5">
-        {months.map(({ month, items }) => (
+        {months.map(({ month, items }) => {
+          const isCollapsed = collapsedMonths.has(month);
+          return (
           <section key={month}>
             <div className="flex items-center gap-3.5">
               <h3 className="text-body">{month}</h3>
               <span className="text-caption text-ink-muted">
                 {items.length} Item{items.length === 1 ? "" : "s"}
               </span>
+              {/* quiet collapse affordance, far right above the rule —
+                  the sidebar-tree chevron grammar */}
+              <button
+                type="button"
+                aria-expanded={!isCollapsed}
+                aria-label={`${isCollapsed ? "Expand" : "Collapse"} ${month}`}
+                onClick={() => toggleMonth(month)}
+                className="ml-auto cursor-pointer text-ink-muted transition-colors duration-150 hover:text-ink"
+              >
+                <ChevronUpIcon
+                  className={`size-3.5 transition-transform duration-150 ease-(--ease-snap) ${
+                    isCollapsed ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
             </div>
             <div className="mt-2 border-b border-divider" />
+            {!isCollapsed && (
             <ul className="mt-6 flex flex-col gap-6">
               {items.map((item) => {
                 const Icon = kindIcon[item.kind];
@@ -121,8 +154,10 @@ export function ActivityFeed({ tail }: { tail?: string }) {
                 );
               })}
             </ul>
+            )}
           </section>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

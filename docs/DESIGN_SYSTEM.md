@@ -386,7 +386,12 @@ and v2's `quiet` (brand-soft fill + muted text — KPI bar only).
 One padded panel (`rounded-field` + hairline + `shadow-card`, `p-6`) holding
 **month groups** at `gap-8.5`. Group header: month 14 Regular + muted 10px
 "N Items" count (`gap-3.5`), hairline rule 8px below; items start 24px under
-the rule, stacked at `gap-6`. Item row (`gap-3.5`): a **26px icon chip**
+the rule, stacked at `gap-6`. **Collapsible months**: a quiet 14px chevron
+at the far right of the header (above the rule; muted, ink on hover; the
+sidebar-tree chevron grammar, 150ms snap rotation) collapses one month to
+its header row — an organizational option, never the default: **all months
+open on load**, and the count badge keeps informing while collapsed.
+Re-expanding replays the row cascade. Item row (`gap-3.5`): a **26px icon chip**
 (`rounded-full`, brand-soft fill, hairline, `shadow-card`) holding a muted
 14px icon — every action type has one that reads at a glance: gauge (meter
 readings), droplet (oil logs), toolbox (physical maintenance work), alert
@@ -532,3 +537,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Pinned header corner notches sealed: a square `-z-10 bg-card` mask behind the header (rows were peeking through the transparent notch outside the rounded corner arc). Full-platform red-content sweep: every scrolling surface, filtered and unfiltered, verified pixel-clean at the rule, corners, and gutters. |
 | 2026-08-31 | 7 | 1px scroll-start jump killed: header pin offset now includes the card's top border (`+ 1px`) so the pinned position equals the rest position exactly — header + stroke measured sub-pixel identical at 9 scroll depths on both pages. Rule: sticky offsets must account for every border between the measured ancestor and the pinned edge. |
 | 2026-08-31 | 7 | Activity sentences made scannable: muted scaffolding + ink key fragments (leading action verb, object acted on, ending value/state), per-kind emphasis pattern documented; `ActivityItem.text` restructured from string to typed fragment array. |
+| 2026-08-31 | 7 | Activity months collapsible: quiet far-right chevron in the group header (sidebar-tree grammar); all open by default, count badge stays visible collapsed, expand replays the cascade. |
