@@ -156,6 +156,20 @@
   }
 }
 
+/* Collapsible region (activity months): the grid-rows 1fr↔0fr trick animates
+   height-to-auto shut and open. Put `collapse-region` on the wrapper, add
+   `collapse-region-closed` while collapsed, and give the single child
+   overflow-hidden (that also lets the row shrink to zero). 250ms snap —
+   the row-in timing, so open/shut sits in the same rhythm as the rows. */
+@utility collapse-region {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 250ms var(--ease-snap);
+}
+@utility collapse-region-closed {
+  grid-template-rows: 0fr;
+}
+
 /* Fires only when the card is hovered on its NAVIGABLE area — suppressed while
    any interactive child (buttons, tiles, rows, non-nav links) is hovered, so
    the ↗ nav cue never lies about what a click will do. */
@@ -175,6 +189,9 @@ body {
   .animate-row-in,
   .animate-chip-in {
     animation: none;
+  }
+  .collapse-region {
+    transition: none;
   }
   /* 1ms (not none) so animationend still fires and exiting modals unmount */
   .animate-scrim-in,

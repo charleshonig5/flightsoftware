@@ -114,7 +114,17 @@ export function ActivityFeed({ tail }: { tail?: string }) {
               </button>
             </div>
             <div className="mt-2 border-b border-divider" />
-            {!isCollapsed && (
+            {/* height-to-auto shut/open via the collapse-region utility;
+                inert keeps hidden tail links out of the tab order */}
+            <div
+              inert={isCollapsed || undefined}
+              className={`collapse-region ${isCollapsed ? "collapse-region-closed" : ""}`}
+            >
+              <div
+                className={`overflow-hidden transition-opacity duration-250 ease-(--ease-snap) ${
+                  isCollapsed ? "opacity-0" : "opacity-100"
+                }`}
+              >
             <ul className="mt-6 flex flex-col gap-6">
               {items.map((item) => {
                 const Icon = kindIcon[item.kind];
@@ -154,7 +164,8 @@ export function ActivityFeed({ tail }: { tail?: string }) {
                 );
               })}
             </ul>
-            )}
+              </div>
+            </div>
           </section>
           );
         })}
