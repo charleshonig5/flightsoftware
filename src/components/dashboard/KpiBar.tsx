@@ -24,13 +24,22 @@ const kpiIcon = {
 function KpiDelta({ kpi }: { kpi: FleetKpi }) {
   const { change, good } = kpi.delta;
   if (change === 0) return null;
+  const tone = good ? "text-success" : "text-danger";
   return (
-    <Tooltip content={`${change > 0 ? "Up" : "Down"} ${Math.abs(change)} vs last week`}>
-      <span
-        className={`flex items-center gap-1 text-caption font-medium ${
-          good ? "text-success" : "text-danger"
-        }`}
-      >
+    /* fit: the bubble hugs the one-liner; "Up/Down N" carries the delta's
+       sentiment color, the period stays ink */
+    <Tooltip
+      fit
+      content={
+        <>
+          <span className={`font-medium ${tone}`}>
+            {change > 0 ? "Up" : "Down"} {Math.abs(change)}
+          </span>{" "}
+          vs last week
+        </>
+      }
+    >
+      <span className={`flex items-center gap-1 text-caption font-medium ${tone}`}>
         <TrendUpIcon className={`size-3 ${change < 0 ? "-scale-y-100" : ""}`} />
         {Math.abs(change)}
       </span>

@@ -296,7 +296,9 @@ on the unit's text box).
 `-scale-y-100` for down) + the amount, caption Medium, colored by
 **sentiment, never direction** (overdue up = danger, current up = success —
 `FleetKpi.delta.good` decides). Hover explains "Up/Down N vs last week" via
-the tooltip; a **no-change week renders nothing**. Deltas derive from the
+the `fit` tooltip (bubble hugs the line; "Up/Down N" wears the delta's
+sentiment color, the period stays ink); a **no-change week renders
+nothing**. Deltas derive from the
 `lastWeek` snapshot in `data/aircraft.ts` so counts and movement can never
 disagree. Cell height is unchanged — the delta lives in the corner, not on
 a new line.
@@ -395,9 +397,10 @@ header label ink. Last Service filters by year; Status by
 Overdue/Upcoming/Current.
 
 ### Tooltips (`ui/Tooltip.tsx`) — v2 (Figma `107:9826`, title since removed)
-White + hairline, `rounded-field`, `shadow-card`, `p-2.5` (10px), fixed
-156px width (`w-39`), centered above the trigger with the fade/slip
-entrance. **Body
+White + hairline, `rounded-field`, `shadow-card`, `p-2.5` (10px), centered
+above the trigger with the fade/slip entrance. Width: fixed 156px (`w-39`)
+for explanatory copy; the `fit` variant hugs a short one-liner (KPI
+deltas). **Body
 copy only** — ink 10px (leading 14). The title row was removed: the
 trigger's context already names the subject, so tooltips say one thing.
 
@@ -577,3 +580,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-09-01 | 7 | Tooltip title row removed everywhere — body copy only (the trigger's context already names the subject); `title` prop deleted from `ui/Tooltip.tsx`. |
 | 2026-09-01 | 3, 7 | Tooltip padding 14 → 10px (`p-2.5`) — tighter bubble around the single-line body copy. |
 | 2026-09-01 | 1, 7 | KPI cells gain weekly trend deltas: new `TrendUpIcon` (chart-line glyph), caption Medium amount beside the info icon (14px gap), sentiment coloring (the sanctioned status-color exception), tooltip explains "vs last week", no-change renders nothing. `FleetKpi.delta` derives from a `lastWeek` snapshot. |
+| 2026-09-01 | 7 | Tooltip gains a `fit` variant (hugs one-liners; content now accepts rich nodes); KPI delta tooltips use it, with "Up/Down N" in the delta's sentiment color. |
