@@ -392,14 +392,23 @@ the rule, stacked at `gap-6`. Item row (`gap-3.5`): a **26px icon chip**
 readings), droplet (oil logs), toolbox (physical maintenance work), alert
 triangle (status changes, e.g. due → overdue), file-with-check
 (records/certification/config), aircraft (fleet changes) — then a column
-(`gap-1.5`) of muted 10px time + date (`gap-3.5`) over the 14px ink
-sentence. The sentence **ends with the aircraft tail as a brand link** with
-a 16px ↗ (`gap-0.5`) that deep-links to the aircraft page — on link hover
-the arrow nudges up-right (the card nav-arrow grammar); no trailing
-period. Content format (locked): one impersonal sentence — **never any
-people or vendor names** — past-tense verb first, from→to values where
-applicable, the aircraft always last. Data: `src/lib/data/activity.ts`
-(`activityMonths`, newest first, reaching back several months).
+(`gap-1.5`) of muted 10px time + date (`gap-3.5`) over the 14px sentence.
+**Scannable two-tone sentences**: the sentence base is `text-ink-muted`
+(verbs, connectors, qualifiers) and the **key fragments render ink** — the
+object acted on and the value/state it ended at. Emphasis pattern per kind:
+meters → meter name + new reading; oil → quantities ("6.5 qts", "1 qt
+added"); maintenance → task name; status → item name + new state; records →
+record object + new value; fleet → aircraft model. Sentences are typed
+fragment arrays (`ActivityFragment = string | { key }`) — emphasis is data,
+never regex. The sentence **ends with the aircraft tail as a brand link**
+with a 16px ↗ (`gap-0.5`) that deep-links to the aircraft page — on link
+hover the arrow nudges up-right (the card nav-arrow grammar); no trailing
+period. Three text colors per row, always in this role split: muted
+scaffolding, ink keys, brand tail link. Content format (locked): one
+impersonal sentence — **never any people or vendor names** — past-tense
+verb first, from→to values where applicable, the aircraft always last.
+Data: `src/lib/data/activity.ts` (`activityMonths`, newest first, reaching
+back several months).
 Plane pages get a **scoped Activity tab** (after Maintenance Schedule) —
 the same feed filtered to that aircraft, with empty months dropped and the
 tail link omitted (the sentence's trailing "on"/"as" connector, plus any
@@ -519,3 +528,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Scroll-clip audit: pre-table blocks widened across the sheet gutters (`-mx/px-10.75`) — the table card's 58px glow was climbing the unmasked gutters beside the pinned block and clipping at the tab rule. Rule recorded: pinned masks must cover the shadow bleed of whatever scrolls beneath. All other surfaces (fleet cards, activity, overview, caps) verified clean via 10× shadow boost. |
 | 2026-08-31 | 7 | Pinned header corner notches sealed: a square `-z-10 bg-card` mask behind the header (rows were peeking through the transparent notch outside the rounded corner arc). Full-platform red-content sweep: every scrolling surface, filtered and unfiltered, verified pixel-clean at the rule, corners, and gutters. |
 | 2026-08-31 | 7 | 1px scroll-start jump killed: header pin offset now includes the card's top border (`+ 1px`) so the pinned position equals the rest position exactly — header + stroke measured sub-pixel identical at 9 scroll depths on both pages. Rule: sticky offsets must account for every border between the measured ancestor and the pinned edge. |
+| 2026-08-31 | 7 | Activity sentences made scannable: muted scaffolding + ink key fragments (object acted on + ending value/state), per-kind emphasis pattern documented; `ActivityItem.text` restructured from string to typed fragment array. |

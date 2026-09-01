@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { activityMonths, type ActivityKind } from "@/lib/data/activity";
+import { activityMonths, type ActivityFragment, type ActivityKind } from "@/lib/data/activity";
 import {
   AircraftIcon,
   AlertTriangleIcon,
@@ -19,6 +19,31 @@ const kindIcon: Record<ActivityKind, typeof ToolboxIcon> = {
   records: RecordsActivityIcon,
   fleet: AircraftIcon,
 };
+
+/**
+ * Scannable sentence: scaffolding fragments render muted, `{ key }`
+ * fragments (the object + outcome) render ink. Scoped feeds drop the
+ * trailing "on"/"as" connector — always the tail of the last fragment.
+ */
+function sentence(fragments: ActivityFragment[], trimConnector: boolean) {
+  let parts = fragments;
+  if (trimConnector) {
+    const last = fragments[fragments.length - 1];
+    if (typeof last === "string") {
+      const trimmed = last.replace(/,? (on|as)$/, "");
+      parts = trimmed === "" ? fragments.slice(0, -1) : [...fragments.slice(0, -1), trimmed];
+    }
+  }
+  return parts.map((fragment, i) =>
+    typeof fragment === "string" ? (
+      fragment
+    ) : (
+      <span key={i} className="text-ink">
+        {fragment.key}
+      </span>
+    ),
+  );
+}
 
 /**
  * v2 activity feed (Figma 117:581): one padded panel, month groups under
@@ -77,10 +102,10 @@ export function ActivityFeed({ tail }: { tail?: string }) {
                       </p>
                       {tail ? (
                         /* Scoped feed: the plane is the context — no tail link */
-                        <p className="text-body">{item.text.replace(/,? (on|as)$/, "")}</p>
+                        <p className="text-body text-ink-muted">{sentence(item.text, true)}</p>
                       ) : (
-                        <p className="text-body">
-                          {item.text}{" "}
+                        <p className="text-body text-ink-muted">
+                          {sentence(item.text, false)}{" "}
                           <Link
                             href={`/aircraft/${item.tail}`}
                             className="group/tail inline-flex items-center gap-0.5 align-bottom text-brand hover:underline"
