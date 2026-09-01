@@ -71,7 +71,9 @@ Rules:
 
 - Status colors appear **only** in status chips — never on standalone text,
   icons, or gauges (v2 gauge arcs always carry the brand→brand-strong
-  gradient on a divider-grey track).
+  gradient on a divider-grey track). **One sanctioned exception**: the KPI
+  **weekly delta** (trend glyph + amount, caption Medium) wears
+  danger/success directly — colored by sentiment, never direction.
 - v2 change: **KPI chips are always `quiet`** (brand-soft fill + muted text),
   regardless of sentiment. Status colors live in the table/card rows where the
   item-level truth is.
@@ -284,10 +286,20 @@ fill, divider hairline, **brand** Medium text, `hover:bg-brand-soft`. Sizes:
 bottom pad is optically corrected to 20px because the count's 36px line box
 carries ~7px of dead leading under the 28px digits (24px read ~31px).
 Cell anatomy:
-label row (14px icon + `gap-2` + caption muted label), info icon top-right
-(faint → brand on hover, tooltip), count row `mt-3.5` — 28 SemiBold count,
-baseline-aligned 14px unit (`gap-2.5`), and a **quiet** chip bottom-right
-(lifted `mb-1.5` to sit on the unit's text box).
+label row (14px icon + `gap-2` + caption muted label), a top-right cluster
+(`gap-3.5`) of **weekly delta + info icon** (faint → brand on hover,
+tooltip), count row `mt-3.5` — 28 SemiBold count, baseline-aligned 14px
+unit (`gap-2.5`), and a **quiet** chip bottom-right (lifted `mb-1.5` to sit
+on the unit's text box).
+
+**Weekly delta**: `TrendUpIcon` (chart-line trend glyph, 12px, mirrored
+`-scale-y-100` for down) + the amount, caption Medium, colored by
+**sentiment, never direction** (overdue up = danger, current up = success —
+`FleetKpi.delta.good` decides). Hover explains "Up/Down N vs last week" via
+the tooltip; a **no-change week renders nothing**. Deltas derive from the
+`lastWeek` snapshot in `data/aircraft.ts` so counts and movement can never
+disagree. Cell height is unchanged — the delta lives in the corner, not on
+a new line.
 
 ### Tab overflow (plane pages, `aircraft/AircraftTabs.tsx`)
 Mercury-style: the tab row never wraps or shrinks — it scrolls horizontally
@@ -564,3 +576,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 6, 7 | Meter-grid glow scoped to the plane Overview only (dashboard cards already glow — no nested double glow); corner rule upgraded: any corner with two exposed edges rounds (stepped grids round their outer step corners, inner junctions stay square). |
 | 2026-09-01 | 7 | Tooltip title row removed everywhere — body copy only (the trigger's context already names the subject); `title` prop deleted from `ui/Tooltip.tsx`. |
 | 2026-09-01 | 3, 7 | Tooltip padding 14 → 10px (`p-2.5`) — tighter bubble around the single-line body copy. |
+| 2026-09-01 | 1, 7 | KPI cells gain weekly trend deltas: new `TrendUpIcon` (chart-line glyph), caption Medium amount beside the info icon (14px gap), sentiment coloring (the sanctioned status-color exception), tooltip explains "vs last week", no-change renders nothing. `FleetKpi.delta` derives from a `lastWeek` snapshot. |

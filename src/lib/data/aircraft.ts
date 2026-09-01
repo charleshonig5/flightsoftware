@@ -63,6 +63,9 @@ export interface FleetKpi {
   unit: string;
   /** Tooltip copy behind the card's info icon */
   info: string;
+  /** Week-over-week movement: `change` = this week − last week; `good` =
+   *  whether the move is welcome news (drives the delta's green/red). */
+  delta: { change: number; good: boolean };
   status: { level: StatusLevel; label: string };
 }
 
@@ -524,6 +527,19 @@ const totals = fleet.reduce(
   { overdue: 0, upcoming: 0, current: 0 },
 );
 
+/** Last week's snapshot of the KPI counts — deltas derive from it so this
+ *  week's numbers and their movement can never disagree. (Fake history:
+ *  a real backend would record these.) */
+const lastWeek = { attention: 1, overdue: 2, upcoming: 8, current: 34 };
+
+/** `good`: fewer problem items is welcome news; more current items is. */
+const delta = (now: number, before: number, moreIsGood: boolean) => {
+  const change = now - before;
+  return { change, good: change === 0 ? true : moreIsGood === change > 0 };
+};
+
+const attentionCount = fleet.filter((aircraft) => aircraft.badge).length;
+
 /** Fleet-level stats for the dashboard header and KPI row — derived from the fleet. */
 export const fleetStats = {
   aircraftCount: fleet.length,
@@ -532,9 +548,10 @@ export const fleetStats = {
     {
       icon: "aircraft",
       label: "Aircraft Status",
-      value: String(fleet.filter((aircraft) => aircraft.badge).length),
+      value: String(attentionCount),
       unit: "Aircraft(s)",
       info: "Aircraft in your fleet with overdue or soon-due maintenance items.",
+      delta: delta(attentionCount, lastWeek.attention, false),
       status: { level: "danger", label: "Need(s) attention" },
     },
     {
@@ -543,6 +560,7 @@ export const fleetStats = {
       value: String(totals.overdue),
       unit: "Item(s)",
       info: "Maintenance items past their due date or hour limit.",
+      delta: delta(totals.overdue, lastWeek.overdue, false),
       status: { level: "danger", label: "Overdue" },
     },
     {
@@ -551,6 +569,7 @@ export const fleetStats = {
       value: String(totals.upcoming),
       unit: "Item(s)",
       info: "Items coming due soon by date or accumulated hours.",
+      delta: delta(totals.upcoming, lastWeek.upcoming, false),
       status: { level: "warning", label: "Upcoming" },
     },
     {
@@ -559,6 +578,7 @@ export const fleetStats = {
       value: String(totals.current),
       unit: "Item(s)",
       info: "Items in good standing with time or hours remaining.",
+      delta: delta(totals.current, lastWeek.current, true),
       status: { level: "success", label: "Current" },
     },
   ] satisfies FleetKpi[],

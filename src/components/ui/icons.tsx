@@ -406,3 +406,16 @@ export function AlertTriangleIcon({ className }: IconProps) {
     </StrokeIcon>
   );
 }
+
+/** Trend arrow (chart-line rising to an arrowhead) — the KPI delta glyph.
+ *  Mirror vertically (`-scale-y-100`) for a downward trend. Drawn at 1.5
+ *  stroke: rendered at 12px beside 10px digits, that lands on the site's
+ *  1px optical stroke weight. */
+export function TrendUpIcon({ className }: IconProps) {
+  return (
+    <StrokeIcon viewBox="0 0 16 16" strokeWidth={1.5} className={className}>
+      <path d="M14.5 4.5 9 10.3 5.7 7 1.5 11.3" />
+      <path d="M10.5 4.5h4v4" />
+    </StrokeIcon>
+  );
+}
