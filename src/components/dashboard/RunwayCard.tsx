@@ -1,28 +1,29 @@
-import { fleet, type StatusLevel } from "@/lib/data/aircraft";
+import { fleet, type MaintenanceItem } from "@/lib/data/aircraft";
+import { Chip } from "@/components/ui/Chip";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 /**
  * Maintenance Runway (lab prototype): the fleet's next 90 days as a
- * timeline — one row per aircraft, every schedule item due inside the
- * window plotted as a status-toned dot. The table answers "what's next";
- * this shows *density*: items clustering into one shop visit, two aircraft
- * down the same week, the clear stretches in between. KPI-bar surface
- * (hairline + `shadow-card-soft`) since it's designed to sit beside the
- * status cards.
+ * timeline — one band per aircraft, every schedule item due inside the
+ * window rendered as a real status chip at its due position (the site's
+ * status vocabulary, not abstract dots). Chips lane-stack when they'd
+ * collide, so a crunch literally makes the band taller. KPI-bar surface
+ * since the candidate home is beside the status cards.
  */
 
 const WINDOW_DAYS = 90;
 /** Nominal fleet utilization for hour-based items (hours → calendar days). */
 const HOURS_PER_DAY = 1.5;
+/** Two chips share a lane only with ~3 weeks of air between their starts
+ *  (a full-width chip spans ~17 days at the design width). */
+const LANE_GAP_DAYS = 21;
+
+/** A chip's max footprint: `max-w-28` text (7rem) + the chip's 8px side
+ *  paddings. Positions clamp against this so no chip can exit the card. */
+const CHIP_MAX = "8rem";
 
 /* label column + track, mirroring the schedule table's structural col defs */
 const RUNWAY_COLS = "grid-cols-[84px_1fr]";
-
-const DOT_TONE: Record<StatusLevel, string> = {
-  danger: "bg-danger",
-  warning: "bg-warning",
-  success: "bg-success",
-};
 
 /**
  * Day offset from today for a schedule item's status label, or null when it
@@ -54,14 +55,40 @@ const MONTH_TICKS = [
 
 const pct = (day: number) => `${(day / WINDOW_DAYS) * 100}%`;
 
+interface Placed {
+  item: MaintenanceItem;
+  day: number;
+  lane: number;
+}
+
+/** First-fit lane packing: a chip drops to the next lane when the one
+ *  before it in that lane started less than LANE_GAP_DAYS ago. */
+function packLanes(entries: { item: MaintenanceItem; day: number }[]): {
+  placed: Placed[];
+  laneCount: number;
+} {
+  const laneEnds: number[] = [];
+  const placed = entries.map(({ item, day }) => {
+    let lane = laneEnds.findIndex((end) => day - end >= LANE_GAP_DAYS);
+    if (lane === -1) {
+      lane = laneEnds.length;
+      laneEnds.push(day);
+    } else {
+      laneEnds[lane] = day;
+    }
+    return { item, day, lane };
+  });
+  return { placed, laneCount: Math.max(1, laneEnds.length) };
+}
+
 export function RunwayCard() {
-  const rows = fleet.map((aircraft) => ({
-    tail: aircraft.tailNumber,
-    items: aircraft.maintenance.items
+  const rows = fleet.map((aircraft) => {
+    const entries = aircraft.maintenance.items
       .map((item) => ({ item, day: dueInDays(item.status.label) }))
-      .filter((entry): entry is { item: (typeof entry)["item"]; day: number } => entry.day !== null)
-      .sort((a, b) => a.day - b.day),
-  }));
+      .filter((entry): entry is { item: MaintenanceItem; day: number } => entry.day !== null)
+      .sort((a, b) => a.day - b.day);
+    return { tail: aircraft.tailNumber, ...packLanes(entries) };
+  });
 
   return (
     <div className="rounded-field border border-divider bg-card p-6 shadow-card-soft">
@@ -70,35 +97,36 @@ export function RunwayCard() {
         <p className="text-caption leading-2.75 text-ink-muted">Next 90 days</p>
       </div>
 
-      <div className={`mt-6 grid ${RUNWAY_COLS} gap-x-3.5`}>
-        {rows.map(({ tail, items }) => (
-          <div key={tail} className="col-span-2 grid grid-cols-subgrid">
-            <p className="flex h-10 items-center text-body">{tail}</p>
-            <div className="relative col-start-2 h-10">
-              {/* month gridlines — rows stack flush, so the segments read as
-                  continuous verticals down the chart */}
+      <div className="relative mt-6">
+        {rows.map(({ tail, placed, laneCount }) => (
+          <div
+            key={tail}
+            className={`grid ${RUNWAY_COLS} items-center gap-x-3.5 border-b border-divider py-3.5 last:border-b-0`}
+          >
+            <p className="text-body">{tail}</p>
+            <div className="relative" style={{ height: `${laneCount * 28 - 8}px` }}>
+              {/* month gridlines, quiet and behind the chips */}
               {MONTH_TICKS.map(({ label, day }) => (
                 <div
                   key={label}
                   aria-hidden
-                  className="absolute inset-y-0 w-px bg-divider"
+                  className="absolute -inset-y-3.5 w-px bg-divider"
                   style={{ left: pct(day) }}
                 />
               ))}
-              {/* the track */}
-              <div className="absolute inset-x-0 top-1/2 h-px bg-divider" />
-              {items.map(({ item, day }) => (
+              {placed.map(({ item, day, lane }) => (
                 <span
                   key={item.title}
-                  className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-                  style={{ left: pct(day) }}
+                  className="absolute"
+                  style={{
+                    left: `min(${pct(day)}, calc(100% - ${CHIP_MAX}))`,
+                    top: `${lane * 28}px`,
+                  }}
                 >
                   <Tooltip title={item.status.label} content={item.title}>
-                    {/* white ring keeps clustered dots legible (overlap reads
-                        as a stack, not a blob) */}
-                    <span
-                      className={`block size-2.5 rounded-full ring-2 ring-card ${DOT_TONE[item.status.level]}`}
-                    />
+                    <Chip tone={item.status.level}>
+                      <span className="inline-block max-w-28 truncate">{item.title}</span>
+                    </Chip>
                   </Tooltip>
                 </span>
               ))}
@@ -107,17 +135,20 @@ export function RunwayCard() {
         ))}
 
         {/* axis: Today at the left edge, month labels on their gridlines */}
-        <div className="relative col-start-2 mt-2 h-3.5">
-          <p className="absolute left-0 text-caption leading-2.75 text-ink-muted">Today</p>
-          {MONTH_TICKS.map(({ label, day }) => (
-            <p
-              key={label}
-              className="absolute -translate-x-1/2 text-caption leading-2.75 text-ink-muted"
-              style={{ left: pct(day) }}
-            >
-              {label}
-            </p>
-          ))}
+        <div className={`grid ${RUNWAY_COLS} gap-x-3.5`}>
+          <div />
+          <div className="relative mt-3.5 h-3.5">
+            <p className="absolute left-0 text-caption leading-2.75 text-ink-muted">Today</p>
+            {MONTH_TICKS.map(({ label, day }) => (
+              <p
+                key={label}
+                className="absolute -translate-x-1/2 text-caption leading-2.75 text-ink-muted"
+                style={{ left: pct(day) }}
+              >
+                {label}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>
