@@ -167,8 +167,10 @@ export function MaintenanceLogs({ aircraft }: { aircraft: Aircraft }) {
           {/* Column header: pinned right below the pre-table block. The edge
               overlay re-draws the card's top stroke + corners so the card top
               reads as fixed while its real edge is masked above. */}
+          {/* +1px = the card's top border: the pinned position must equal the
+              rest position exactly, or the card visibly jumps on scroll start */}
           <div
-            style={{ top: "calc(var(--cap-h, 0px) + var(--pre-h, 0px))" }}
+            style={{ top: "calc(var(--cap-h, 0px) + var(--pre-h, 0px) + 1px)" }}
             className={`sticky z-10 grid ${TABLE_COLS} items-center rounded-t-field border-b border-divider bg-card px-6 py-3.25`}
           >
             {/* square mask first (-z-10: under the labels, over scrolled rows):

@@ -327,10 +327,13 @@ only rows slide underneath. Three pieces:
    padding: `pb-3.5` when chips are showing (14px to the card), `pb-6` after
    a toolbar with no chips, none when the block is empty (dashboard,
    unfiltered).
-2. **Column header** — sticky at `top: calc(var(--cap-h) + var(--pre-h))`,
-   directly under the block. `--pre-h` is the block's measured height,
-   published onto the table root by a ResizeObserver (same pattern as
-   `--cap-h`, which the tab components publish from the cap).
+2. **Column header** — sticky at `top: calc(var(--cap-h) + var(--pre-h)
+   + 1px)`, directly under the block. `--pre-h` is the block's measured
+   height, published onto the table root by a ResizeObserver (same pattern
+   as `--cap-h`, which the tab components publish from the cap). The `+1px`
+   is the card's top border: **a pinned element's sticky offset must equal
+   its rest position exactly** — one missing border-width made the whole
+   card jump 1px on scroll start.
 3. **Edge overlay** — two absolute, aria-hidden children of the header
    spanning `-inset-x-px -top-px bottom-0`: first a **square `-z-10 bg-card`
    mask** (under the labels, over scrolled rows — the header's rounded bg
@@ -515,3 +518,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Pinned-table scroll model (both tables): toolbar + filter chips + card top + column header all pin at their rest position — nothing above the rows moves on scroll; rows slide underneath. Pre-table block publishes `--pre-h`; header edge-overlay keeps the card's top stroke/corners fixed. Chips always visible while filtering. |
 | 2026-08-31 | 7 | Scroll-clip audit: pre-table blocks widened across the sheet gutters (`-mx/px-10.75`) — the table card's 58px glow was climbing the unmasked gutters beside the pinned block and clipping at the tab rule. Rule recorded: pinned masks must cover the shadow bleed of whatever scrolls beneath. All other surfaces (fleet cards, activity, overview, caps) verified clean via 10× shadow boost. |
 | 2026-08-31 | 7 | Pinned header corner notches sealed: a square `-z-10 bg-card` mask behind the header (rows were peeking through the transparent notch outside the rounded corner arc). Full-platform red-content sweep: every scrolling surface, filtered and unfiltered, verified pixel-clean at the rule, corners, and gutters. |
+| 2026-08-31 | 7 | 1px scroll-start jump killed: header pin offset now includes the card's top border (`+ 1px`) so the pinned position equals the rest position exactly — header + stroke measured sub-pixel identical at 9 scroll depths on both pages. Rule: sticky offsets must account for every border between the measured ancestor and the pinned edge. |
