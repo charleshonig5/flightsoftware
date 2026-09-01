@@ -1,19 +1,10 @@
 /**
  * Pure-CSS hover/focus tooltip. Wraps its trigger; the bubble pops up
  * centered above it. v2 surface: white card, hairline border, `rounded-field`,
- * `shadow-card` glow, fixed 156px width (`w-39`). Optional muted 10px title
- * over black 10px body copy.
+ * `shadow-card` glow, fixed 156px width (`w-39`). Body copy only — no
+ * title row; the trigger's context already names the subject.
  */
-export function Tooltip({
-  title,
-  content,
-  children,
-}: {
-  /** Muted caption headline above the body (e.g. the KPI label). */
-  title?: string;
-  content: string;
-  children: React.ReactNode;
-}) {
+export function Tooltip({ content, children }: { content: string; children: React.ReactNode }) {
   return (
     <span className="group/tip relative inline-flex" tabIndex={0}>
       {children}
@@ -21,10 +12,7 @@ export function Tooltip({
         role="tooltip"
         className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 w-39 -translate-x-1/2 translate-y-0.5 rounded-field border border-divider bg-card p-3.5 text-left shadow-card opacity-0 transition-all duration-150 ease-(--ease-snap) group-hover/tip:translate-y-0 group-hover/tip:opacity-100 group-focus-visible/tip:translate-y-0 group-focus-visible/tip:opacity-100"
       >
-        {title && <span className="block text-caption leading-2.75 text-ink-muted">{title}</span>}
-        <span className={`block text-caption leading-3.5 text-ink ${title ? "mt-1" : ""}`}>
-          {content}
-        </span>
+        <span className="block text-caption leading-3.5 text-ink">{content}</span>
       </span>
     </span>
   );

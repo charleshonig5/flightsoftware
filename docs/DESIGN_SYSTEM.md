@@ -382,11 +382,11 @@ Active filters render as **quiet chips** inside the pinned pre-table block
 header label ink. Last Service filters by year; Status by
 Overdue/Upcoming/Current.
 
-### Tooltips (`ui/Tooltip.tsx`) — v2 (Figma `107:9826`)
+### Tooltips (`ui/Tooltip.tsx`) — v2 (Figma `107:9826`, title since removed)
 White + hairline, `rounded-field`, `shadow-card`, `p-3.5`, fixed 156px width
-(`w-39`), centered above the trigger with the fade/slip entrance. Muted 10px
-title (leading 11) over ink 10px body (leading 14), `gap-1` — KPI tooltips
-title with the KPI label.
+(`w-39`), centered above the trigger with the fade/slip entrance. **Body
+copy only** — ink 10px (leading 14). The title row was removed: the
+trigger's context already names the subject, so tooltips say one thing.
 
 ### Chips (`ui/Chip.tsx`)
 v2 metrics: **`px-2 py-1.25`** (8/5px), 10px leading-none → 20px tall,
@@ -561,3 +561,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 3 | Greeting date gap tightened to ~8px optical (`mt-0.5`); dashboard hero actions top-align with the greeting line instead of centering on the taller greeting + date block. |
 | 2026-08-31 | 6, 7 | Meter grid gets the site glow — as a true silhouette: new `--drop-shadow-card` token (`filter: drop-shadow`) traces the tiles' stepped shape, so a partial last row casts an L-shaped glow, never the empty bounding rectangle. |
 | 2026-08-31 | 6, 7 | Meter-grid glow scoped to the plane Overview only (dashboard cards already glow — no nested double glow); corner rule upgraded: any corner with two exposed edges rounds (stepped grids round their outer step corners, inner junctions stay square). |
+| 2026-09-01 | 7 | Tooltip title row removed everywhere — body copy only (the trigger's context already names the subject); `title` prop deleted from `ui/Tooltip.tsx`. |

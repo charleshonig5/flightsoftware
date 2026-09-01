@@ -28,7 +28,7 @@ function KpiCell({ kpi, first }: { kpi: FleetKpi; first: boolean }) {
       </div>
       {/* flex kills the line-box so the icon sits exactly at top-6, level with the label row */}
       <span className="absolute top-6 right-6 flex">
-        <Tooltip title={kpi.label} content={kpi.info}>
+        <Tooltip content={kpi.info}>
           <span className="text-ink-faint transition-colors duration-150 group-hover/tip:text-brand group-focus-visible/tip:text-brand">
             <InfoIcon className="size-3.5" />
           </span>
