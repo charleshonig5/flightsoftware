@@ -1,8 +1,8 @@
 /**
  * Pure-CSS hover/focus tooltip. Wraps its trigger; the bubble pops up
  * centered above it. v2 surface: white card, hairline border, `rounded-field`,
- * `shadow-card` glow, fixed 156px width (`w-39`). Body copy only — no
- * title row; the trigger's context already names the subject.
+ * `shadow-card` glow, fixed 156px width (`w-39`), 10px padding. Body copy
+ * only — no title row; the trigger's context already names the subject.
  */
 export function Tooltip({ content, children }: { content: string; children: React.ReactNode }) {
   return (
@@ -10,7 +10,7 @@ export function Tooltip({ content, children }: { content: string; children: Reac
       {children}
       <span
         role="tooltip"
-        className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 w-39 -translate-x-1/2 translate-y-0.5 rounded-field border border-divider bg-card p-3.5 text-left shadow-card opacity-0 transition-all duration-150 ease-(--ease-snap) group-hover/tip:translate-y-0 group-hover/tip:opacity-100 group-focus-visible/tip:translate-y-0 group-focus-visible/tip:opacity-100"
+        className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 w-39 -translate-x-1/2 translate-y-0.5 rounded-field border border-divider bg-card p-2.5 text-left shadow-card opacity-0 transition-all duration-150 ease-(--ease-snap) group-hover/tip:translate-y-0 group-hover/tip:opacity-100 group-focus-visible/tip:translate-y-0 group-focus-visible/tip:opacity-100"
       >
         <span className="block text-caption leading-3.5 text-ink">{content}</span>
       </span>

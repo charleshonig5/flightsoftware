@@ -383,8 +383,9 @@ header label ink. Last Service filters by year; Status by
 Overdue/Upcoming/Current.
 
 ### Tooltips (`ui/Tooltip.tsx`) — v2 (Figma `107:9826`, title since removed)
-White + hairline, `rounded-field`, `shadow-card`, `p-3.5`, fixed 156px width
-(`w-39`), centered above the trigger with the fade/slip entrance. **Body
+White + hairline, `rounded-field`, `shadow-card`, `p-2.5` (10px), fixed
+156px width (`w-39`), centered above the trigger with the fade/slip
+entrance. **Body
 copy only** — ink 10px (leading 14). The title row was removed: the
 trigger's context already names the subject, so tooltips say one thing.
 
@@ -562,3 +563,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 6, 7 | Meter grid gets the site glow — as a true silhouette: new `--drop-shadow-card` token (`filter: drop-shadow`) traces the tiles' stepped shape, so a partial last row casts an L-shaped glow, never the empty bounding rectangle. |
 | 2026-08-31 | 6, 7 | Meter-grid glow scoped to the plane Overview only (dashboard cards already glow — no nested double glow); corner rule upgraded: any corner with two exposed edges rounds (stepped grids round their outer step corners, inner junctions stay square). |
 | 2026-09-01 | 7 | Tooltip title row removed everywhere — body copy only (the trigger's context already names the subject); `title` prop deleted from `ui/Tooltip.tsx`. |
+| 2026-09-01 | 3, 7 | Tooltip padding 14 → 10px (`p-2.5`) — tighter bubble around the single-line body copy. |
