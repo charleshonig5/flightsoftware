@@ -9,15 +9,24 @@ const partOfDay = () => {
   return "evening";
 };
 
+/** "31" → "31st" (handles the 11th/12th/13th exceptions). */
+const ordinal = (day: number) => {
+  const tens = day % 100;
+  if (tens >= 11 && tens <= 13) return `${day}th`;
+  const suffix = { 1: "st", 2: "nd", 3: "rd" }[day % 10] ?? "th";
+  return `${day}${suffix}`;
+};
+
 /** v2 page greeting — time-of-day + first name, 28px Regular, with today's
- *  date beneath (muted 14): the anchor for every relative due label. */
+ *  date beneath (muted 14, "Monday, August 31st"): the anchor for every
+ *  relative due label. */
 export function Greeting() {
   const firstName = currentUser.name.split(" ")[0];
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
+  const now = new Date();
+  const today = `${now.toLocaleDateString("en-US", { weekday: "long" })}, ${now.toLocaleDateString(
+    "en-US",
+    { month: "long" },
+  )} ${ordinal(now.getDate())}`;
   return (
     <div>
       <h1 className="text-headline font-normal" suppressHydrationWarning>
