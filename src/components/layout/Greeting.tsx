@@ -43,7 +43,9 @@ export function Greeting() {
       <h1 className="text-headline font-normal" suppressHydrationWarning>
         Good {partOfDay(now)}, {firstName}
       </h1>
-      <p className="mt-1.5 text-body text-ink-muted" suppressHydrationWarning>
+      {/* mt-0.5: with the two lines' leading (4px + 2px) this reads as 8px
+          of optical air between the letters */}
+      <p className="mt-0.5 text-body text-ink-muted" suppressHydrationWarning>
         {today}
       </p>
     </div>

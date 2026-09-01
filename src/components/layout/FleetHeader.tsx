@@ -6,7 +6,9 @@ import { Greeting } from "./Greeting";
 /** v2 dashboard header: time-of-day greeting left, hero actions right. */
 export function FleetHeader() {
   return (
-    <header className="flex items-center justify-between">
+    /* items-start: the hero actions top-align with the greeting line, not
+       center on the greeting + date block */
+    <header className="flex items-start justify-between">
       <Greeting />
       <div className="flex items-center gap-3.5">
         <Button size="lg" variant="outline">

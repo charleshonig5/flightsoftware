@@ -97,8 +97,11 @@ Rules:
 - No 30/32px sizes exist in v2; the top of the ramp is 28.
 - The dashboard greeting is time-of-day aware: `Good {morning|afternoon|evening},
   {firstName}` — 28px **Regular** (`Greeting.tsx`) — with **today's date**
-  beneath (muted 14, `mt-1.5`, "Monday, August 31st" — ordinal day, no year): the anchor
-  for every relative due label on the page.
+  beneath (muted 14, `mt-0.5` — ~8px optical with the lines' leading,
+  "Monday, August 31st" — ordinal day, no year): the anchor
+  for every relative due label on the page. The header's hero actions
+  top-align with the greeting line (`items-start`), never centering on the
+  greeting + date block.
 
 ## 3. Spacing
 
@@ -552,3 +555,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Lab prototype (NOT locked, not linked): Maintenance Runway card at `/lab/runway` — fleet's next 90 days as a per-aircraft timeline, status-toned dots on hairline tracks, month gridlines, v2 tooltips; KPI-bar surface. Exploring a home beside the status cards. |
 | 2026-08-31 | 7 | Runway prototype KILLED and deleted (component + `/lab/runway`). Verdict: the sorted schedule table + gauges + status chips already solve the tracking job — a timeline card didn't earn its place. Standing principle: no chart unless it answers a question the existing surfaces can't. |
 | 2026-08-31 | 2, 7 | Today's date added under the dashboard greeting (muted 14, weekday + month + ordinal day, no year) — the reference point for the app's relative due labels. |
+| 2026-08-31 | 3 | Greeting date gap tightened to ~8px optical (`mt-0.5`); dashboard hero actions top-align with the greeting line instead of centering on the taller greeting + date block. |
