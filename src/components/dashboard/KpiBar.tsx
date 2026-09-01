@@ -58,9 +58,8 @@ function KpiCell({ kpi, first }: { kpi: FleetKpi; first: boolean }) {
         <span className="text-caption">{kpi.label}</span>
       </div>
       {/* flex kills the line-box so the cluster sits exactly at top-6, level
-          with the label row — delta first, then the info icon, at the 14px
-          control gap */}
-      <span className="absolute top-6 right-6 flex items-center gap-3.5">
+          with the label row — delta first, then the info icon, 10px apart */}
+      <span className="absolute top-6 right-6 flex items-center gap-2.5">
         <KpiDelta kpi={kpi} />
         <Tooltip content={kpi.info}>
           <span className="text-ink-faint transition-colors duration-150 group-hover/tip:text-brand group-focus-visible/tip:text-brand">

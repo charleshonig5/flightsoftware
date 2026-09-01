@@ -287,7 +287,7 @@ bottom pad is optically corrected to 20px because the count's 36px line box
 carries ~7px of dead leading under the 28px digits (24px read ~31px).
 Cell anatomy:
 label row (14px icon + `gap-2` + caption muted label), a top-right cluster
-(`gap-3.5`) of **weekly delta + info icon** (faint → brand on hover,
+(`gap-2.5`, 10px) of **weekly delta + info icon** (faint → brand on hover,
 tooltip), count row `mt-3.5` — 28 SemiBold count, baseline-aligned 14px
 unit (`gap-2.5`), and a **quiet** chip bottom-right (lifted `mb-1.5` to sit
 on the unit's text box).
@@ -581,3 +581,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-09-01 | 3, 7 | Tooltip padding 14 → 10px (`p-2.5`) — tighter bubble around the single-line body copy. |
 | 2026-09-01 | 1, 7 | KPI cells gain weekly trend deltas: new `TrendUpIcon` (chart-line glyph), caption Medium amount beside the info icon (14px gap), sentiment coloring (the sanctioned status-color exception), tooltip explains "vs last week", no-change renders nothing. `FleetKpi.delta` derives from a `lastWeek` snapshot. |
 | 2026-09-01 | 7 | Tooltip gains a `fit` variant (hugs one-liners; content now accepts rich nodes); KPI delta tooltips use it, with "Up/Down N" in the delta's sentiment color. |
+| 2026-09-01 | 3 | KPI corner cluster gap (delta -> info icon) 14 -> 10px. |
