@@ -170,7 +170,7 @@ Elevation:
 
 | Token | Value | Usage |
 |---|---|---|
-| `--shadow-card` | `0 0 58px rgb(113 113 113 / 5%)` | Ambient glow: the sheet (via its glow layer), tables, aircraft cards, **all buttons**, **v2 overlays (tooltips, filter popovers, dropdowns)**, **modal panels**, the Ask AI sidecar, paddles, activity icon chips |
+| `--shadow-card` | `0 0 58px rgb(113 113 113 / 5%)` | Ambient glow: the sheet (via its glow layer), tables, aircraft cards, **the meter grid block** (one shadow behind the whole flush grid, never per tile), **all buttons**, **v2 overlays (tooltips, filter popovers, dropdowns)**, **modal panels**, the Ask AI sidecar, paddles, activity icon chips |
 | `--shadow-card-soft` | `0 0 29px rgb(113 113 113 / 5%)` | Half-strength glow for panels nested inside the sheet (KPI bar) |
 | `--shadow-pop` | `0 4px 12px 8%, 0 1px 3px 6%` | Legacy v1 overlays not yet redesigned (dropdown pickers) |
 | `--blur-scrim` | 12px | Modal lightbox backdrop blur |
@@ -556,3 +556,4 @@ imagery only** (sourced via Openverse), type-accurate to the airframe.
 | 2026-08-31 | 7 | Runway prototype KILLED and deleted (component + `/lab/runway`). Verdict: the sorted schedule table + gauges + status chips already solve the tracking job — a timeline card didn't earn its place. Standing principle: no chart unless it answers a question the existing surfaces can't. |
 | 2026-08-31 | 2, 7 | Today's date added under the dashboard greeting (muted 14, weekday + month + ordinal day, no year) — the reference point for the app's relative due labels. |
 | 2026-08-31 | 3 | Greeting date gap tightened to ~8px optical (`mt-0.5`); dashboard hero actions top-align with the greeting line instead of centering on the taller greeting + date block. |
+| 2026-08-31 | 6, 7 | Meter grid gets the site glow: one `shadow-card` behind the whole flush block (dashboard cards + plane Overview), silhouette rounded to match the grid corners. |
