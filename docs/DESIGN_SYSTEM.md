@@ -214,8 +214,8 @@ under reduced motion):
   modifier): height-to-auto open/shut via the grid-rows `1fr↔0fr` trick,
   250ms `ease-snap` (the row-in timing) with a matching opacity fade on the
   inner wrapper; collapsed content is `inert`. Used by activity months
-  (header chevron rotates 150ms `ease-snap`, sidebar-tree grammar).
-  Transition disabled under reduced motion.
+  (header chevron is the sidebar-tree chevron exactly: `size-4`, 200ms
+  rotation). Transition disabled under reduced motion.
 - **Ask AI**: suggestion chips cascade in on every panel open (120ms base +
   30ms/chip, timed to the 300ms slide); the suggestion arrow nudges 2px on
   hover (card-arrow grammar); the send circle pops awake (`chip-in`) when a
@@ -392,9 +392,10 @@ and v2's `quiet` (brand-soft fill + muted text — KPI bar only).
 One padded panel (`rounded-field` + hairline + `shadow-card`, `p-6`) holding
 **month groups** at `gap-8.5`. Group header: month 14 Regular + muted 10px
 "N Items" count (`gap-3.5`), hairline rule 8px below; items start 24px under
-the rule, stacked at `gap-6`. **Collapsible months**: a quiet 14px chevron
+the rule, stacked at `gap-6`. **Collapsible months**: a quiet 16px chevron
 at the far right of the header (above the rule; muted, ink on hover; the
-sidebar-tree chevron grammar, 150ms snap rotation) collapses one month to
+sidebar-tree chevron exactly — same icon, `size-4`, 200ms
+rotation) collapses one month to
 its header row — an organizational option, never the default: **all months
 open on load**, and the count badge keeps informing while collapsed. The
 region slides shut/open at 250ms `ease-snap` with an opacity fade

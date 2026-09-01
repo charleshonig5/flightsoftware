@@ -106,8 +106,9 @@ export function ActivityFeed({ tail }: { tail?: string }) {
                 onClick={() => toggleMonth(month)}
                 className="ml-auto cursor-pointer text-ink-muted transition-colors duration-150 hover:text-ink"
               >
+                {/* the sidebar-tree chevron exactly: size-4, 200ms rotation */}
                 <ChevronUpIcon
-                  className={`size-3.5 transition-transform duration-150 ease-(--ease-snap) ${
+                  className={`size-4 transition-transform duration-200 ${
                     isCollapsed ? "rotate-180" : ""
                   }`}
                 />
